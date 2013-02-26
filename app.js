@@ -7,9 +7,12 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , Facebook = require('facebook-node-sdk')
+  , mongoose = require('mongoose');
 
 var app = express();
+mongoose.connect((process.env.MONGOLAB_URI||'mongodb://localhost/coplay'));
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -19,8 +22,9 @@ app.configure(function(){
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(express.cookieParser('your secret here'));
+  app.use(express.cookieParser(process.env.COOKIE_SECRET));
   app.use(express.session());
+  app.use(Facebook.middleware({appId: process.env.FB_APPID, secret: process.env.FB_SECRET}));
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
