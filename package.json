@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "express": "3.0.6",
-    "jade": "*"
+    "jade": "*",
     "mongoose": "3.x",
     "fb": "0.1.0"
   },
