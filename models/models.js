@@ -6,20 +6,7 @@ var userSchema = mongoose.Schema({
     fb_id: String,
     friend_list: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     mixes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Mix' }],
-    preferences: { type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }
-});
-
-var mixSchema = mongoose.Schema({
-    users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    preferences: { type: mongoose.Schema.Types.ObjectId, ref: 'Preference' }
-});
-
-var preferenceSchema = mongoose.Schema({
-    //Should eventually be converted to embedded
-    genres: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Genres' }],
-    artists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Artists' }],
-    albums: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Albums' }],
-    songs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Songs' }]
+    preferences: preferenceSchema
 });
 
 var genreSchema = mongoose.Schema({
@@ -42,14 +29,27 @@ var songSchema = mongoose.Schema({
     weight: Number
 });
 
+var preferenceSchema = mongoose.Schema({
+    //Should eventually be converted to embedded
+    genres: [genreSchema],
+    artists: [artistSchema],
+    albums: [albumSchema],
+    songs: [songSchema]
+});
+
+var mixSchema = mongoose.Schema({
+    users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    preferences: preferenceSchema
+});
+
 
 var User = mongoose.model('User', userSchema);
 var Mix = mongoose.model('Mix', mixSchema);
-var Preferences = mongoose.model('Preferences', preferenceSchema);
 var Genres = mongoose.model('Genres', genreSchema);
 var Artists = mongoose.model('Artists', artistSchema);
 var Albums = mongoose.model('Albums', albumSchema);
 var Songs = mongoose.model('Songs', songSchema);
+var Preferences = mongoose.model('Preferences', preferenceSchema);
 
 exports.User = User;
 exports.Mix = Mix;

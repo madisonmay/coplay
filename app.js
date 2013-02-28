@@ -33,7 +33,7 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
+app.get('/home', user.login);
 app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
