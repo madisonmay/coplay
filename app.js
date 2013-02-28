@@ -6,6 +6,7 @@
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
+  , site = require('./routes/site')
   , http = require('http')
   , path = require('path')
   , Facebook = require('facebook-node-sdk')
@@ -33,8 +34,12 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', user.login);
-app.get('/users', user.list);
+app.get('/', user.landing_page);
+app.post('/login', user.login);
+app.get('/logout', user.logout);
+app.get('/settings', user.settings);
+app.get('/about', site.about)
+app.get('/home', site.home);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
