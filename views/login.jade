@@ -5,13 +5,16 @@ extends layout
 block content
 
     div.ph-line-nav.nav
-        a(href="#") Home
-        a(href="#") About
-        a(href="#") Settings
-        a(href="#") Login
+        a(href="/") Home
+        a(href="/about") About
+        a(href="/settings") Settings
+        a(href="/login") Login
         div.effect
 
-    div.chart_body
+    div.wrapper
+        div.chart_body
+        div.description
+            | Social Listening
 
     script(src="/javascripts/landing_page.js")
 
