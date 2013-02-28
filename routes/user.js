@@ -10,5 +10,10 @@ exports.logout = function(req, res){
     res.render('Placeholder for logout handler');
 }
 
+exports.settings = function(req, res){
+    res.render('Placeholder for settings page');
+}
+
+
 
 
