@@ -4,6 +4,5 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(href='http://fonts.googleapis.com/css?family=Unica+One', rel='stylesheet', type='text/css')
-    link(rel='icon', type='image/png', href='images/favicon.ico')
   body
     block content
