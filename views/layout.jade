@@ -2,9 +2,18 @@ doctype 5
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src="http://d3js.org/d3.v3.min.js")
+    link(type='text/css', rel='stylesheet', href='/stylesheets/style.css')
+    script(type='text/javascript', src="http://d3js.org/d3.v3.min.js")
     link(href='http://fonts.googleapis.com/css?family=Unica+One', rel='stylesheet', type='text/css')
     link(rel='icon', type='image/png', href='images/favicon.ico')
   body
+    div(id='logodiv')
+      a(href='/')
+        img(id='logo', src='images/coplay_logo.png', width='147', height='84', alt='Coplay: Collaborative music at its finest.')
     block content
+      div.ph-line-nav.nav
+        a(href="#")Home
+        a(href="#")About
+        a(href="#")Gallery
+        a(href="#")Contact
+        div.effect

@@ -1,6 +1,14 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  min-width: 800px;
+}
+
+#logodiv {
+  position: absolute;
+  left:2px;
+  top:2px;
+  z-index: 2;
 }
 
 a {
@@ -34,7 +42,7 @@ body {
   text-align: center;
   overflow: hidden;
   margin: 2em auto;
-  margin-top: 0px;
+  margin-top: 7px;
   width: 480px;
   position: relative; }
   .nav a {
