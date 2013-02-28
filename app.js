@@ -38,7 +38,7 @@ app.get('/', user.landing_page);
 app.post('/login', user.login);
 app.get('/logout', user.logout);
 app.get('/settings', user.settings);
-app.get('/about', site.about)
+app.get('/about', site.about);
 app.get('/home', site.home);
 
 http.createServer(app).listen(app.get('port'), function(){
