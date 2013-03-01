@@ -30,11 +30,8 @@ var songSchema = mongoose.Schema({
 });
 
 var preferenceSchema = mongoose.Schema({
-    //Should eventually be converted to embedded
-    genres: [genreSchema],
-    artists: [artistSchema],
-    albums: [albumSchema],
-    songs: [songSchema]
+    artists: [{name: String, weight:Number}],
+    songs: [{name: String, artist: String, weight:Number}}]
 });
 
 var mixSchema = mongoose.Schema({
