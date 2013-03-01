@@ -100,22 +100,22 @@ body {
   float: left;
 }
 
-.wrapper_right {
-  position: absolute;
-  text-align: center;
-  /*border: solid 2px black;*/
-  right: 600px;
-  margin-top: -50px;
-  height: 600px;
-  width: 0px;
-}
-
 .description {
   position: relative;
   margin-top: -265px;
   font-size: 30px;
   margin-left: 300px;
   width: 250px;
+}
+
+.wrapper_right {
+  text-align: center;
+  /*border: solid 2px black;*/
+  margin-left: 850px;
+  right: 600px;
+  margin-top: -50px;
+  height: 600px;
+  width: 0px;
 }
 
 .description_right {
