@@ -1,4 +1,11 @@
 extends layout
+block scripts
+  script(type='text/javascript')
+    $(function() {
+      var slider = $('#slider');
+    });
 
 block content
-
+  section
+    span(class='tooltip')
+    div(id='slider')

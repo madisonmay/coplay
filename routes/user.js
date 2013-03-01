@@ -11,7 +11,7 @@ exports.logout = function(req, res){
 };
 
 exports.settings = function(req, res){
-    res.send('Placeholder for settings page');
+    res.render("settings", {title: 'CoPlay'});
 };
 
 
