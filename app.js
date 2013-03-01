@@ -10,7 +10,8 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , Facebook = require('facebook-node-sdk')
-  , mongoose = require('mongoose');
+  , mongoose = require('mongoose')
+  , gs = require('./grooveshark');
 
 var app = express();
 mongoose.connect((process.env.MONGOLAB_URI||'mongodb://localhost/coplay'));
@@ -40,6 +41,10 @@ app.get('/logout', user.logout);
 app.get('/settings', user.settings);
 app.get('/about', site.about);
 app.get('/home', site.home);
+app.get('/gs',function(req, res){
+  gs.make_request({});
+  res.render('grooveshark', { title: 'Grooveshark Player' });
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
