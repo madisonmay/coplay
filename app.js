@@ -11,7 +11,21 @@ var express = require('express')
   , path = require('path')
   , Facebook = require('facebook-node-sdk')
   , mongoose = require('mongoose')
-  , gs = require('./grooveshark');
+  , gs = require('./grooveshark')
+  , echojs = require('echojs');
+
+var echo = echojs({
+  key: process.env.ECHONEST_KEY
+});
+
+
+//example code for echojs
+/*echo('song/search').get({
+  artist: 'radiohead',
+  title: 'karma police'
+}, function (err, json) {
+  console.log(json.response);
+});*/
 
 var app = express();
 mongoose.connect((process.env.MONGOLAB_URI||'mongodb://localhost/coplay'));
