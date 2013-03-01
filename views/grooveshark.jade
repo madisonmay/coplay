@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+  object(classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000",codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0", width="400",height="160",id="mymoviename")
+    param(name="movie",value="http://grooveshark.com/APIPlayer.swf") 
+    param(name="quality",value="high")
+    param(name="bgcolor",value="#ffffff")
+    embed(src="http://grooveshark.com/APIPlayer.swf",id='player',quality="high",bgcolor="#ffffff",width="400",height="160",name="mymoviename",align="",type="application/x-shockwave-flash",pluginspage="http://www.macromedia.com/go/getflashplayer")
+  script(src="/javascripts/player.js")
