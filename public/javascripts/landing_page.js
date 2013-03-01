@@ -10,6 +10,7 @@ var flatten = function flatten(arr) {
   }, []);
 };
 
+//Main graph and user graph functions should eventually be merged.
 function maingraph(input_counts) {
 
     var counts = flatten(input_counts);
@@ -54,7 +55,7 @@ function maingraph(input_counts) {
         });
 }
 
-function usergraph(num) {
+function usergraph(num, users) {
 
     var user_counts = [];
 
@@ -77,7 +78,8 @@ function usergraph(num) {
     var dataset = {
         user_counts: user_counts,
         names: ['The Beach Boys', 'The Eagles', 'The Beatles', 'The Who', 'Black Sabbath', 'Foo Fighters', 'The Kennedys', 'T.I.',
-                'Three Days Grace', 'AWOLNATION', 'The Monkeys']
+                'Three Days Grace', 'AWOLNATION', 'The Monkeys'],
+        usernames: users
     };
 
     var width = 500;
@@ -107,6 +109,7 @@ function usergraph(num) {
             .attr("fill", function(d, i) { return color(i); })
             .attr("base_color", function(d, i) { return color(i); })
             .attr("d", arc)
+            .attr("username", dataset.usernames[i])
             .attr("count", function(d, i) { return dataset.user_counts[i]; })
             .on("mouseover", function(){
                 d3.select(this).style("fill", "#DDDDDD");
@@ -114,11 +117,16 @@ function usergraph(num) {
             .on("mouseout", function(){
                 d3.select(this).style("fill", function() { return d3.select(this).attr("base_color"); });
             });
+
+
+        var text = svg.append('text').text(dataset.usernames[i]);
+        text.attr("y", "10").attr("x", "110")
+
     }
 
     return user_counts;
 };
 
-var counts = usergraph(3, ['Madison', 'Derek', 'Tom']);
+var counts = usergraph(3, ['Tom', 'Derek', 'Madison']);
 maingraph(counts);
 

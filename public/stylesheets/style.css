@@ -90,16 +90,24 @@ body {
   margin-left:-45px;
 }
 
+.meta-wrapper {
+  /*border: 2px black solid;*/
+  min-width: 1600px;
+  min-height: 600px;
+}
+
 .wrapper {
   float: left;
 }
 
 .wrapper_right {
-  float: right;
+  position: absolute;
   text-align: center;
-  margin-right: 100px;
-  margin-top: -40px;
+  /*border: solid 2px black;*/
+  right: 600px;
+  margin-top: -50px;
   height: 600px;
+  width: 0px;
 }
 
 .description {
@@ -108,6 +116,10 @@ body {
   font-size: 30px;
   margin-left: 300px;
   width: 250px;
+}
+
+.description_right {
+  /*border: 2px solid black;*/
 }
 
 .user_chart_body {
