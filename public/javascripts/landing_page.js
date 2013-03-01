@@ -1,17 +1,23 @@
-function maingraph() {
-    var min = 0,
-        max = 30,
-        i,
-        counts = [];
-
-    for (i = min; i<max; i++){
-        counts.push(i.toString());
+var flatten = function flatten(arr) {
+  return arr.reduce(function (flat, toFlatten) {
+    // See if this index is an array that itself needs to be flattened.
+    if (toFlatten.some(Array.isArray)) {
+      return flat.concat(flatten(toFlatten));
+    // Otherwise just add the current index to the end of the flattened array.
+    } else {
+      return flat.concat(toFlatten);
     }
+  }, []);
+};
+
+function maingraph(input_counts) {
+
+    var counts = flatten(input_counts);
+
+    console.log(counts);
 
     var dataset = {
         counts: counts,
-        names: ['The Beach Boys', 'The Eagles', 'The Beatles', 'The Who', 'Black Sabbath', 'Foo Fighters', 'The Kennedys', 'T.I.',
-                'Three Days Grace', 'AWOLNATION', 'The Monkeys']
     };
 
     var width = 800,
@@ -66,7 +72,6 @@ function usergraph(num) {
         console.log("Count:" + count)
     }
 
-    console.log("Out of loop?")
     console.log(user_counts)
 
     var dataset = {
@@ -110,8 +115,10 @@ function usergraph(num) {
                 d3.select(this).style("fill", function() { return d3.select(this).attr("base_color"); });
             });
     }
+
+    return user_counts;
 };
 
-maingraph();
-usergraph(3);
+var counts = usergraph(3, ['Madison', 'Derek', 'Tom']);
+maingraph(counts);
 
