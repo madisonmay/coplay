@@ -49,8 +49,10 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+var scope = {scope: ['']};
+
 app.get('/', user.landing_page);
-app.post('/login', user.login);
+app.get('/login', Facebook.loginRequired(scope), user.login);
 app.get('/logout', user.logout);
 app.get('/settings', user.settings);
 app.get('/about', site.about);

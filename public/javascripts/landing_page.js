@@ -26,8 +26,6 @@ function maingraph(input_counts) {
     var counts = flatten(input_counts);
     var artist_names = [];
 
-    console.log(counts);
-
     var dataset = {
         counts: counts,
     };
@@ -73,7 +71,6 @@ function usergraph(num, users) {
 
     for (i=0; i<num; i++) {
 
-        console.log(i)
         var count = [];
 
         for (j = 0; j<10; j++){
@@ -83,11 +80,8 @@ function usergraph(num, users) {
             artist_names.push(artists[randomArtist]);
         }
 
-        user_counts.push(count)
-        console.log("Count:" + count)
+        user_counts.push(count);
     }
-
-    console.log(user_counts)
 
     var dataset = {
         user_counts: user_counts,
