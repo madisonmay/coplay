@@ -91,12 +91,26 @@ body {
 }
 
 .wrapper {
-  text-align: center;
   float: left;
+}
+
+.wrapper_right {
+  float: right;
+  text-align: center;
+  margin-right: 100px;
+  margin-top: -40px;
+  height: 600px;
 }
 
 .description {
   position: relative;
   margin-top: -265px;
   font-size: 30px;
+  margin-left: 300px;
+  width: 250px;
+}
+
+.user_chart_body {
+  height: 600px;
+  width: 300px;
 }
