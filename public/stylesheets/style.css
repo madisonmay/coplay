@@ -135,3 +135,7 @@ body {
   margin-top: -50px;
   margin-bottom: 25px;
 }
+
+.name {
+  text-align: center;
+}

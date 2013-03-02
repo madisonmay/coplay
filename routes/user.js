@@ -52,6 +52,17 @@ exports.login = function(req, res){
 };
 
 exports.logout = function(req, res){
+    req.facebook.getLogoutUrl({next: 'http://localhost:3000/refresh'}, function(err, url) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(url);
+            res.redirect(url);
+        }
+    });
+};
+
+exports.refresh = function(req, res){
     req.session.destroy();
     res.redirect('/');
 };

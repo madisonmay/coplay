@@ -21,13 +21,14 @@ var artists = ['Pink Floyd', 'The Beatles', 'Led Zeppelin', 'The Rolling Stones'
 
 
 //Main graph and user graph functions should eventually be merged.
-function maingraph(input_counts) {
+function maingraph(input_counts, names) {
 
     var counts = flatten(input_counts);
-    var artist_names = [];
+    var artist_names = names;
 
     var dataset = {
         counts: counts,
+        artist_names: artist_names
     };
 
     var width = 800,
@@ -55,17 +56,22 @@ function maingraph(input_counts) {
         .attr("fill", function(d, i) { return color(i); })
         .attr("base_color", function(d, i) { return color(i); })
         .attr("d", arc)
+        .attr("name", function (d, i) { return dataset.artist_names[i] })
         .attr("count", function(d, i) { return dataset.counts[i]; })
         .on("mouseover", function(){
-            // d3.select(this).style("fill", "#DDDDDD");
+            d3.select(this).style("fill", "#DDDDDD");
+            var name = $(this).attr("name");
+            $(".name").html("<b>" + name + "<b>");
         })
         .on("mouseout", function(){
             d3.select(this).style("fill", function() { return d3.select(this).attr("base_color"); });
+            $(".name").html("");
         });
 }
 
-function usergraph(num, users) {
+function usergraph(users) {
 
+    var num = users.length
     var user_counts = [];
     var artist_names = [];
 
@@ -117,13 +123,16 @@ function usergraph(num, users) {
             .attr("base_color", function(d, i) { return color(i); })
             .attr("d", arc)
             .attr("username", dataset.usernames[i])
-            .attr("artist_name", dataset.artist_names[i])
+            .attr("name", function(d, i) { return dataset.artist_names[i];} )
             .attr("count", function(d, i) { return dataset.user_counts[i]; })
-            // .on("mouseover", function(){
-                // d3.select(this).style("fill", "#DDDDDD");
-            // })
+            .on("mouseover", function(){
+                d3.select(this).style("fill", "#DDDDDD");
+                var name = $(this).attr("name");
+                $(".name").html("<b>" + name + "<b>");
+            })
             .on("mouseout", function(){
                 d3.select(this).style("fill", function() { return d3.select(this).attr("base_color"); });
+                $(".name").html("");
             });
 
 
@@ -134,8 +143,9 @@ function usergraph(num, users) {
     return [user_counts, artist_names];
 };
 
-var values = usergraph(3, ['Tom', 'Derek', 'Madison']);
+var values = usergraph(['Tom', 'Derek', 'Madison']);
 counts = values[0];
 artists = values[1];
-maingraph(counts);
+console.log(artists);
+maingraph(counts, artists);
 

@@ -54,6 +54,7 @@ var scope = {scope: ['']};
 app.get('/', user.landing_page);
 app.get('/login', Facebook.loginRequired(scope), user.login);
 app.get('/logout', user.logout);
+app.get('/refresh', user.refresh);
 app.get('/settings', user.settings);
 app.get('/about', site.about);
 app.get('/home', site.home);
