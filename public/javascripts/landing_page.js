@@ -57,7 +57,7 @@ function maingraph(input_counts) {
         .attr("d", arc)
         .attr("count", function(d, i) { return dataset.counts[i]; })
         .on("mouseover", function(){
-            d3.select(this).style("fill", "#DDDDDD");
+            // d3.select(this).style("fill", "#DDDDDD");
         })
         .on("mouseout", function(){
             d3.select(this).style("fill", function() { return d3.select(this).attr("base_color"); });
@@ -119,9 +119,9 @@ function usergraph(num, users) {
             .attr("username", dataset.usernames[i])
             .attr("artist_name", dataset.artist_names[i])
             .attr("count", function(d, i) { return dataset.user_counts[i]; })
-            .on("mouseover", function(){
-                d3.select(this).style("fill", "#DDDDDD");
-            })
+            // .on("mouseover", function(){
+                // d3.select(this).style("fill", "#DDDDDD");
+            // })
             .on("mouseout", function(){
                 d3.select(this).style("fill", function() { return d3.select(this).attr("base_color"); });
             });

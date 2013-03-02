@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 
 var userSchema = mongoose.Schema({
     username: String,
+    first_name: String,
+    last_name: String,
     fb_id: String,
     friend_list: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     mixes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Mix' }],

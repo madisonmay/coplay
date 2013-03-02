@@ -3,6 +3,11 @@
 extends layout
 
 block content
+
+    if logged_in
+        div.welcome
+            | Welcome, #{user.first_name}!
+
     div.meta-wrapper
 
         div.wrapper
@@ -13,8 +18,6 @@ block content
         div.wrapper_right
             div.user_chart_body
             div.description_right
-
-    div.title
 
     script(src="/javascripts/landing_page.js")
 
