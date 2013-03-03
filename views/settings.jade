@@ -1,12 +1,73 @@
 extends layout
+
 block scripts
-  style
-    #slider{
-    width: 200px;
-    }
+  link(rel='stylesheet', type='text/css', href='stylesheets/settings.css')
   script(type='text/javascript')
     $(function() {
-      $( "#slider" ).slider();
+      $( ".slider" ).slider();
     });
+
+    $(document).ready(function() {
+      // for adding artists to the mix
+      $('#Submit').click(function (){
+        console.log("Add artist button has been clicked");
+        console.log("New Artist: " + $("#newArtist").val());
+        var newArtist = $("#newArtist").val();
+        //When you figure out the routes add the proper stuff here
+        $.post('/addartist', {thingy: newArtist}
+           , function (data) {
+               $('#settingsBox').prepend(data);
+               $("#newArtist").val("");
+           });
+      });
+      //for removing artists
+      $('.Remove').click(function (){
+        console.log('Remove button clicked...')
+        //nonfunctional again remember to add in proper attribute
+        var artist = $(this);
+        // and also here
+        $.post('/removeartist', { artist: artist });
+        $(this).parent().remove();
+        document.location.href='/settings';});
+        
+      // for saving preferences
+      $('#Add').click(function (){
+        console.log("Add artist button has been clicked");
+        console.log("New Artist: " + $("#newArtist").val());
+        var newArtist = $("#newArtist").val();
+        //When you figure out the routes add the proper stuff here
+        $.post('/addartist', {thingy: newArtist}
+           , function (data) {
+               $('#settingsBox').prepend(data);
+               $("#newArtist").val("");
+           });
+      });
+    })
+    
 block content
-  div(id='slider')
+  //Should we use another font this one is only good for titles and shits
+  div(id='addBox')
+    h3(id='line1') Add an Artist:
+    textarea(rows="1", cols="20", id="newArtist")
+    input(type="button", id="Add", value="Submit")
+
+  div(id='settingsBox')
+    h3 Artists in your Mix
+    table
+      //Remove this line when you actually pass data this is just a sampler
+      - var artists = ["Iron Maiden Tribute Band: The Bestest Ever", "Foo Fighters", "Wax Tailor"]
+      each artist in artists
+        tr
+          td
+            div(class="artist")
+              p(class="artist_name")
+                //When you actually pass in data make sure to change this to reflect the proper attribute
+                | #{artist} 
+                input(type="button", class="Remove", value="Remove")
+        tr
+          td
+            div(class="slider")
+      tr
+        td
+          p
+            input(type="button", id="Save", value="Save Mix")
