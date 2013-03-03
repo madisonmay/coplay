@@ -1,0 +1,26 @@
+.slider{
+  width: 200px;
+  margin-left: 15px;
+}
+#addBox{
+  width:260px;
+  //border: solid 1px black;
+  height: 130px;
+  margin-left: 250px;
+  padding-top: 1px;
+}
+#settingsBox{
+  margin-left: 553px;
+  margin-top: -135px;
+  width:740px;
+  //border: solid 1px black;
+  padding: 10px;
+  padding-top: 4px;
+}
+#line1{
+  margin-bottom: 56px;
+}
+//Disables the text area resizing in Chrome but why would you do that
+// textarea{
+  // resize: none
+// }
