@@ -1,6 +1,6 @@
 
 exports.about = function(req, res){
-    res.send("About page placeholder");
+    res.render("index", {title: 'CoPlay', logged_in: false});
 };
 
 exports.home = function(req, res){

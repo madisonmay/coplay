@@ -52,7 +52,7 @@ exports.login = function(req, res){
 };
 
 exports.logout = function(req, res){
-    req.facebook.getLogoutUrl({next: 'http://localhost:3000/refresh'}, function(err, url) {
+    req.facebook.getLogoutUrl({next: 'http://localhost:5000/refresh/'}, function(err, url) {
         if (err) {
             console.log(err);
         } else {
