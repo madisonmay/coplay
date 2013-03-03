@@ -25,10 +25,31 @@ function maingraph(input_counts, names) {
 
     var counts = flatten(input_counts);
     var artist_names = names;
+    var map = {};
+    var combined_counts = [];
+    var combined_names = [];
+
+    //Combine counts and names into dictionary
+    for (i in counts) {
+        console.log(counts[i], artist_names[i]);
+        if (artist_names[i] in map) {
+            map[artist_names[i]] += parseInt(counts[i]);
+        } else {
+            map[artist_names[i]] = parseInt(counts[i]);
+        }
+    }
+
+    //Move from object to two lists
+    for (key in map) {
+        combined_counts.push(map[key]);
+        combined_names.push(key);
+    }
+
+    console.log(map);
 
     var dataset = {
-        counts: counts,
-        artist_names: artist_names
+        counts: combined_counts,
+        artist_names: combined_names
     };
 
     var width = 800,
@@ -138,19 +159,34 @@ function usergraph(users) {
         var text = svg.append('text').text(dataset.usernames[i]);
         text.attr("y", "10").attr("x", "110").attr('width', "100px");
 
-        // var del = svg.append('text').text("x");
-        // del.attr("y", "10").attr("x", "-4").attr('width', "100px").attr("fill", "#FF3333");
-
-
         svg.append("image")
             .attr("xlink:href", "/images/delete.png")
             .attr("width", 25)
             .attr("height", 25)
             .attr("y", "-11").attr("x", "-11")
             .on("click", function(){
-                $(".name").html("<b>" + "Deleted" + "<b>");
+                $(".name").html("<b>" + "Friend removed from mix." + "<b>");
             });
     }
+
+    var svg = d3.select(".user_chart_body").append("svg")
+        .attr("width", width)
+        .attr("height", height/2)
+      .append("g")
+        .attr("transform", "translate(" + 5 + "," + height / 2 + ")")
+
+
+    var img = svg.append("image")
+        .attr("xlink:href", "/images/plus.png")
+        .attr("width", 25)
+        .attr("height", 25)
+        .attr("y", "-70").attr("x", "110")
+        .on("click", function(){
+            $(".name").html("<b>" + "Friend added to mix." + "<b>");
+        });
+
+    var text = svg.append('text').text("Add a friend");
+    text.attr("y", "-50").attr("x", "230").attr('width', "100px");
 
     return [user_counts, artist_names];
 };
@@ -158,6 +194,5 @@ function usergraph(users) {
 var values = usergraph(['Tom', 'Derek', 'Madison', 'David']);
 counts = values[0];
 artists = values[1];
-console.log(artists);
 maingraph(counts, artists);
 

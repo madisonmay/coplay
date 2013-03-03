@@ -29,7 +29,7 @@ block scripts
         $.post('/removeartist', { artist: artist });
         $(this).parent().remove();
         document.location.href='/settings';});
-        
+
       // for saving preferences
       $('#Add').click(function (){
         console.log("Add artist button has been clicked");
@@ -43,13 +43,13 @@ block scripts
            });
       });
     })
-    
+
 block content
   //Should we use another font this one is only good for titles and shits
   div(id='addBox')
     h3(id='line1') Add an Artist:
     textarea(rows="1", cols="20", id="newArtist")
-    input(type="button", id="Add", value="Submit")
+    input(type="button", class="btn btn-success addArtist", id="Add", value="Submit")
 
   div(id='settingsBox')
     h3 Artists in your Mix
@@ -62,12 +62,12 @@ block content
             div(class="artist")
               p(class="artist_name")
                 //When you actually pass in data make sure to change this to reflect the proper attribute
-                | #{artist} 
-                input(type="button", class="Remove", value="Remove")
+                input(type="button", class="Remove btn btn-danger", value="-")
+                | #{artist}
         tr
           td
             div(class="slider")
       tr
         td
           p
-            input(type="button", id="Save", value="Save Mix")
+            input(type="button", class="btn btn-success save", id="Save", value="Save Mix")
