@@ -135,15 +135,27 @@ function usergraph(users) {
                 $(".name").html("");
             });
 
-
         var text = svg.append('text').text(dataset.usernames[i]);
-        text.attr("y", "10").attr("x", "110").attr('width', "100px")
+        text.attr("y", "10").attr("x", "110").attr('width', "100px");
+
+        // var del = svg.append('text').text("x");
+        // del.attr("y", "10").attr("x", "-4").attr('width', "100px").attr("fill", "#FF3333");
+
+
+        svg.append("image")
+            .attr("xlink:href", "/images/delete.png")
+            .attr("width", 25)
+            .attr("height", 25)
+            .attr("y", "-11").attr("x", "-11")
+            .on("click", function(){
+                $(".name").html("<b>" + "Deleted" + "<b>");
+            });
     }
 
     return [user_counts, artist_names];
 };
 
-var values = usergraph(['Tom', 'Derek', 'Madison']);
+var values = usergraph(['Tom', 'Derek', 'Madison', 'David']);
 counts = values[0];
 artists = values[1];
 console.log(artists);
