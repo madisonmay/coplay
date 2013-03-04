@@ -9,11 +9,13 @@ exports.landing_page = function(req, res){
         console.log(db_user);
 
         if (db_user) {
-            res.render('login', {'title': 'CoPlay', 'user': db_user, 'logged_in': true, 'friends': ['Derek', 'Tom', 'Madison']});
+            var data = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
+            var data2 = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
+            res.render('login', {'title': 'CoPlay', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify(data), 'other_friends': data2});
         }
 
         else {
-            res.render('login', {'title': 'CoPlay', 'logged_in': false, 'friends': ['']});
+            res.render('login', {'title': 'CoPlay', 'logged_in': false, 'friends': [''], 'other_friends' : ['']});
         }
     });
 };
@@ -85,6 +87,7 @@ exports.settings = function(req, res){
 };
 
 exports.addFriend = function(req, res){
+    console.log(req.body['friend'])
     console.log("Friend added");
 }
 
@@ -99,4 +102,9 @@ exports.editArtist = function(req, res){
 exports.removeArtist = function(req, res){
     console.log("Artist removed");
 }
+
+exports.removeFriend = function(req, res){
+    console.log(req.body['friend']);
+}
+
 

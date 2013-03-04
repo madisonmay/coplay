@@ -38,7 +38,6 @@ function maingraph(input_counts, names) {
 
     //Combine counts and names into dictionary
     for (i in counts) {
-        console.log(counts[i], artist_names[i]);
         if (artist_names[i] in map) {
             map[artist_names[i]] += parseInt(counts[i]);
         } else {
@@ -51,8 +50,6 @@ function maingraph(input_counts, names) {
         combined_counts.push(map[key]);
         combined_names.push(key);
     }
-
-    console.log(map);
 
     var dataset = {
         counts: combined_counts,
@@ -150,7 +147,7 @@ function usergraph(users) {
             .attr("fill", function(d, i) { return color(i); })
             .attr("base_color", function(d, i) { return color(i); })
             .attr("d", arc)
-            .attr("username", dataset.usernames[i])
+            .attr("username", dataset.usernames[i]['name'])
             .attr("name", function(d, i) { return dataset.artist_names[i];} )
             .attr("count", function(d, i) { return dataset.user_counts[i]; })
             .on("mouseover", function(){
@@ -163,16 +160,23 @@ function usergraph(users) {
                 $(".description").html("Social Listening");
             });
 
-        var text = svg.append('text').text(dataset.usernames[i]);
+        var text = svg.append('text').text(dataset.usernames[i]['name']);
         text.attr("y", "10").attr("x", "110");
 
         svg.append("image")
             .attr("xlink:href", "/images/delete.png")
             .attr("width", 25)
             .attr("height", 25)
+            .attr("username", dataset.usernames[i]['name'])
             .attr("y", "-11").attr("x", "-11")
             .on("click", function(){
                 $(".description").html("Friend removed");
+                var friend = $(this).attr("username");
+                $.post("/removeFriend", {'friend': friend}, function(err, data){
+                    if (err) {
+                        console.log(err);
+                    }
+                });
             });
     }
 
@@ -185,7 +189,7 @@ function usergraph(users) {
     return [user_counts, artist_names];
 };
 
-var values = usergraph(['Tom', 'Derek', 'Madison', 'David']);
+var values = usergraph(friend_list);
 counts = values[0];
 artists = values[1];
 maingraph(counts, artists);

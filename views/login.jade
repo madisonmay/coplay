@@ -22,12 +22,14 @@ block content
             div.friend_title
                 | - Add Friends -
             div.friend_list
-                each friend in friends
+                each friend in other_friends
                     p
-                        a(href="#", username="#{friend}", class="friend") #{friend}
+                        a(href="#", username="#{friend.id}", class="friend") #{friend.name}
 
+    script
+
+        var friend_list = !{friends};
 
     div.name
-
     script(src="/javascripts/landing_page.js")
 
