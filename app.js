@@ -48,8 +48,11 @@ app.get('/refresh', user.refresh);
 app.get('/settings', user.settings);
 app.get('/about', site.about);
 app.get('/home', site.home);
+app.post('/editArtist', user.editArtist)
 app.post('/addFriend', user.addFriend);
-app.get('/gs',function (req, res){
+app.post('/removeArtist', user.removeArtist)
+app.post('/addArtist', user.addArtist);
+app.get('/gs',function(req, res){
   gs.make_request({});
   res.render('grooveshark', { title: 'Grooveshark Player' });
 });
