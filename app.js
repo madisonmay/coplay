@@ -12,23 +12,11 @@ var express = require('express')
   , Facebook = require('facebook-node-sdk')
   , mongoose = require('mongoose')
   , gs = require('./grooveshark')
-  , echojs = require('echojs');
-
-var echo = echojs({
-  key: process.env.ECHONEST_KEY
-});
-
-
-//example code for echojs
-/*echo('song/search').get({
-  artist: 'radiohead',
-  title: 'karma police'
-}, function (err, json) {
-  console.log(json.response);
-});*/
+  , echoWrapper = require('./echonestTest');
 
 var app = express();
 mongoose.connect((process.env.MONGOLAB_URI||'mongodb://localhost/coplay'));
+var models = require('./models/models');
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -51,6 +39,8 @@ app.configure('development', function(){
 
 var scope = {scope: ['']};
 
+
+
 app.get('/', user.landing_page);
 app.get('/login', Facebook.loginRequired(scope), user.login);
 app.get('/logout', user.logout);
@@ -66,6 +56,9 @@ app.get('/gs',function(req, res){
   gs.make_request({});
   res.render('grooveshark', { title: 'Grooveshark Player' });
 });
+app.get('/echo',function (req,res) {
+  echoWrapper.getPlaylistFromMix("5132d5b6e85596b332000005");
+})
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

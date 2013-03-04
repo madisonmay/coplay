@@ -14,7 +14,7 @@ var userSchema = mongoose.Schema({
 var mixSchema = mongoose.Schema({
     users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     preferences: {artists: [{name: String, weight:Number}],
-                    songs: [{name: String,artist: String, weight:Number}]}
+                    songs: [{name: String, artist: String, weight:Number}]}
 });
 
 
