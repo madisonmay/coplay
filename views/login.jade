@@ -20,7 +20,8 @@ block content
                 | - Add Friends -
             div.friend_list
                 each friend in friends
-                    p #{friend}
+                    p
+                        a(href="#", username="#{friend}", class="friend") #{friend}
 
 
     div.name

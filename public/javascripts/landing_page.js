@@ -165,7 +165,7 @@ function usergraph(users) {
             .attr("height", 25)
             .attr("y", "-11").attr("x", "-11")
             .on("click", function(){
-                $(".name").html("<b>" + "Friend removed from mix." + "<b>");
+                $(".description").html("Friend removed");
             });
     }
 
@@ -174,19 +174,6 @@ function usergraph(users) {
         .attr("height", height/2)
       .append("g")
         .attr("transform", "translate(" + 5 + "," + height / 2 + ")")
-
-
-    var img = svg.append("image")
-        .attr("xlink:href", "/images/plus.png")
-        .attr("width", 25)
-        .attr("height", 25)
-        .attr("y", "-70").attr("x", "110")
-        .on("click", function(){
-            $(".name").html("<b>" + "Friend added to mix." + "<b>");
-        });
-
-    var text = svg.append('text').text("Add a friend");
-    text.attr("y", "-50").attr("x", "230").attr('width', "100px");
 
     return [user_counts, artist_names];
 };
