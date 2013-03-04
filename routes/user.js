@@ -93,14 +93,17 @@ exports.addFriend = function(req, res){
 
 exports.addArtist = function(req, res){
     console.log("Artist added");
+    console.log(req.body['artist']);
 }
 
 exports.editArtist = function(req, res){
-    console.log("Artist value edited");
+    console.log("Artist values edited");
+    console.log(req.body['artists'])
 }
 
 exports.removeArtist = function(req, res){
     console.log("Artist removed");
+    console.log(req.body['artist']);
 }
 
 exports.removeFriend = function(req, res){
