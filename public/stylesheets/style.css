@@ -168,6 +168,12 @@ body {
   margin-top: -600px;
 }
 
+#groovesharkPlayer {
+  position:absolute;
+  left:-999px;
+  top:-999px;
+}
+
 .friend_title {
   margin-bottom: 20px;
 }

@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Mix = mongoose.model('Mix');
 
-exports.getPlaylistFromMix = function(mixid) {
+exports.getPlaylistFromMix = function(mixid,sendPlaylistToClient) {
     var intervalID;
     var tasteProfileID;
     var tasteProfileTicket;
@@ -85,7 +85,7 @@ exports.getPlaylistFromMix = function(mixid) {
             console.log("------------------");
             console.log("Playlist:");
             console.log(json.response.songs);
-            return json.response.songs;
+            sendPlaylistToClient(json.response.songs);
         });
     };
     Mix.findOne({_id:mixid}).exec(function (err,doc){
