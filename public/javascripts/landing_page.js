@@ -10,6 +10,13 @@ var flatten = function flatten(arr) {
   }, []);
 };
 
+$('document').ready( function() {
+    $('.friend').click( function () {
+        var friend = $(this).attr("username");
+        $.post('/addFriend', {'friend': friend});
+    });
+});
+
 var artists = ['Pink Floyd', 'The Beatles', 'Led Zeppelin', 'The Rolling Stones',
                'Michael Jackson', 'The Who', 'Queen', 'U2', 'The Beach Boys',
                'Elvis Presley', 'Grateful Dead', 'The Doors', 'The Jimi Hendrix Experience',
@@ -82,11 +89,11 @@ function maingraph(input_counts, names) {
         .on("mouseover", function(){
             d3.select(this).style("fill", "#DDDDDD");
             var name = $(this).attr("name");
-            $(".name").html("<b>" + name + "<b>");
+            $(".description").html(name);
         })
         .on("mouseout", function(){
             d3.select(this).style("fill", function() { return d3.select(this).attr("base_color"); });
-            $(".name").html("");
+            $(".description").html("Social Listening");
         });
 }
 
@@ -132,7 +139,7 @@ function usergraph(users) {
     for (i=0; i < num; i++) {
 
         var svg = d3.select(".user_chart_body").append("svg")
-            .attr("width", width)
+            .attr("width", 400)
             .attr("height", height-5)
           .append("g")
             .attr("transform", "translate(" + width / 4  + "," + height / 2 + ")");
@@ -149,15 +156,15 @@ function usergraph(users) {
             .on("mouseover", function(){
                 d3.select(this).style("fill", "#DDDDDD");
                 var name = $(this).attr("name");
-                $(".name").html("<b>" + name + "<b>");
+                $(".description").html(name);
             })
             .on("mouseout", function(){
                 d3.select(this).style("fill", function() { return d3.select(this).attr("base_color"); });
-                $(".name").html("");
+                $(".description").html("Social Listening");
             });
 
         var text = svg.append('text').text(dataset.usernames[i]);
-        text.attr("y", "10").attr("x", "110").attr('width', "100px");
+        text.attr("y", "10").attr("x", "110");
 
         svg.append("image")
             .attr("xlink:href", "/images/delete.png")
@@ -165,7 +172,7 @@ function usergraph(users) {
             .attr("height", 25)
             .attr("y", "-11").attr("x", "-11")
             .on("click", function(){
-                $(".name").html("<b>" + "Friend removed from mix." + "<b>");
+                $(".description").html("Friend removed");
             });
     }
 
@@ -174,19 +181,6 @@ function usergraph(users) {
         .attr("height", height/2)
       .append("g")
         .attr("transform", "translate(" + 5 + "," + height / 2 + ")")
-
-
-    var img = svg.append("image")
-        .attr("xlink:href", "/images/plus.png")
-        .attr("width", 25)
-        .attr("height", 25)
-        .attr("y", "-70").attr("x", "110")
-        .on("click", function(){
-            $(".name").html("<b>" + "Friend added to mix." + "<b>");
-        });
-
-    var text = svg.append('text').text("Add a friend");
-    text.attr("y", "-50").attr("x", "230").attr('width', "100px");
 
     return [user_counts, artist_names];
 };

@@ -4,11 +4,18 @@ block scripts
   link(rel='stylesheet', type='text/css', href='stylesheets/settings.css')
   script(type='text/javascript')
     $(function() {
-      $( ".slider" ).slider();
+      $( ".slider" ).slider({
+        value: 0,
+        start: function(event,ui) {},
+        slide: function(event, ui) {
+          var value = $(this).slider('value');
+        stop: function(event, ui) {},
+      });
     });
 
     $(document).ready(function() {
       // for adding artists to the mix
+
       $('#Submit').click(function (){
         console.log("Add artist button has been clicked");
         console.log("New Artist: " + $("#newArtist").val());

@@ -4,10 +4,6 @@ extends layout
 
 block content
 
-    if logged_in
-        div.welcome
-            | Welcome, #{user.first_name}!
-
     div.meta-wrapper
 
         div.wrapper
@@ -18,6 +14,15 @@ block content
         div.wrapper_right
             div.user_chart_body
             div.description_right
+
+        div.friends
+            div.friend_title
+                | - Add Friends -
+            div.friend_list
+                each friend in friends
+                    p
+                        a(href="#", username="#{friend}", class="friend") #{friend}
+
 
     div.name
 
