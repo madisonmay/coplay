@@ -10,6 +10,13 @@ var flatten = function flatten(arr) {
   }, []);
 };
 
+$('document').ready( function() {
+    $('.friend').click( function () {
+        var friend = $(this).attr("username");
+        $.post('/addFriend', {'friend': friend});
+    });
+});
+
 var artists = ['Pink Floyd', 'The Beatles', 'Led Zeppelin', 'The Rolling Stones',
                'Michael Jackson', 'The Who', 'Queen', 'U2', 'The Beach Boys',
                'Elvis Presley', 'Grateful Dead', 'The Doors', 'The Jimi Hendrix Experience',

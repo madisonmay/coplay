@@ -84,6 +84,8 @@ exports.settings = function(req, res){
     res.render("settings", {title: 'CoPlay', logged_in: logged_in});
 };
 
-
+exports.addFriend = function(req, res){
+    console.log("Friend added")
+}
 
 
