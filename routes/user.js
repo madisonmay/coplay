@@ -85,7 +85,18 @@ exports.settings = function(req, res){
 };
 
 exports.addFriend = function(req, res){
-    console.log("Friend added")
+    console.log("Friend added");
 }
 
+exports.addArtist = function(req, res){
+    console.log("Artist added");
+}
+
+exports.editArtist = function(req, res){
+    console.log("Artist value edited");
+}
+
+exports.removeArtist = function(req, res){
+    console.log("Artist removed");
+}
 

@@ -1,5 +1,9 @@
 extends layout
 
+block jquery_ui
+  script(type='text/javasacript', src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+  script(type='text/javasacript', src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js")
+
 block scripts
   link(rel='stylesheet', type='text/css', href='stylesheets/settings.css')
   script(type='text/javascript')
@@ -8,7 +12,7 @@ block scripts
         value: 0,
         start: function(event,ui) {},
         slide: function(event, ui) {
-          var value = $(this).slider('value');
+          var value = $(this).slider('value');},
         stop: function(event, ui) {},
       });
     });
@@ -16,12 +20,12 @@ block scripts
     $(document).ready(function() {
       // for adding artists to the mix
 
-      $('#Submit').click(function (){
+      $('#Save').click(function (){
         console.log("Add artist button has been clicked");
         console.log("New Artist: " + $("#newArtist").val());
         var newArtist = $("#newArtist").val();
         //When you figure out the routes add the proper stuff here
-        $.post('/addartist', {thingy: newArtist}
+        $.post('/editArtist', {thingy: newArtist}
            , function (data) {
                $('#settingsBox').prepend(data);
                $("#newArtist").val("");
@@ -29,13 +33,15 @@ block scripts
       });
       //for removing artists
       $('.Remove').click(function (){
-        console.log('Remove button clicked...')
+        console.log('Remove button clicked...');
         //nonfunctional again remember to add in proper attribute
-        var artist = $(this);
+        var artist = $(this).attr("artist");
         // and also here
-        $.post('/removeartist', { artist: artist });
-        $(this).parent().remove();
-        document.location.href='/settings';});
+        $.post('/removeArtist', { artist: artist }, function(data){
+          $(this).parent().remove();
+        });
+        //- document.location.href='/settings';
+      });
 
       // for saving preferences
       $('#Add').click(function (){
@@ -43,7 +49,7 @@ block scripts
         console.log("New Artist: " + $("#newArtist").val());
         var newArtist = $("#newArtist").val();
         //When you figure out the routes add the proper stuff here
-        $.post('/addartist', {thingy: newArtist}
+        $.post('/addArtist', {thingy: newArtist}
            , function (data) {
                $('#settingsBox').prepend(data);
                $("#newArtist").val("");
@@ -69,7 +75,7 @@ block content
             div(class="artist")
               p(class="artist_name")
                 //When you actually pass in data make sure to change this to reflect the proper attribute
-                input(type="button", class="Remove btn btn-danger", value="-")
+                input(type="button", class="Remove btn btn-danger", value="-", artist="#{artist}")
                 | #{artist}
         tr
           td
