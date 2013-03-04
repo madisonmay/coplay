@@ -103,20 +103,21 @@ body {
 }
 
 .description {
+  text-align: center;
   position: relative;
   margin-top: -265px;
   font-size: 30px;
-  margin-left: 300px;
-  width: 250px;
+  margin-left: 270px;
+  width: 258px;
 }
 
 .wrapper_right {
   text-align: center;
   /*border: solid 2px black;*/
-  margin-left: 900px;
+  margin-left: 300px;
   margin-top: -50px;
   height: 600px;
-  width: 600px;
+  width: 400px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -157,4 +158,19 @@ body {
 
 .save {
   margin-top: 10px;
+}
+
+.user_name {
+  width: 50px;
+}
+
+.friends {
+  position: relative;
+  text-align: center;
+  margin-left: 1100px;
+  margin-top: -600px;
+}
+
+.friend_title {
+  margin-bottom: 20px;
 }

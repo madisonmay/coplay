@@ -82,11 +82,11 @@ function maingraph(input_counts, names) {
         .on("mouseover", function(){
             d3.select(this).style("fill", "#DDDDDD");
             var name = $(this).attr("name");
-            $(".name").html("<b>" + name + "<b>");
+            $(".description").html(name);
         })
         .on("mouseout", function(){
             d3.select(this).style("fill", function() { return d3.select(this).attr("base_color"); });
-            $(".name").html("");
+            $(".description").html("Social Listening");
         });
 }
 
@@ -132,7 +132,7 @@ function usergraph(users) {
     for (i=0; i < num; i++) {
 
         var svg = d3.select(".user_chart_body").append("svg")
-            .attr("width", width)
+            .attr("width", 400)
             .attr("height", height-5)
           .append("g")
             .attr("transform", "translate(" + width / 4  + "," + height / 2 + ")");
@@ -149,15 +149,15 @@ function usergraph(users) {
             .on("mouseover", function(){
                 d3.select(this).style("fill", "#DDDDDD");
                 var name = $(this).attr("name");
-                $(".name").html("<b>" + name + "<b>");
+                $(".description").html(name);
             })
             .on("mouseout", function(){
                 d3.select(this).style("fill", function() { return d3.select(this).attr("base_color"); });
-                $(".name").html("");
+                $(".description").html("Social Listening");
             });
 
         var text = svg.append('text').text(dataset.usernames[i]);
-        text.attr("y", "10").attr("x", "110").attr('width', "100px");
+        text.attr("y", "10").attr("x", "110");
 
         svg.append("image")
             .attr("xlink:href", "/images/delete.png")
