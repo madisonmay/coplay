@@ -11,8 +11,8 @@ var express = require('express')
   , path = require('path')
   , Facebook = require('facebook-node-sdk')
   , mongoose = require('mongoose')
-  , gs = require('./grooveshark')
-  , echoWrapper = require('./echonestTest');
+  , gs = require('./grooveshark');
+  // , echoWrapper = require('./echonestTest');
 
 var app = express();
 mongoose.connect((process.env.MONGOLAB_URI||'mongodb://localhost/coplay'));

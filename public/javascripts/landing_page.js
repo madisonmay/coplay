@@ -120,7 +120,7 @@ function usergraph(users) {
         usernames: users
     };
 
-    var width = 500;
+    var width = 360;
         height = 200,
         radius = Math.min(width, height) / 2;
 
@@ -136,7 +136,7 @@ function usergraph(users) {
     for (i=0; i < num; i++) {
 
         var svg = d3.select(".user_chart_body").append("svg")
-            .attr("width", 400)
+            .attr("width", 360)
             .attr("height", height-5)
           .append("g")
             .attr("transform", "translate(" + width / 4  + "," + height / 2 + ")");
@@ -168,10 +168,11 @@ function usergraph(users) {
             .attr("width", 25)
             .attr("height", 25)
             .attr("username", dataset.usernames[i]['name'])
+            .attr("userid", dataset.usernames[i]['id'])
             .attr("y", "-11").attr("x", "-11")
             .on("click", function(){
                 $(".description").html("Friend removed");
-                var friend = $(this).attr("username");
+                var friend = $(this).attr("userid");
                 $.post("/removeFriend", {'friend': friend}, function(err, data){
                     if (err) {
                         console.log(err);
@@ -179,12 +180,6 @@ function usergraph(users) {
                 });
             });
     }
-
-    var svg = d3.select(".user_chart_body").append("svg")
-        .attr("width", width)
-        .attr("height", height/2)
-      .append("g")
-        .attr("transform", "translate(" + 5 + "," + height / 2 + ")")
 
     return [user_counts, artist_names];
 };
