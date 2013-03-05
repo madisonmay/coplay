@@ -1,8 +1,9 @@
 extends layout
 
 block content
+  script(src='/javascripts/grooveshark.js')
   h1= title
   p Welcome to #{title}
 
   div#player
-  script(src="/javascripts/player.js")
+    script(src="/javascripts/player.js")

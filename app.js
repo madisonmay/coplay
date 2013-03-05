@@ -6,14 +6,14 @@
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
-  , site = require('./routes/site')
   , http = require('http')
   , path = require('path')
   , Facebook = require('facebook-node-sdk')
   , mongoose = require('mongoose')
   , gs = require('./grooveshark')
   , audio = require('./routes/audio')
-  , echoWrapper = require('./echonest');
+  , echoWrapper = require('./echonest')
+  , gs = require('./grooveshark');
 
 var app = express();
 mongoose.connect((process.env.MONGOLAB_URI||'mongodb://localhost/coplay'));
@@ -45,12 +45,14 @@ app.get('/login', Facebook.loginRequired(scope), user.login);
 app.get('/logout', user.logout);
 app.get('/refresh', user.refresh);
 app.get('/settings', user.settings);
-app.get('/about', site.about);
-app.get('/home', site.home);
+app.get('/about', user.about);
 app.post('/editArtist', user.editArtist)
 app.post('/addFriend', user.addFriend);
 app.post('/removeArtist', user.removeArtist)
 app.post('/addArtist', user.addArtist);
+app.get('/gs',function(req, res){
+  res.render('grooveshark', { title: 'Grooveshark Player' });
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

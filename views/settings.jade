@@ -9,11 +9,12 @@ block scripts
   script(type='text/javascript')
     $(function() {
       $( ".slider" ).slider({
-        value: 0,
+        value: 50,
         start: function(event,ui) {},
-        slide: function(event, ui) {
-          var value = $(this).slider('value');},
-        stop: function(event, ui) {},
+        slide: function(event, ui) {},
+        stop: function(event, ui) {
+          var value = $(this).slider('value');
+        },
       });
     });
 
@@ -21,11 +22,14 @@ block scripts
       // for adding artists to the mix
 
       $('#Save').click(function (){
-        console.log("Add artist button has been clicked");
-        console.log("New Artist: " + $("#newArtist").val());
-        var newArtist = $("#newArtist").val();
+        var Artist_data = [];
+        $('.Remove').each(function() {
+          Artist_data.push([$(this).attr("artist"), $(this).parent().next('.slider').slider('value')]);
+        });
+
+        console.log(Artist_data);
         //When you figure out the routes add the proper stuff here
-        $.post('/editArtist', {thingy: newArtist}
+        $.post('/editArtist', {artists: Artist_data}
            , function (data) {
                $('#settingsBox').prepend(data);
                $("#newArtist").val("");
@@ -37,8 +41,11 @@ block scripts
         //nonfunctional again remember to add in proper attribute
         var artist = $(this).attr("artist");
         // and also here
-        $.post('/removeArtist', { artist: artist }, function(data){
-          $(this).parent().remove();
+        $(this).parent().parent().remove();
+        $.post('/removeArtist', { artist: $(this).attr("artist") }, function(err, data){
+          if (err) {
+            console.log(err);
+          }
         });
         //- document.location.href='/settings';
       });
@@ -49,7 +56,7 @@ block scripts
         console.log("New Artist: " + $("#newArtist").val());
         var newArtist = $("#newArtist").val();
         //When you figure out the routes add the proper stuff here
-        $.post('/addArtist', {thingy: newArtist}
+        $.post('/addArtist', {artist: newArtist}
            , function (data) {
                $('#settingsBox').prepend(data);
                $("#newArtist").val("");
@@ -61,26 +68,19 @@ block content
   //Should we use another font this one is only good for titles and shits
   div(id='addBox')
     h3(id='line1') Add an Artist:
-    textarea(rows="1", cols="20", id="newArtist")
-    input(type="button", class="btn btn-success addArtist", id="Add", value="Submit")
+    textarea(rows="1", cols="20", id="newArtist", style="margin-top:-80px")
+    input(type="button", class="btn btn-success addArtist", id="Add", value="Submit", style="margin-top:-60px")
 
   div(id='settingsBox')
     h3 Artists in your Mix
-    table
+    div
       //Remove this line when you actually pass data this is just a sampler
       - var artists = ["Iron Maiden Tribute Band: The Bestest Ever", "Foo Fighters", "Wax Tailor"]
       each artist in artists
-        tr
-          td
-            div(class="artist")
-              p(class="artist_name")
-                //When you actually pass in data make sure to change this to reflect the proper attribute
-                input(type="button", class="Remove btn btn-danger", value="-", artist="#{artist}")
-                | #{artist}
-        tr
-          td
-            div(class="slider")
-      tr
-        td
-          p
-            input(type="button", class="btn btn-success save", id="Save", value="Save Mix")
+        div.artist
+          p.artist_name
+            //When you actually pass in data make sure to change this to reflect the proper attribute
+            input(type="button", class="Remove btn btn-danger", value="-", artist="#{artist}")
+            | #{artist}
+          div(class="slider", style="margin-left:0px;")
+    input(type="button", class="btn btn-success save", id="Save", value="Save Mix")

@@ -10,7 +10,7 @@ exports.make_request = function(data,callback){
   var datatest5 = {method: "getSongSearchResults", parameters:{query:"vibesquad punchingbag",limit:1,country:{ID:223,CC1:0,CC2:0,CC3:0,CC4:1073741824,DMA:506,IPR:0}}, header:{wsKey:process.env.GSHARK_KEY,sessionID:"67309bd2c4ad33a96274131c4165cf8a"}};
   
   var datastring = JSON.stringify(data);
-  console.log(datastring);
+  //console.log(datastring);
   var sig = hmac.CryptoJS.HmacMD5(datastring,process.env.GSHARK_SECRET).toString(hmac.CryptoJS.enc.Hex);
 
   var options = {
@@ -26,15 +26,15 @@ exports.make_request = function(data,callback){
   var data = "";
 
   var req = https.request(options, function(res) {
-    console.log('STATUS: ' + res.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(res.headers));
+    //console.log('STATUS: ' + res.statusCode);
+    //console.log('HEADERS: ' + JSON.stringify(res.headers));
     res.setEncoding('utf8');
     res.on('data', function (chunk) {
       data += chunk;
       //console.log('BODY: ' + chunk);
     });
     res.on('end', function () {
-      callback(data);
+      callback(JSON.parse(data));
     });
   });
 
