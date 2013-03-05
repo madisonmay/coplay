@@ -11,16 +11,16 @@ exports.landing_page = function(req, res){
         if (db_user) {
             var data = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
             var data2 = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
-            res.render('login', {'title': 'CoPlay', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify(data), 'other_friends': data2});
+            res.render('home', {'title': 'CoPlay: Social Music At Its Finest', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify(data), 'other_friends': data2});
         }
 
         else {
-            res.render('login', {'title': 'CoPlay', 'logged_in': false, 'friends': [''], 'other_friends' : ['']});
+            res.render('landing', {'title': 'CoPlay: Social Music At Its Finest', 'logged_in': false});
         }
     });
 };
 exports.about = function(req, res){
-    res.render("about", {title: 'CoPlay'});
+    res.render("about", {title: 'CoPlay', logged_in: false});
 };
 
 exports.login = function(req, res){
@@ -73,7 +73,7 @@ exports.logout = function(req, res){
 };
 
 exports.refresh = function(req, res){
-    //Finish logout process by destroying cookies and redirecting to the home page
+    //Finish logout process by destroying cookies and redirecting to the landing page
     req.session.destroy();
     res.redirect('/');
 };
@@ -86,7 +86,7 @@ exports.settings = function(req, res){
         logged_in = false
     }
     console.log(logged_in, "Logged")
-    res.render("settings", {title: 'CoPlay', logged_in: logged_in});
+    res.render("settings", {title: 'CoPlay: Adjust mix', logged_in: logged_in});
 };
 
 exports.addFriend = function(req, res){

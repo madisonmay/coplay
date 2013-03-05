@@ -45,7 +45,7 @@ app.get('/login', Facebook.loginRequired(scope), user.login);
 app.get('/logout', user.logout);
 app.get('/refresh', user.refresh);
 app.get('/settings', user.settings);
-app.get('/about', site.about);
+app.get('/about', user.about);
 app.post('/editArtist', user.editArtist)
 app.post('/addFriend', user.addFriend);
 app.post('/removeArtist', user.removeArtist)

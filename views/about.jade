@@ -1,27 +1,55 @@
 extends layout
 // Derr this is not serious at all.
+block scripts
+  style
+    td{
+      width: 300px;
+    }
+    table{
+      margin-left: 90px;
+      margin-top: 40px;
+    }
+    td{
+      padding: 10px;
+    }
+    .picture{
+      text-align: right;
+    }
+    h1{
+      text-align: center;
+      margin-top: -50px;
+    }
 block content
-  h2
+  h1
     | Our Team:
   table
     tr
       td(class='picture')
+        img(class='portrait', src='images/madison.jpg', width='200px', height='300px')
       td(class='blurb')
         h3
           | Madison May
         p
           | Raised on a steady diet of pebbles and harebrained ideas, Madison always makes everything better, I guess.
+      td(class='picture')
+        img(class='portrait', src='images/derek.jpg', width='200px', height='300px')
+      td(class='blurb')
+        h3
+          | Derek Redfern
+        p
+          | In the far off land of Canada, Derek Redfern is the unequestioned king.
     tr
       td(class='picture')
+        img(class='portrait', src='images/tom.jpg', width='200px', height='300px')
       td(class='blurb')
         h3
           | Tom Chen
         p
           | A robot from the year 3000, he somehow convinced the admissions department that he was a human during Candidates' Weekend.
-    tr
       td(class='picture')
+        img(class='portrait', src='images/homer.jpg', width='200px', height='300px')
       td(class='blurb')
         h3
-          | Derek Redfern
+          | Poor Judgment
         p
-          | In the far off land of Canada, Derek Redfern is king.
+          | How bad could it possibly go? (Don't answer.)
