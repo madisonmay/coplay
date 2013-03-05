@@ -51,7 +51,10 @@ exports.getPlaylistFromMix = function(req,res){
     //echo.getPlaylistFromMix(req.session.mix,echonestCallback);
     //echo.getPlaylistFromMix("5132d5b6e85596b332000005",echonestPlaylistCallback);
     var userFindCallback = function(err,doc){
-        echo.getPlaylistFromMix(doc.mix.toString(),echonestPlaylistCallback);
+        console.log("Result:")
+        console.log(doc)
+        echo.getPlaylistFromMix(doc.mix,echonestPlaylistCallback);
     };
-    User.findOne({fbid:req.session.user},userFindCallback)
+    console.log(req.session.user)
+    User.findOne({fb_id:req.session.user},userFindCallback)
 };
