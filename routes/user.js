@@ -85,7 +85,7 @@ exports.about = function(req, res){
     res.render("about", {title: 'Coplay', logged_in: false});
 };
 
-function get_friends(fb_id, req, res, thisID, callback){
+function get_friends(fb_id, thisID,req, res, callback){
     //Populates the user object with friends who use CoPlay
     var curr = 0;
     var max;
@@ -110,7 +110,8 @@ function get_friends(fb_id, req, res, thisID, callback){
                 console.log("DB_USER", db_user);
                 friend_list.push(db_user);
                 console.log("Friend list:", friend_list);
-                db_user.friend_list.push()
+                db_user.friend_list.push(thisID);
+                db_user.save(console.log);
             }
             return save_try(friends, friend_list);
         };
@@ -137,7 +138,7 @@ exports.login = function(req, res){
             //User in database
             if (db_user) {
                 req.session.user = db_user.fb_id;
-                get_friends(db_user.fb_id, req, res, function(friend_list){
+                get_friends(db_user.fb_id, db_user._id, req, res, function(friend_list){
                     db_user.friend_list = friend_list;
                     db_user.save();
                     res.redirect('/');
@@ -157,7 +158,7 @@ exports.login = function(req, res){
                         new_user.mix = mix;
                         req.session.user = new_user.fb_id;
                         new_user.save(function (err) {
-                            get_friends(new_user.fb_id, req, res, new_user.fb_id, function(friend_list){
+                            get_friends(new_user.fb_id, new_user._id, req, res, function(friend_list){
                                 new_user.friend_list = friend_list;
                                 new_user.save();
                                 res.redirect('/');
