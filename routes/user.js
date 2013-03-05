@@ -1,4 +1,3 @@
-var async = require('async');
 var Models = require('../models/models.js');
 var User = Models.User;
 var Mix = Models.Mix
