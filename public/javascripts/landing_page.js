@@ -99,8 +99,8 @@ function maingraph(input_counts, names) {
 
 function usergraph(users) {
 
-    var num = users.length
-    var user_counts = [];
+    var num = users.users.length
+    /*var user_counts = [];
     var artist_names = [];
 
     for (var i=0; i<num; i++) {
@@ -117,16 +117,15 @@ function usergraph(users) {
 
         artist_names.push(user_artists)
         user_counts.push(count);
-    }
+    }*/
+
+    console.log(users)
 
     var dataset = {
-        user_counts: user_counts,
-        artist_names: artist_names,
-        usernames: users
+        user_counts: users.user_counts,
+        artist_names: users.artist_names,
+        usernames: users.users
     };
-
-    console.log(user_counts);
-    console.log(artist_names);
 
     var width = 360;
         height = 200,
@@ -196,7 +195,7 @@ function usergraph(users) {
             });
     }
 
-    return [user_counts, artist_names];
+    return [users.user_counts, users.artist_names];
 };
 
 var values = usergraph(friend_list);
