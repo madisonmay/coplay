@@ -31,7 +31,7 @@ var artists = ['Pink Floyd', 'The Beatles', 'Led Zeppelin', 'The Rolling Stones'
 function maingraph(input_counts, names) {
 
     var counts = flatten(input_counts);
-    var artist_names = names;
+    var artist_names = flatten(names);
     var map = {};
     var combined_counts = [];
     var combined_names = [];
@@ -44,6 +44,8 @@ function maingraph(input_counts, names) {
             map[artist_names[i]] = parseInt(counts[i]);
         }
     }
+
+    console.log(map)
 
     //Move from object to two lists
     for (key in map) {
@@ -100,17 +102,19 @@ function usergraph(users) {
     var user_counts = [];
     var artist_names = [];
 
-    for (i=0; i<num; i++) {
+    for (var i=0; i<num; i++) {
 
+        var user_artists = [];
         var count = [];
 
-        for (j = 0; j<10; j++){
-            var random=Math.floor(Math.random()*11);
+        for (var j = 0; j<10; j++){
+            var random=Math.floor(Math.random()*10+1);
             count.push(random.toString());
             var randomArtist = Math.floor(Math.random()*artists.length);
-            artist_names.push(artists[randomArtist]);
+            user_artists.push(artists[randomArtist]);
         }
 
+        artist_names.push(user_artists)
         user_counts.push(count);
     }
 
@@ -119,6 +123,9 @@ function usergraph(users) {
         artist_names: artist_names,
         usernames: users
     };
+
+    console.log(user_counts);
+    console.log(artist_names);
 
     var width = 360;
         height = 200,
@@ -133,7 +140,7 @@ function usergraph(users) {
         .innerRadius(radius - 60)
         .outerRadius(radius - 10);
 
-    for (i=0; i < num; i++) {
+    for (var n=0; n < num; n++) {
 
         var svg = d3.select(".user_chart_body").append("svg")
             .attr("width", 360)
@@ -142,14 +149,14 @@ function usergraph(users) {
             .attr("transform", "translate(" + width / 4  + "," + height / 2 + ")");
 
         var path = svg.selectAll("path")
-            .data(pie(dataset.user_counts[i]))
+            .data(pie(dataset.user_counts[n]))
           .enter().append("path")
             .attr("fill", function(d, i) { return color(i); })
             .attr("base_color", function(d, i) { return color(i); })
             .attr("d", arc)
-            .attr("username", dataset.usernames[i]['name'])
-            .attr("name", function(d, i) { return dataset.artist_names[i];} )
-            .attr("count", function(d, i) { return dataset.user_counts[i]; })
+            .attr("username", dataset.usernames[n]['name'])
+            .attr("name", function(d, i) { return dataset.artist_names[n][i];} )
+            .attr("count", function(d, i) { return dataset.user_counts[n][i]; })
             .on("mouseover", function(){
                 d3.select(this).style("fill", "#DDDDDD");
                 var name = $(this).attr("name");
@@ -160,15 +167,15 @@ function usergraph(users) {
                 $(".description").html("Social Listening");
             });
 
-        var text = svg.append('text').text(dataset.usernames[i]['name']);
+        var text = svg.append('text').text(dataset.usernames[n]['name']);
         text.attr("y", "10").attr("x", "110");
 
         svg.append("image")
             .attr("xlink:href", "/images/delete.png")
             .attr("width", 25)
             .attr("height", 25)
-            .attr("username", dataset.usernames[i]['name'])
-            .attr("userid", dataset.usernames[i]['fb_id'])
+            .attr("username", dataset.usernames[n]['name'])
+            .attr("userid", dataset.usernames[n]['fb_id'])
             .attr("y", "-11").attr("x", "-11")
             .on("click", function(){
                 $(".description").html("Friend removed");
