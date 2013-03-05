@@ -1,6 +1,9 @@
 var gs = require('../grooveshark'),
     echo = require('../echonest');
 
+var Models = require('../models/models.js');
+var User = Models.User;
+
 exports.getPlaylistFromMix = function(req,res){
     var numSongs;
     var streamKeys = [];
