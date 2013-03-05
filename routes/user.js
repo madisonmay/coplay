@@ -41,6 +41,13 @@ exports.landing_page = function(req, res){
                     weights[i].push(doc.preferences.artists[j].weight)
                     totalWeight += weights[i][j];
                 };
+
+                if (!doc.preferences.artists.length) {
+                    topics[i].push("No Artist or Songs")
+                    weights[i].push(1)
+                    totalWeight += 1;
+                }
+
                 console.log(totalWeight)
                 //normalize the weight
                 for (var j = 0; j < weights[i].length; j++) {
