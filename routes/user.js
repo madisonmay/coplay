@@ -39,20 +39,24 @@ exports.about = function(req, res){
 };
 
 function get_friends(fb_id, req, res, callback){
+    //Populates the user object with friends who use CoPlay
     var curr = 0;
     var max;
 
+    //attempt to complete request
     function save_try(friends, friend_list, i) {
         curr += 1;
         if (curr == max){
             console.log(friend_list);
             console.log("Friend list: ", friend_list);
             console.log("Callback:", callback);
+            //save to user friend_list
             callback(friend_list);
         }
     }
 
     function db_query(friends, friend_list, i) {
+        //Query database for fb_ids
         User.findOne({'fb_id': friends.data[i].id}, function(err, db_user){
             if (db_user) {
                 console.log(friends.data[i].id)
@@ -64,6 +68,7 @@ function get_friends(fb_id, req, res, callback){
         });
     };
 
+    //facebook request to generate list of fb_id
     req.facebook.api('/me/friends?', function(err, friends) {
         max = friends.data.length;
         var friend_list = [];
@@ -193,7 +198,7 @@ exports.editArtist = function(req, res){
             console.log(err);
         } else {
             db_user.preferences.artists = artists;
-                db_user.save();
+            db_user.save();
         }
     });
 }
@@ -241,7 +246,6 @@ exports.removeFriend = function(req, res){
                 for (var i =0; i < mix.users.length; i++) {
                     console.log(mix.users[i], " | ", friend)
                     if (mix.users[i] == friend) {
-                        console.log("Match")
                         mix.users.splice(i,1);
                         mix.save(function(err, mix) {
                             if (err){
@@ -250,7 +254,6 @@ exports.removeFriend = function(req, res){
                                 console.log("Success")
                             }
                         });
-
                    }
                 }
             });
