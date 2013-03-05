@@ -23,7 +23,7 @@ exports.landing_page = function(req, res){
             var topics = [];
             var weights = [];
 
-            var mixPopulateCallback = function (doc) {
+            var mixPopulateCallback = function (err,doc) {
                 console.log("Callback")
                 console.log(doc)
                 users.push({name:doc.first_name,id:doc._id});
@@ -46,6 +46,17 @@ exports.landing_page = function(req, res){
                 for (var j = 0; j < weights[i].length; j++) {
                     weights[i][j] *= 100.0/totalWeight;
                 };
+                if((i+1)>=db_user.mix.users.length) {
+                    console.log(weights)
+                var data = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
+                var data2 = db_user.friend_list;
+                data2 = data2.filter(function(el){
+                    return (!db_user.mix.users.contains(el._id))
+                })
+                console.log(JSON.stringify({users:users,artist_names:topics,user_counts:weights}))
+                res.render('home', {'title': 'Coplay: Social Music At Its Finest', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify({users:users,artist_names:topics,user_counts:weights}), 'other_friends': data2});
+            
+                }
             }
 
             //add current user
@@ -75,12 +86,7 @@ exports.landing_page = function(req, res){
             for (var i = 0; i < db_user.mix.users.length; i++) {
                 console.log(db_user.mix.users[i])
                 console.log(db_user._id)
-                if(db_user.mix.users[i].toString()===db_user._id.toString()) {
-                    console.log(true)
-                    mixPopulateCallback(db_user);
-                } else {
-                    User.findOne({_id:db_user.mix.users[i]}).exec(mixPopulateCallback);
-                }
+                User.findOne({_id:db_user.mix.users[i]}).exec(mixPopulateCallback);
             };
 
             //add friends
@@ -106,16 +112,7 @@ exports.landing_page = function(req, res){
                 };
             };*/
 
-            
-            console.log(weights)
-            var data = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
-            var data2 = db_user.friend_list;
-            data2 = data2.filter(function(el){
-                return (!db_user.mix.users.contains(el._id))
-            })
-            console.log(JSON.stringify({users:users,artist_names:topics,user_counts:weights}))
-            res.render('home', {'title': 'Coplay: Social Music At Its Finest', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify({users:users,artist_names:topics,user_counts:weights}), 'other_friends': data2});
-        }
+            }
 
         else {
             res.render('landing', {'title': 'Coplay: Social Music At Its Finest', 'logged_in': false});

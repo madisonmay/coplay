@@ -46,5 +46,9 @@ exports.getPlaylistFromMix = function(req,res){
         }
     }
     //echo.getPlaylistFromMix(req.session.mix,echonestCallback);
-    echo.getPlaylistFromMix("5132d5b6e85596b332000005",echonestPlaylistCallback);
+    //echo.getPlaylistFromMix("5132d5b6e85596b332000005",echonestPlaylistCallback);
+    var userFindCallback = function(err,doc){
+        echo.getPlaylistFromMix(doc.mix.toString(),echonestPlaylistCallback);
+    };
+    User.findOne({fbid:req.session.user},userFindCallback)
 };
