@@ -14,13 +14,12 @@ block scripts
         var Artist_data = [];
         $('.Remove').each(function() {
           Artist_data.push({'name': $(this).attr("artist"), 'weight': $(this).parent().next('.slider').slider('value')});
-          console.log($(this).parent().next('.slider').slider('value'))
         });
 
         console.log(Artist_data);
         //When you figure out the routes add the proper stuff here
-        $.post('/editArtist', {artists: Artist_data}
-           , function (data) {
+        $.post('/editArtist', {artists: Artist_data}, function (data) {
+               console.log("Jquery post")
                $('#settingsBox').prepend(data);
                $("#newArtist").val("");
            });
@@ -52,8 +51,8 @@ block scripts
                $('#artists').prepend("");
                $("#newArtist").val("");
            });
+        //temporary solution
         setTimeout(function() {
-          console.log("Blarghle");
           location.reload(true);
         }, 500);
       });
@@ -84,6 +83,7 @@ block content
   script
     $('div.slider').each(function() {
       var weight = $(this).attr("weight");
+      console.log(weight);
       $(this).slider({
         value: weight,
         start: function(event,ui) {

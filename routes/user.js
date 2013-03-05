@@ -17,7 +17,6 @@ exports.landing_page = function(req, res){
     User.findOne({fb_id : req.session.user}).populate('friend_list').populate('mix').exec(function(err, db_user) {
 
         if (db_user) {
-
             console.log(db_user.mix)
             console.log(db_user.friend_list);
             var users = [];
@@ -282,7 +281,7 @@ exports.editArtist = function(req, res){
             console.log(err);
         } else {
             db_user.preferences.artists = artists;
-            db_user.save();
+                db_user.save();
         }
     });
 }
@@ -301,7 +300,11 @@ exports.removeArtist = function(req, res){
                 console.log(db_user.preferences.artists[i].name)
                 if (db_user.preferences.artists[i].name == artist_name) {
                     db_user.preferences.artists.splice(i,1);
-                    db_user.save();
+                    db_user.save(function(err, data) {
+                        if (err) {
+                            console.log(err)
+                        }
+                    });
                     break;
                }
             }
@@ -310,7 +313,37 @@ exports.removeArtist = function(req, res){
 }
 
 exports.removeFriend = function(req, res){
-    console.log(req.body['friend']);
+
+    //Remove a friend from user's mix
+    friend = req.body['friend']
+    console.log("Friend: ", friend)
+    user_id = req.session.user;
+    console.log("Friend removed");
+    User.findOne({'fb_id': user_id}).exec(function(err, db_user) {
+        if (err) {
+            console.log(err);
+        } else {
+             Mix.findOne({"_id": db_user.mix}).exec(function(err, mix) {
+                //Right now only works with 1 user at a time.
+                console.log(mix.users)
+                for (var i =0; i < mix.users.length; i++) {
+                    console.log(mix.users[i], " | ", friend)
+                    if (mix.users[i] == friend) {
+                        console.log("Match")
+                        mix.users.splice(i,1);
+                        mix.save(function(err, mix) {
+                            if (err){
+                                console.log(err)
+                            } else {
+                                console.log("Success")
+                            }
+                        });
+
+                   }
+                }
+            });
+        }
+    });
 }
 
 exports.mixUpdate = function(req, res){
@@ -326,15 +359,17 @@ exports.mixUpdate = function(req, res){
                 console.log("UID: ", new_friends[0])
                 console.log("In List: ", mix.users.contains(new_friends[0]));
                 //Right now only works with 1 user at a time.
-                if (!mix.users.contains(new_friends[0])) {
-                    mix.users.push(new_friends[0])
-                    mix.save(function(err, mix) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            console.log(mix);
-                        }
-                    });
+                for(var i=0; i<new_friends.length; i++) {
+                    if (!mix.users.contains(new_friends[i])) {
+                        mix.users.push(new_friends[i])
+                        mix.save(function(err, mix) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log(mix);
+                            }
+                        });
+                    }
                 }
             });
         }
