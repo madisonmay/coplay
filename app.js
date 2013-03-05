@@ -12,7 +12,8 @@ var express = require('express')
   , Facebook = require('facebook-node-sdk')
   , mongoose = require('mongoose')
   , gs = require('./grooveshark')
-  , echoWrapper = require('./echonestTest');
+  , audio = require('./routes/audio')
+  , echoWrapper = require('./echonest');
 
 var app = express();
 mongoose.connect((process.env.MONGOLAB_URI||'mongodb://localhost/coplay'));
@@ -39,8 +40,6 @@ app.configure('development', function(){
 
 var scope = {scope: ['']};
 
-
-
 app.get('/', user.landing_page);
 app.get('/login', Facebook.loginRequired(scope), user.login);
 app.get('/logout', user.logout);
@@ -52,13 +51,6 @@ app.post('/editArtist', user.editArtist)
 app.post('/addFriend', user.addFriend);
 app.post('/removeArtist', user.removeArtist)
 app.post('/addArtist', user.addArtist);
-app.get('/gs',function(req, res){
-  gs.make_request({});
-  res.render('grooveshark', { title: 'Grooveshark Player' });
-});
-app.get('/echo',function (req,res) {
-  echoWrapper.getPlaylistFromMix("5132d5b6e85596b332000005");
-})
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
