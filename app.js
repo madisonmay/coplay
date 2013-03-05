@@ -50,6 +50,7 @@ app.post('/addFriend', user.addFriend);
 app.post('/removeArtist', user.removeArtist)
 app.post('/addArtist', user.addArtist);
 app.post('/mixUpdate', user.mixUpdate);
+app.post('/removeFriend', user.removeFriend);
 app.get('/play',function(req, res){
   res.render('grooveshark', { title: 'Now Playing', logged_in:true });
 });

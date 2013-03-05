@@ -175,11 +175,13 @@ function usergraph(users) {
             .attr("width", 25)
             .attr("height", 25)
             .attr("username", dataset.usernames[n]['name'])
-            .attr("userid", dataset.usernames[n]['fb_id'])
+            .attr("userid", dataset.usernames[n]['id'])
             .attr("y", "-11").attr("x", "-11")
             .on("click", function(){
                 $(".description").html("Friend removed");
+                $(this).parent().parent().remove();
                 var friend = $(this).attr("userid");
+                console.log(friend)
                 $.post("/removeFriend", {'friend': friend}, function(err, data){
                     if (err) {
                         console.log(err);

@@ -20,7 +20,7 @@ exports.landing_page = function(req, res){
 
             console.log(db_user.mix.users)
             console.log(db_user.friend_list);
-            var data = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
+            var data = [{name: 'Derek', id: '5135a2f7823bd1ab56000005'}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
             var data2 = db_user.friend_list;
             data2 = data2.filter(function(el){
                 return (!db_user.mix.users.contains(el._id))
@@ -220,7 +220,31 @@ exports.removeArtist = function(req, res){
 }
 
 exports.removeFriend = function(req, res){
-    console.log(req.body['friend']);
+
+    //Remove a friend from user's mix
+    friend = req.body['friend']
+    console.log("Friend: ", friend)
+    user_id = req.session.user;
+    console.log("Friend removed");
+    User.findOne({'fb_id': user_id}).exec(function(err, db_user) {
+        if (err) {
+            console.log(err);
+        } else {
+             Mix.findOne({"_id": db_user.mix}).exec(function(err, mix) {
+                //Right now only works with 1 user at a time.
+                console.log(mix.users)
+                for (var i =0; i < mix.users.length; i++) {
+                    console.log(mix.users[i], " | ", friend)
+                    if (mix.users[i] == friend) {
+                        console.log("Match")
+                        mix.users.splice(i,1);
+                        mix.save();
+                        break;
+                   }
+                }
+            });
+        }
+    });
 }
 
 exports.mixUpdate = function(req, res){
