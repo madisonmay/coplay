@@ -81,7 +81,7 @@ exports.getPlaylistFromMix = function(mixid,sendPlaylistToClient) {
         echo('playlist/static').get({
             seed_catalog: tasteProfileID,
             type: "catalog-radio",
-            adventurousness: 0,
+            adventurousness: 0.1,
             results: 6
         }, function (err,json) {
             if (err) return console.log(err);
