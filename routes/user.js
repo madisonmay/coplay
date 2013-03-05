@@ -65,29 +65,6 @@ exports.landing_page = function(req, res){
 
                 }
             }
-
-            //add current user
-            /*var i = users.length;
-            var totalWeight = 0;
-            users[i] = {name:db_user.first_name,id:i};
-            console.log(db_user)
-            topics[i] = []
-            weights[i] = []
-            for (var j = 0; j < db_user.preferences.songs.length; j++) {
-                topics[i].push(db_user.preferences.songs[j].name)
-                weights[i].push(db_user.preferences.songs[j].weight)
-                totalWeight += weights[i][j];
-            };
-            for (var j = 0; j < db_user.preferences.artists.length; j++) {
-                topics[i].push(db_user.preferences.artists[j].name)
-                weights[i].push(db_user.preferences.artists[j].weight)
-                totalWeight += weights[i][j];
-            };
-            console.log(totalWeight)
-            //normalize the weight
-            for (var j = 0; j < weights[i].length; j++) {
-                weights[i][j] *= 100.0/totalWeight;
-            };*/
             console.log(db_user.mix)
             console.log(db_user.mix.users[0])
             for (var i = 0; i < db_user.mix.users.length; i++) {
@@ -96,28 +73,6 @@ exports.landing_page = function(req, res){
                 User.findOne({_id:db_user.mix.users[i]}).exec(mixPopulateCallback);
             };
 
-            //add friends
-            /*for (var i = 0; i < db_user.friend_list.length; i++) {
-                users.push({name:db_user.friend_list[i].first_name,id:i});
-                topics.push([]);
-                weights.push([]);
-                var totalWeight = 0;
-                for (var j = 0; j < db_user.friend_list[i].preferences.songs.length; j++) {
-                    topics[i].push(db_user.friend_list[i].preferences.songs[j].name)
-                    weights[i].push(db_user.friend_list[i].preferences.songs[j].weight)
-                    totalWeight += weights[i][j];
-                };
-                for (var j = 0; j < db_user.friend_list[i].preferences.artists.length; j++) {
-                    topics[i].push(db_user.friend_list[i].preferences.artists[j].name)
-                    weights[i].push(db_user.friend_list[i].preferences.artists[j].weight)
-                    totalWeight += weights[i][j];
-                };
-                console.log(totalWeight)
-                //normalize the weight
-                for (var j = 0; j < weights[i].length; j++) {
-                    weights[i][j] *= 100.0/totalWeight;
-                };
-            };*/
 
             }
 
@@ -130,7 +85,7 @@ exports.about = function(req, res){
     res.render("about", {title: 'Coplay', logged_in: false});
 };
 
-function get_friends(fb_id, req, res, callback){
+function get_friends(fb_id, req, res, thisID, callback){
     //Populates the user object with friends who use CoPlay
     var curr = 0;
     var max;
@@ -149,15 +104,17 @@ function get_friends(fb_id, req, res, callback){
 
     function db_query(friends, friend_list, i) {
         //Query database for fb_ids
-        User.findOne({'fb_id': friends.data[i].id}, function(err, db_user){
+        var queryCallback = function(err, db_user){
             if (db_user) {
                 console.log(friends.data[i].id)
                 console.log("DB_USER", db_user);
                 friend_list.push(db_user);
                 console.log("Friend list:", friend_list);
+                db_user.friend_list.push()
             }
             return save_try(friends, friend_list);
-        });
+        };
+        User.findOne({'fb_id': friends.data[i].id}, queryCallback);
     };
 
     //facebook request to generate list of fb_id
@@ -200,7 +157,7 @@ exports.login = function(req, res){
                         new_user.mix = mix;
                         req.session.user = new_user.fb_id;
                         new_user.save(function (err) {
-                            get_friends(new_user.fb_id, req, res, function(friend_list){
+                            get_friends(new_user.fb_id, req, res, new_user.fb_id, function(friend_list){
                                 new_user.friend_list = friend_list;
                                 new_user.save();
                                 res.redirect('/');
