@@ -111,6 +111,7 @@ exports.logout = function(req, res){
             console.log(err);
         } else {
             console.log(url);
+            req.session.destroy();
             res.redirect('/');
         }
     });
