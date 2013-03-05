@@ -14,13 +14,17 @@ Array.prototype.contains = function(obj) {
 
 exports.landing_page = function(req, res){
     //Main page for mixing and welcome page
-    User.findOne({fb_id : req.session.user}).populate('friend_list').exec(function(err, db_user) {
+    User.findOne({fb_id : req.session.user}).populate('friend_list').populate('mix').exec(function(err, db_user) {
 
         if (db_user) {
 
+            console.log(db_user.mix.users)
             console.log(db_user.friend_list);
             var data = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
             var data2 = db_user.friend_list;
+            data2 = data2.filter(function(el){
+                return (!db_user.mix.users.contains(el._id))
+            })
             res.render('home', {'title': 'Coplay: Social Music At Its Finest', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify(data), 'other_friends': data2});
         }
 
@@ -52,15 +56,8 @@ function get_friends(fb_id, req, res, callback){
             if (db_user) {
                 console.log(friends.data[i].id)
                 console.log("DB_USER", db_user);
-                User.findOne({"fb_id": req.session.user}).exec(function(err, main_user) {
-                    Mix.findOne({"_id": main_user.mix}).exec(function(err, mix) {
-                        //Right now only works with 1 user at a time.
-                        if (!mix.users.contains(friends.data[i].id)) {
-                            friend_list.push(db_user);
-                            console.log("Friend list:", friend_list);
-                        }
-                    });
-                });
+                friend_list.push(db_user);
+                console.log("Friend list:", friend_list);
             }
             return save_try(friends, friend_list);
         });
