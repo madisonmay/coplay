@@ -26,6 +26,10 @@ block d3
                   location.reload(true);
                 }, 500);
             })
+
+            $('.playMix').click( function() {
+                window.location = '/play';
+            })
         });
 
 block content
@@ -36,10 +40,12 @@ block content
             div.chart_body
             div.description
                 | Social Listening
+            input(type="button", class="btn btn-success playMix", id="Add", value="♬")
 
         div.wrapper_right
             div.user_chart_body
             div.description_right
+
 
         div.friends
             div.friend_title

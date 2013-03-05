@@ -108,6 +108,15 @@ body {
   width: 258px;
 }
 
+.playMix {
+  text-align: center;
+  position: relative;
+  margin-top: 5px;
+  font-size: 30px;
+  margin-left: 372px;
+  width: 258px;
+}
+
 .wrapper_right {
   text-align: center;
   /*border: solid 2px black;*/

@@ -55,7 +55,7 @@ exports.landing_page = function(req, res){
                 })
                 console.log(JSON.stringify({users:users,artist_names:topics,user_counts:weights}))
                 res.render('home', {'title': 'Coplay: Social Music At Its Finest', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify({users:users,artist_names:topics,user_counts:weights}), 'other_friends': data2});
-            
+
                 }
             }
 
@@ -213,16 +213,8 @@ exports.login = function(req, res){
 
 exports.logout = function(req, res){
 
-    //Redirect to facebook logout url
-    req.facebook.getLogoutUrl({next: 'http://localhost:5000/refresh/'}, function(err, url) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(url);
-            req.session.destroy();
-            res.redirect('/');
-        }
-    });
+    req.session.destroy();
+    res.redirect('/');
 };
 
 exports.refresh = function(req, res){
