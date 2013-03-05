@@ -58,7 +58,7 @@ exports.getPlaylistFromMix = function(mixid,sendPlaylistToClient) {
     var tasteProfileUpdateCallback = function (err, json) {
         console.log(json);
         tasteProfileTicket = json.response.ticket;
-        intervalID = setInterval(checkTasteProfileStatus,250);
+        intervalID = setInterval(checkTasteProfileStatus,150);
     };
     var checkTasteProfileStatus = function () {
         echo('catalog/status').get({
@@ -79,13 +79,17 @@ exports.getPlaylistFromMix = function(mixid,sendPlaylistToClient) {
         echo('playlist/static').get({
             seed_catalog: tasteProfileID,
             type: "catalog-radio",
-            adventurousness: .3
+            adventurousness: 0,
+            results: 6
         }, function (err,json) {
             if (err) return console.log(err);
             console.log("------------------");
             console.log("Playlist:");
             console.log(json.response.songs);
             sendPlaylistToClient(json.response.songs);
+            echo('catalog/delete').post({
+                id: tasteProfileID
+            });
         });
     };
     Mix.findOne({_id:mixid}).exec(function (err,doc){
