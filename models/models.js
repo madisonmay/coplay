@@ -6,7 +6,7 @@ var userSchema = mongoose.Schema({
     last_name: String,
     fb_id: String,
     friend_list: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    mixes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Mix' }],
+    mix: { type: mongoose.Schema.Types.ObjectId, ref: 'Mix' },
     preferences: {artists: [{name: String, weight:Number}],
                     songs: [{name: String, artist: String, weight:Number}]}
 });

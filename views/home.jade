@@ -4,6 +4,23 @@ extends layout
 
 block d3
     script(type='text/javascript', src="http://d3js.org/d3.v3.min.js")
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+    script
+        $(document).ready(function() {
+            var new_friends = [];
+            $('.friend').click(function() {
+                $(this).remove();
+                new_friends.push($(this).attr("username"));
+                console.log(new_friends);
+                console.log("Removed");
+            });
+
+            $('.saveMix').click( function() {
+                $.post('/mixUpdate', {new_friends: new_friends}, function(err, data){
+                    console.log(err);
+                })
+            })
+        });
 
 block content
 
@@ -24,7 +41,8 @@ block content
             div.friend_list
                 each friend in other_friends
                     p
-                        a(href="#", username="#{friend.fb_id}", class="friend") #{friend.first_name}
+                        a(href="#", username="#{friend._id}", class="friend") #{friend.first_name}
+                input(type="button", class="btn btn-success saveMix", id="Add", value="Save Mix")
 
     script
 

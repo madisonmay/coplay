@@ -2,6 +2,16 @@ var Models = require('../models/models.js');
 var User = Models.User;
 var Mix = Models.Mix
 
+Array.prototype.contains = function(obj) {
+    var i = this.length;
+    while (i--) {
+        if (this[i].toString() === obj.toString()) {
+            return true;
+        }
+    }
+    return false;
+}
+
 exports.landing_page = function(req, res){
     //Main page for mixing and welcome page
     User.findOne({fb_id : req.session.user}).populate('friend_list').exec(function(err, db_user) {
@@ -42,8 +52,15 @@ function get_friends(fb_id, req, res, callback){
             if (db_user) {
                 console.log(friends.data[i].id)
                 console.log("DB_USER", db_user);
-                friend_list.push(db_user);
-                console.log("Friend list:", friend_list);
+                User.findOne({"fb_id": req.session.user}).exec(function(err, main_user) {
+                    Mix.findOne({"_id": main_user.mix}).exec(function(err, mix) {
+                        //Right now only works with 1 user at a time.
+                        if (!mix.users.contains(friends.data[i].id)) {
+                            friend_list.push(db_user);
+                            console.log("Friend list:", friend_list);
+                        }
+                    });
+                });
             }
             return save_try(friends, friend_list);
         });
@@ -65,9 +82,6 @@ exports.login = function(req, res){
     req.facebook.api('/me', function(err, user) {
         User.findOne({fb_id : user.id}).exec(function(err, db_user) {
 
-            console.log(err, user);
-            console.log("db_user", db_user);
-
             //User in database
             if (db_user) {
                 req.session.user = db_user.fb_id;
@@ -79,18 +93,24 @@ exports.login = function(req, res){
             }
 
             //User DNE
-            else if (!db_user.length) {
+            else if (!db_user) {
                 var new_user = new User({username: user.name, fb_id: user.id, first_name: user.first_name,
                                          last_name: user.last_name});
                 new_user.save(function(err) {
                     if(err) {
                         console.log("Error: ", err);
                     }
-                    req.session.user = new_user.fb_id;
-                    get_friends(new_user.fb_id, req, res, function(friend_list){
-                        db_user.friend_list = friend_list;
-                        db_user.save();
-                        res.redirect('/');
+                    var mix = new Mix({users: [new_user._id]});
+                    mix.save(function(err) {
+                        new_user.mix = mix;
+                        req.session.user = new_user.fb_id;
+                        new_user.save(function (err) {
+                            get_friends(new_user.fb_id, req, res, function(friend_list){
+                                new_user.friend_list = friend_list;
+                                new_user.save();
+                                res.redirect('/');
+                            });
+                        });
                     });
                 });
             }
@@ -206,4 +226,30 @@ exports.removeFriend = function(req, res){
     console.log(req.body['friend']);
 }
 
-
+exports.mixUpdate = function(req, res){
+    new_friends = req.body['new_friends']
+    console.log(new_friends);
+    user_id = req.session.user;
+    User.findOne({'fb_id': user_id}).exec(function(err, db_user) {
+        if (err) {
+            console.log(err);
+        } else {
+            Mix.findOne({"_id": db_user.mix}).exec(function(err, mix) {
+                console.log("Mix: ", mix.users);
+                console.log("UID: ", new_friends[0])
+                console.log("In List: ", mix.users.contains(new_friends[0]));
+                //Right now only works with 1 user at a time.
+                if (!mix.users.contains(new_friends[0])) {
+                    mix.users.push(new_friends[0])
+                    mix.save(function(err, mix) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log(mix);
+                        }
+                    });
+                }
+            });
+        }
+    });
+}

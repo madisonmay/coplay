@@ -48,7 +48,7 @@ block scripts
         //When you figure out the routes add the proper stuff here
         $.post('/addArtist', {artist: newArtist}
            , function (data) {
-               $('#settingsBox').prepend(data);
+               $('#artists').prepend("");
                $("#newArtist").val("");
            });
       });
@@ -65,7 +65,7 @@ block content
 
   div(id='settingsBox')
     h3 Artists in your Mix
-    div
+    div.artists
       each artist in artists
         div.artist
           p.artist_name

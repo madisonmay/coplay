@@ -49,6 +49,7 @@ app.post('/editArtist', user.editArtist)
 app.post('/addFriend', user.addFriend);
 app.post('/removeArtist', user.removeArtist)
 app.post('/addArtist', user.addArtist);
+app.post('/mixUpdate', user.mixUpdate);
 app.get('/gs',function(req, res){
   res.render('grooveshark', { title: 'Grooveshark Player' });
 });
