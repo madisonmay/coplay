@@ -193,7 +193,7 @@ exports.editArtist = function(req, res){
             console.log(err);
         } else {
             db_user.preferences.artists = artists;
-            db_user.save();
+                db_user.save();
         }
     });
 }
@@ -271,17 +271,16 @@ exports.mixUpdate = function(req, res){
                 console.log("UID: ", new_friends[0])
                 console.log("In List: ", mix.users.contains(new_friends[0]));
                 //Right now only works with 1 user at a time.
-                for (var i=0; i<new_friends.length; i++)
-                    if (!mix.users.contains(new_friends[i])) {
-                        mix.users.push(new_friends[i])
-                        mix.save(function(err, mix) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                console.log(mix);
-                            }
-                        });
-                    }
+                if (!mix.users.contains(new_friends[0])) {
+                    mix.users.push(new_friends[0])
+                    mix.save(function(err, mix) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log(mix);
+                        }
+                    });
+                }
             });
         }
     });
