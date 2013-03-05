@@ -21,7 +21,7 @@ exports.landing_page = function(req, res){
             console.log("Rendering home page");
             console.log(db_user.mix.users)
             console.log(db_user.friend_list);
-            var data = [{name: 'Derek', id: '5135a2f7823bd1ab56000005'}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
+            var data = [{name: 'Derek', id: '5135a2f7823bd1ab56000005'}, {name: 'Tom', id: '5135a23ccfc0dc4e56000005'}, {name:'Madison', id: 3}];
             var data2 = db_user.friend_list;
             data2 = data2.filter(function(el){
                 return (!db_user.mix.users.contains(el._id))
@@ -271,15 +271,17 @@ exports.mixUpdate = function(req, res){
                 console.log("UID: ", new_friends[0])
                 console.log("In List: ", mix.users.contains(new_friends[0]));
                 //Right now only works with 1 user at a time.
-                if (!mix.users.contains(new_friends[0])) {
-                    mix.users.push(new_friends[0])
-                    mix.save(function(err, mix) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            console.log(mix);
-                        }
-                    });
+                for(var i=0; i<new_friends.length; i++) {
+                    if (!mix.users.contains(new_friends[i])) {
+                        mix.users.push(new_friends[i])
+                        mix.save(function(err, mix) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log(mix);
+                            }
+                        });
+                    }
                 }
             });
         }
