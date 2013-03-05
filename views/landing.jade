@@ -1,3 +1,25 @@
-extends layout
-block scripts
-block content
+doctype 5
+html
+  head
+    title= title
+    link(type='text/css', rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='icon', type='image/png', href='images/favicon.ico')
+    style
+      #logodiv{
+        left:50%;
+        margin-left:-177px;
+      }
+
+  body
+    div(id='logodiv')
+      img(id='logo', src='images/coplay_logo.png', width='354px', height='204px')
+    div(id='blurb')
+      h3
+        | What is Coplay?
+      p
+        | Coplay is social music at its finest. Customize your own personal mix, then add and drop friends' music on the fly.
+    div(id='logindiv')
+      h2
+        | Get Started:
+      a(href='/login')
+        img(id='loginbutton', src='images/facebook_login.png',)

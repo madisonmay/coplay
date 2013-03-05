@@ -12,16 +12,16 @@ exports.landing_page = function(req, res){
         if (db_user) {
             var data = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
             var data2 = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
-            res.render('home', {'title': 'CoPlay: Social Music At Its Finest', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify(data), 'other_friends': data2});
+            res.render('home', {'title': 'Coplay: Social Music At Its Finest', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify(data), 'other_friends': data2});
         }
 
         else {
-            res.render('landing', {'title': 'CoPlay: Social Music At Its Finest', 'logged_in': false});
+            res.render('landing', {'title': 'Coplay: Social Music At Its Finest', 'logged_in': false});
         }
     });
 };
 exports.about = function(req, res){
-    res.render("about", {title: 'CoPlay', logged_in: false});
+    res.render("about", {title: 'Coplay', logged_in: false});
 };
 
 exports.login = function(req, res){
@@ -54,7 +54,7 @@ exports.login = function(req, res){
 
             //Something else unexpected happens
             else {
-                res.send("CoPlay is currently experiencing issues.");
+                res.send("Coplay is currently experiencing issues.");
             }
         });
     });
@@ -68,7 +68,7 @@ exports.logout = function(req, res){
             console.log(err);
         } else {
             console.log(url);
-            res.redirect(url);
+            res.redirect('/');
         }
     });
 };
@@ -93,7 +93,7 @@ exports.settings = function(req, res){
             console.log(err);
         } else {
             artists = db_user.preferences.artists;
-            res.render("settings", {title: 'CoPlay: Adjust Mix', logged_in: logged_in, artists: artists});
+            res.render("settings", {title: 'Coplay: Adjust Mix', logged_in: logged_in, artists: artists});
         }
     });
 };
