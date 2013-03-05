@@ -14,7 +14,6 @@ block scripts
         var Artist_data = [];
         $('.Remove').each(function() {
           Artist_data.push({'name': $(this).attr("artist"), 'weight': $(this).parent().next('.slider').slider('value')});
-          console.log("Blarghle");
           location.reload(true);
         });
 
@@ -54,7 +53,6 @@ block scripts
                $("#newArtist").val("");
            });
         setTimeout(function() {
-          console.log("Blarghle");
           location.reload(true);
         }, 500);
       });

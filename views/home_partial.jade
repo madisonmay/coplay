@@ -1,0 +1,26 @@
+div.meta-wrapper
+
+    div.wrapper
+        div.chart_body
+        div.description
+            | Social Listening
+
+    div.wrapper_right
+        div.user_chart_body
+        div.description_right
+
+    div.friends
+        div.friend_title
+            | - Add Friends -
+        div.friend_list
+            each friend in other_friends
+                p
+                    a(href="#", username="#{friend._id}", class="friend") #{friend.first_name}
+            input(type="button", class="btn btn-success saveMix", id="Add", value="Save Mix")
+
+script
+
+    var friend_list = !{friends};
+
+div.name
+script(src="/javascripts/landing_page.js")

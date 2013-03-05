@@ -18,6 +18,7 @@ exports.landing_page = function(req, res){
 
         if (db_user) {
 
+            console.log("Rendering home page");
             console.log(db_user.mix.users)
             console.log(db_user.friend_list);
             var data = [{name: 'Derek', id: '5135a2f7823bd1ab56000005'}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
@@ -211,7 +212,11 @@ exports.removeArtist = function(req, res){
                 console.log(db_user.preferences.artists[i].name)
                 if (db_user.preferences.artists[i].name == artist_name) {
                     db_user.preferences.artists.splice(i,1);
-                    db_user.save();
+                    db_user.save(function(err, data) {
+                        if (err) {
+                            console.log(err)
+                        }
+                    });
                     break;
                }
             }
@@ -238,8 +243,14 @@ exports.removeFriend = function(req, res){
                     if (mix.users[i] == friend) {
                         console.log("Match")
                         mix.users.splice(i,1);
-                        mix.save();
-                        break;
+                        mix.save(function(err, mix) {
+                            if (err){
+                                console.log(err)
+                            } else {
+                                console.log("Success")
+                            }
+                        });
+
                    }
                 }
             });

@@ -17,8 +17,13 @@ block d3
 
             $('.saveMix').click( function() {
                 $.post('/mixUpdate', {new_friends: new_friends}, function(err, data){
-                    console.log(err);
+                    if (err) {
+                        console.log(err);
+                    }
                 })
+                setTimeout(function() {
+                  location.reload(true);
+                }, 500);
             })
         });
 

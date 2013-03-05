@@ -94,6 +94,7 @@ function maingraph(input_counts, names) {
             d3.select(this).style("fill", function() { return d3.select(this).attr("base_color"); });
             $(".description").html("Social Listening");
         });
+
 }
 
 function usergraph(users) {
@@ -184,9 +185,14 @@ function usergraph(users) {
                 console.log(friend)
                 $.post("/removeFriend", {'friend': friend}, function(err, data){
                     if (err) {
-                        console.log(err);
+                        console.log(err)
+                    } else {
+
                     }
                 });
+                setTimeout(function() {
+                  location.reload(true);
+                }, 500);
             });
     }
 
