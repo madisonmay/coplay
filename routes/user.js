@@ -43,8 +43,8 @@ exports.landing_page = function(req, res){
                 };
 
                 if (!doc.preferences.artists.length) {
-                    topics[i].push("No Artist or Songs")
-                    weights[i].push(1)
+                    topics[i].push("Taylor Swift")
+                    weights[i].push(1);
                     totalWeight += 1;
                 }
 
