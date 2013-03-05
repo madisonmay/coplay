@@ -178,9 +178,9 @@ function usergraph(users) {
             .attr("userid", dataset.usernames[n]['id'])
             .attr("y", "-11").attr("x", "-11")
             .on("click", function(){
+                var friend = $(this).attr("userid");
                 $(".description").html("Friend removed");
                 $(this).parent().parent().remove();
-                var friend = $(this).attr("userid");
                 console.log(friend)
                 $.post("/removeFriend", {'friend': friend}, function(err, data){
                     if (err) {
