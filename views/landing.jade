@@ -36,9 +36,9 @@ html
           visible:1, 
           step:1,
           width:1000,
-          height:200,
+          height:120,
           speed:1000,
-          auto: {enabled: true, direction: "next", interval: 5000}
+          auto: {enabled: true, direction: "next", interval: 3500}
         });
       });
   body
@@ -55,9 +55,15 @@ html
       a(href='/login')
         img(id='loginbutton', src='images/facebook_login.png',)
     div(id='carousel')
-      div
-        h3 Coplay is and will be 100% free. No subscriptions, no ads.
-      div
+      div.text-center
+        h3 Coplay is 100% free - no subscriptions!
+      div.text-center
         h3 Powered by Grooveshark: Access all your favorite music.
-      div 
+      div.text-center
         h3 No more arguing over music: effortlessly equal representation.
+    div.center.half
+      h3 Powered by:
+      div.half.inline.text-center
+        img(src='/images/echo-nest-logo.png')
+      div.half.inline.text-center
+        img(src='/images/grooveshark_logo.png',height='300')

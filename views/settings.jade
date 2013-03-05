@@ -14,8 +14,7 @@ block scripts
         var Artist_data = [];
         $('.Remove').each(function() {
           Artist_data.push({'name': $(this).attr("artist"), 'weight': $(this).parent().next('.slider').slider('value')});
-          console.log("Blarghle");
-          location.reload(true);
+          console.log($(this).parent().next('.slider').slider('value'))
         });
 
         console.log(Artist_data);
