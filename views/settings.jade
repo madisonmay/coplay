@@ -8,8 +8,10 @@ block scripts
   link(rel='stylesheet', type='text/css', href='stylesheets/settings.css')
   script(type='text/javascript')
     $(function() {
+      var weight = $(this).attr('weight');
+      console.log(weight);
       $( ".slider" ).slider({
-        value: 50,
+        value: weight,
         start: function(event,ui) {},
         slide: function(event, ui) {},
         stop: function(event, ui) {
@@ -24,7 +26,7 @@ block scripts
       $('#Save').click(function (){
         var Artist_data = [];
         $('.Remove').each(function() {
-          Artist_data.push([$(this).attr("artist"), $(this).parent().next('.slider').slider('value')]);
+          Artist_data.push({'name': $(this).attr("artist"), 'weight': $(this).parent().next('.slider').slider('value')});
         });
 
         console.log(Artist_data);
@@ -40,9 +42,10 @@ block scripts
         console.log('Remove button clicked...');
         //nonfunctional again remember to add in proper attribute
         var artist = $(this).attr("artist");
+        console.log(artist)
         // and also here
         $(this).parent().parent().remove();
-        $.post('/removeArtist', { artist: $(this).attr("artist") }, function(err, data){
+        $.post('/removeArtist', { artist: artist }, function(err, data){
           if (err) {
             console.log(err);
           }
@@ -64,8 +67,10 @@ block scripts
       });
     })
 
+
+
 block content
-  //Should we use another font this one is only good for titles and shits
+
   div(id='addBox')
     h3(id='line1') Add an Artist:
     textarea(rows="1", cols="20", id="newArtist", style="margin-top:-80px")
@@ -74,13 +79,12 @@ block content
   div(id='settingsBox')
     h3 Artists in your Mix
     div
-      //Remove this line when you actually pass data this is just a sampler
-      - var artists = ["Iron Maiden Tribute Band: The Bestest Ever", "Foo Fighters", "Wax Tailor"]
       each artist in artists
         div.artist
           p.artist_name
             //When you actually pass in data make sure to change this to reflect the proper attribute
-            input(type="button", class="Remove btn btn-danger", value="-", artist="#{artist}")
-            | #{artist}
-          div(class="slider", style="margin-left:0px;")
+            input(type="button", class="Remove btn btn-danger", value="-", artist="#{artist.name}")
+            | #{artist.name}
+          div(class="slider", style="margin-left:0px;", weight="#{artist.weight}")
     input(type="button", class="btn btn-success save", id="Save", value="Save Mix")
+

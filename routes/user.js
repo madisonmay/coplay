@@ -1,6 +1,7 @@
 
 var Models = require('../models/models.js');
 var User = Models.User;
+var Mix = Models.Mix
 
 exports.landing_page = function(req, res){
     //Main page for mixing and welcome page
@@ -77,13 +78,20 @@ exports.refresh = function(req, res){
 
 exports.settings = function(req, res){
     //Render the page for personal mix management
-    if (req.session.user) {
+    user_id = req.session.user
+    if (user_id) {
         logged_in = true
     } else {
         logged_in = false
     }
-    console.log(logged_in, "Logged")
-    res.render("settings", {title: 'CoPlay', logged_in: logged_in});
+    User.findOne({'fb_id': user_id}, function(err, db_user) {
+        if (err) {
+            console.log(err);
+        } else {
+            artists = db_user.preferences.artists;
+            res.render("settings", {title: 'CoPlay', logged_in: logged_in, artists: artists});
+        }
+    });
 };
 
 exports.addFriend = function(req, res){
@@ -92,18 +100,58 @@ exports.addFriend = function(req, res){
 }
 
 exports.addArtist = function(req, res){
+    //Grab user id from session variables
+    //Add artist to user preferences
+    user_id = req.session.user;
     console.log("Artist added");
-    console.log(req.body['artist']);
+    var artist_name = req.body['artist']
+    console.log(artist_name);
+    User.findOne({'fb_id': user_id}, function(err, db_user) {
+        if (err) {
+            console.log(err);
+        } else {
+            db_user.preferences.artists.push({"name": artist_name, "weight": 50})
+            db_user.save()
+        }
+    });
 }
 
 exports.editArtist = function(req, res){
+    //Edit user preferences
+    user_id = req.session.user
     console.log("Artist values edited");
-    console.log(req.body['artists'])
+    artists = req.body['artists'];
+    console.log(artists);
+    User.findOne({'fb_id': user_id}, function(err, db_user) {
+        if (err) {
+            console.log(err);
+        } else {
+            db_user.preferences.artists = artists;
+            db_user.save();
+        }
+    });
 }
 
 exports.removeArtist = function(req, res){
+    //Remove an artist from user preferences
+    user_id = req.session.user;
     console.log("Artist removed");
-    console.log(req.body['artist']);
+    var artist_name = req.body['artist'];
+    console.log(artist_name);
+    User.findOne({'fb_id': user_id}, function(err, db_user) {
+        if (err) {
+            console.log(err);
+        } else {
+            for (var i =0; i < db_user.preferences.artists.length; i++) {
+                console.log(db_user.preferences.artists[i].name)
+                if (db_user.preferences.artists[i].name == artist_name) {
+                    db_user.preferences.artists.splice(i,1);
+                    db_user.save();
+                    break;
+               }
+            }
+        }
+    });
 }
 
 exports.removeFriend = function(req, res){

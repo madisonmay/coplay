@@ -8,7 +8,7 @@ var userSchema = mongoose.Schema({
     friend_list: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     mixes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Mix' }],
     preferences: {artists: [{name: String, weight:Number}],
-                    songs: [{name: String,artist: String, weight:Number}]}
+                    songs: [{name: String, artist: String, weight:Number}]}
 });
 
 var mixSchema = mongoose.Schema({
