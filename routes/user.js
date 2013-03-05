@@ -281,7 +281,7 @@ exports.removeFriend = function(req, res){
     User.findOne({'fb_id': user_id}).exec(function(err, db_user) {
         if (err) {
             console.log(err);
-        } else if ((!db_user._id == friend)){
+        } else if (!(db_user._id == friend)){
              Mix.findOne({"_id": db_user.mix}).exec(function(err, mix) {
                 //Right now only works with 1 user at a time.
                 console.log(mix.users)
