@@ -1,11 +1,11 @@
-
+var async = require('async');
 var Models = require('../models/models.js');
 var User = Models.User;
 var Mix = Models.Mix
 
 exports.landing_page = function(req, res){
     //Main page for mixing and welcome page
-    User.findOne({fb_id : req.session.user}).exec(function(err, db_user) {
+    User.findOne({fb_id : req.session.user}).populate('friend_list').exec(function(err, db_user) {
         console.log(db_user);
 
         if (db_user) {
@@ -24,53 +24,58 @@ exports.about = function(req, res){
 };
 
 function get_friends(fb_id, req, res, callback){
+    var curr = 0;
+    var max;
 
-    var friend_list = [];
-    function return_list(friend_list) {
-        console.log("Friend list: ", friend_list)
-        callback(friend_list);
+    function save_try(friends, friend_list, i) {
+        curr += 1;
+        if (curr == max){
+            console.log(friend_list);
+            console.log("Friend list: ", friend_list);
+            console.log("Callback:", callback);
+            callback(friend_list);
+        }
     }
 
-    function db_query(err, db_user, friends, i){
-        if (db_user.length == 1) {
-            friend_list.push({"name": db_user.first_name, "id": db_user.fb_id});
-        }
-        if (i == friends.data.length) {
-            return_list(friend_list)
-        }
+    function db_query(friends, friend_list, i) {
+        User.findOne({'fb_id': friends.data[i].id}, function(err, db_user){
+            if (db_user) {
+                console.log(friends.data[i].id)
+                console.log("DB_USER", db_user);
+                friend_list.push(db_user);
+                console.log("Friend list:", friend_list);
+            }
+            return save_try(friends, friend_list);
+        });
     };
 
-    var fb_query = function(err, friends) {
-        for (i=0; i<friends.data.length; i++){
-            console.log(friends.data[i].name)
-            User.find({'fb_id': friends.data[i].id}, function(err, db_user) {
-                db_query(err, db_user, friends, i);
-            });
+    req.facebook.api('/me/friends?', function(err, friends) {
+        max = friends.data.length;
+        var friend_list = [];
+        for (var i=0; i<friends.data.length; i++){
+            db_query(friends, friend_list, i);
         }
-    }
 
-    req.facebook.api('/me/friends?', fb_query)
+    });
 }
 
 exports.login = function(req, res){
     //Handles facebook authentication
     console.log("Logged in")
     req.facebook.api('/me', function(err, user) {
-        User.find({fb_id : user.id}).exec(function(err, db_user) {
+        User.findOne({fb_id : user.id}).exec(function(err, db_user) {
 
             console.log(err, user);
-            console.log(db_user);
-
-            function save(user, friend_list) {
-                user.friend_list = friend_list;
-                user.save;
-                res.redirect('/');
-            }
+            console.log("db_user", db_user);
 
             //User in database
-            if (db_user.length == 1) {
-                req.session.user = db_user[0].fb_id;
-                get_friends(db_user[0].fb_id, req, res, save);
+            if (db_user) {
+                req.session.user = db_user.fb_id;
+                get_friends(db_user.fb_id, req, res, function(friend_list){
+                    db_user.friend_list = friend_list;
+                    db_user.save();
+                    res.redirect('/');
+                });
             }
 
             //User DNE
@@ -82,7 +87,11 @@ exports.login = function(req, res){
                         console.log("Error: ", err);
                     }
                     req.session.user = new_user.fb_id;
-                    get_friends(new_user.fb_id, req, res, save);
+                    get_friends(new_user.fb_id, req, res, function(friend_list){
+                        db_user.friend_list = friend_list;
+                        db_user.save();
+                        res.redirect('/');
+                    });
                 });
             }
 

@@ -168,7 +168,7 @@ function usergraph(users) {
             .attr("width", 25)
             .attr("height", 25)
             .attr("username", dataset.usernames[i]['name'])
-            .attr("userid", dataset.usernames[i]['id'])
+            .attr("userid", dataset.usernames[i]['fb_id'])
             .attr("y", "-11").attr("x", "-11")
             .on("click", function(){
                 $(".description").html("Friend removed");
