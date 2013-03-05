@@ -7,19 +7,6 @@ block jquery_ui
 block scripts
   link(rel='stylesheet', type='text/css', href='stylesheets/settings.css')
   script(type='text/javascript')
-    $(function() {
-      var weight = $(this).attr('weight');
-      console.log(weight);
-      $( ".slider" ).slider({
-        value: weight,
-        start: function(event,ui) {},
-        slide: function(event, ui) {},
-        stop: function(event, ui) {
-          var value = $(this).slider('value');
-        },
-      });
-    });
-
     $(document).ready(function() {
       // for adding artists to the mix
 
@@ -86,5 +73,19 @@ block content
             input(type="button", class="Remove btn btn-danger", value="-", artist="#{artist.name}")
             | #{artist.name}
           div(class="slider", style="margin-left:0px;", weight="#{artist.weight}")
+
     input(type="button", class="btn btn-success save", id="Save", value="Save Mix")
 
+  script
+    $('div.slider').each(function() {
+      var weight = $(this).attr("weight");
+      $(this).slider({
+        value: weight,
+        start: function(event,ui) {
+            var value = $(this).slider('value');
+            console.log(value);
+          },
+        slide: function(event, ui) {},
+        stop: function(event, ui) {},
+      });
+    });
