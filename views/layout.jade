@@ -23,9 +23,6 @@ html
       a(href="/") Home
       a(href="/about") About
       a(href="/settings") Settings
-      if logged_in
-          a(href='/logout') Logout
-      else
-          a(href="/login") Login
+      a(href='/logout') Logout
       div.effect
     block content

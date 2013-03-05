@@ -25,7 +25,7 @@ html {
 /* --- basic styles ----*/
 
 body {
-  background: #f2f2f2;
+  background-image: url('../images/satinweave.png');
   text-shadow: 0 1px 0 white;
   font-size: 24px;
   font-family:  Helvetica, Calibri, Arial, sans-serif, sans;
@@ -173,6 +173,27 @@ body {
   position:absolute;
   left:-999px;
   top:-999px;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.center {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.half {
+  width: 50%;
+}
+
+#text {
+  width: 350px;
 }
 
 .friend_title {

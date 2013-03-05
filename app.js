@@ -50,9 +50,10 @@ app.post('/addFriend', user.addFriend);
 app.post('/removeArtist', user.removeArtist)
 app.post('/addArtist', user.addArtist);
 app.post('/mixUpdate', user.mixUpdate);
-app.get('/gs',function(req, res){
-  res.render('grooveshark', { title: 'Grooveshark Player' });
+app.get('/play',function(req, res){
+  res.render('grooveshark', { title: 'Now Playing', logged_in:true });
 });
+app.get('/getPlaylist', audio.getPlaylistFromMix);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
