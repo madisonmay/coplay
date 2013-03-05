@@ -5,11 +5,12 @@ var Mix = Models.Mix
 exports.landing_page = function(req, res){
     //Main page for mixing and welcome page
     User.findOne({fb_id : req.session.user}).populate('friend_list').exec(function(err, db_user) {
-        console.log(db_user);
 
         if (db_user) {
+
+            console.log(db_user.friend_list);
             var data = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
-            var data2 = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
+            var data2 = db_user.friend_list;
             res.render('home', {'title': 'Coplay: Social Music At Its Finest', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify(data), 'other_friends': data2});
         }
 

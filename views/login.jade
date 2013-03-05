@@ -22,9 +22,11 @@ block content
             div.friend_title
                 | - Add Friends -
             div.friend_list
+                script
+                    console.log(other_friends)
                 each friend in other_friends
                     p
-                        a(href="#", username="#{friend.id}", class="friend") #{friend.name}
+                        a(href="#", username="#{friend.fb_id}", class="friend") #{friend.first_name}
 
     script
         var friend_list = !{friends};
