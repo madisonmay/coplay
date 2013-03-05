@@ -6,7 +6,6 @@
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
-  , site = require('./routes/site')
   , http = require('http')
   , path = require('path')
   , Facebook = require('facebook-node-sdk')
@@ -47,7 +46,6 @@ app.get('/logout', user.logout);
 app.get('/refresh', user.refresh);
 app.get('/settings', user.settings);
 app.get('/about', site.about);
-app.get('/home', site.home);
 app.post('/editArtist', user.editArtist)
 app.post('/addFriend', user.addFriend);
 app.post('/removeArtist', user.removeArtist)

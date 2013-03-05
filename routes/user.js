@@ -19,6 +19,9 @@ exports.landing_page = function(req, res){
         }
     });
 };
+exports.about = function(req, res){
+    res.render("about", {title: 'CoPlay'});
+};
 
 exports.login = function(req, res){
     //Handles facebook authentication
