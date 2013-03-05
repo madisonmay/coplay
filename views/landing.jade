@@ -4,17 +4,48 @@ html
     title= title
     link(type='text/css', rel='stylesheet', href='/stylesheets/style.css')
     link(rel='icon', type='image/png', href='images/favicon.ico')
+    script(type='text/javascript', src='rcarousel/lib/jquery-1.7.1.min.js')
+    script(type='text/javascript', src='rcarousel/lib/jquery.ui.core.min.js')
+    script(type='text/javascript', src='rcarousel/lib/jquery.ui.widget.min.js')
+    script(type='text/javascript', src='rcarousel/lib/jquery.ui.rcarousel.min.js')
+
     style
       #logodiv{
         left:50%;
         margin-left:-177px;
       }
+      #blurb{
+        margin-left: 27%;
+        width: 310px;
+        margin-top: 250px;
+        text-align: right;
+        height: 200px;
+      }
+      #logindiv{
+        margin-top: -230px;
+        margin-left: 55%;
+      }
+      #carousel{
+      margin-left: 20%;
+      padding-left: 30px;
+      }
 
+    script(type='text/javascript')
+      jQuery(function($) {
+        $( "#carousel" ).rcarousel({
+          visible:1, 
+          step:1,
+          width:1000,
+          height:200,
+          speed:1000,
+          auto: {enabled: true, direction: "next", interval: 5000}
+        });
+      });
   body
     div(id='logodiv')
       img(id='logo', src='images/coplay_logo.png', width='354px', height='204px')
     div(id='blurb')
-      h3
+      h2
         | What is Coplay?
       p
         | Coplay is social music at its finest. Customize your own personal mix, then add and drop friends' music on the fly.
@@ -23,3 +54,10 @@ html
         | Get Started:
       a(href='/login')
         img(id='loginbutton', src='images/facebook_login.png',)
+    div(id='carousel')
+      div
+        h3 Coplay is and will be 100% free. No subscriptions, no ads.
+      div
+        h3 Powered by Grooveshark: Access all your favorite music.
+      div 
+        h3 No more arguing over music: effortlessly equal representation.
