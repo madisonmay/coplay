@@ -45,7 +45,7 @@ Ideas
     - probably
 
 18)* Act as "glue" app
-    - combine last.fm, spotify, pandora, grooveshark, rdio data to remove needed activation energy
+    - combine last.fm (official api), spotify (c bindings only), pandora (unofficial api), grooveshark (official api), rdio (official api) data to remove needed activation energy
 
 19) Song updates via chrome extension -- skipping
 
