@@ -28,7 +28,7 @@ Ideas
     - ties user to another account
     - reduces need for configuration
 
-14) *Adhoc / Location Based Stations
+14)* Adhoc / Location Based Stations
     - cuts down on activation energy
     - fun, technical challenge
 
@@ -43,6 +43,13 @@ Ideas
 
 17) Host has ultimate control
     - probably
+
+18)* Act as "glue" app
+    - combine last.fm, spotify, pandora, grooveshark, rdio data to remove needed activation energy
+
+19) Song updates via chrome extension -- skipping
+
+20) Tie a song to a person or group of people
 
 
 Pitch & Use Case
