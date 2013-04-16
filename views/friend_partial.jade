@@ -1,0 +1,8 @@
+ div.friends
+    div.friend_title
+        | - Add Friends -
+    div.friend_list
+        each friend in other_friends
+            p
+                a(href="#", username="#{friend._id}", class="friend") #{friend.first_name}
+        input(type="button", class="btn btn-success saveMix", id="Add", value="Save Mix")

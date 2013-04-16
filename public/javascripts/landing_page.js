@@ -171,6 +171,7 @@ function usergraph(users) {
         text.attr("y", "10").attr("x", "110");
 
         svg.append("image")
+            //Add as class instead of changing properties from here
             .attr("xlink:href", "/images/delete.png")
             .attr("cursor", "hand")
             .attr("cursor", "pointer")

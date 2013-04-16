@@ -1,5 +1,5 @@
 Coplay Todo List
-----------------------------------------------
+-------------------------------------------------
 
 1) Fix glitch where music loops single song.
 2) Fix window resizing issues
@@ -8,4 +8,38 @@ Coplay Todo List
 5) Fix about page
 6) Add songs/albums if possible
 7) General UI improvements
-8) Persistent sessions / login with other services besides Facebook
+8) Persistent sessions
+9) Social aspect -- sharing
+10) Gmail contacts?
+
+Ideas
+-----------------------------------------------
+11) Scrape preferences from Facebook
+    - cut down activation energy
+    - might not necessarily be representative of current tastes
+    - requires facebook account
+    - not everyone has artists listed
+
+12) Multiple stations
+    - provides a way to save different groups
+
+13) Link with spotify or last.fm?
+    - not always applicable
+    - ties user to another account
+    - reduces need for configuration
+
+14) *Adhoc / Location Based Stations
+    - cuts down on activation energy
+    - fun, technical challenge
+
+15) Upvote / Downvote
+    - requires more active participation
+    - greater sense of control
+
+16) Crowdsourced skipping?
+    - requires more active participation
+    - gives users a feeling that their voice is heard
+    - greater sense of control
+
+17) Host has ultimate control
+    - probably
