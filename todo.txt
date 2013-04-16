@@ -1,0 +1,11 @@
+Coplay Todo List
+----------------------------------------------
+
+1) Fix glitch where music loops single song.
+2) Fix window resizing issues
+3) More ajax calls
+4) Remove Taylor Swift default -- better default behavior for new users
+5) Fix about page
+6) Add songs/albums if possible
+7) General UI improvements
+8) Persistent sessions / login with other services besides Facebook

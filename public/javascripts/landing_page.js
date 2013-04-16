@@ -172,6 +172,8 @@ function usergraph(users) {
 
         svg.append("image")
             .attr("xlink:href", "/images/delete.png")
+            .attr("cursor", "hand")
+            .attr("cursor", "pointer")
             .attr("width", 25)
             .attr("height", 25)
             .attr("username", dataset.usernames[n]['name'])
