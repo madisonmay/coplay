@@ -56,6 +56,7 @@ app.get('/play',function(req, res){
 });
 app.get('/getPlaylist', audio.getPlaylistFromMix);
 app.get('/locate', user.locate);
+app.get('/autocomplete', audio.autocomplete);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
