@@ -12,6 +12,10 @@ Array.prototype.contains = function(obj) {
     return false;
 }
 
+exports.locate = function(req, res){
+    res.render('locate', {'title': 'Stations nearby...'})
+}
+
 exports.landing_page = function(req, res){
     //Main page for mixing and welcome page
     User.findOne({fb_id : req.session.user}).populate('friend_list').populate('mix').exec(function(err, db_user) {

@@ -14,27 +14,8 @@ Coplay Todo List
 
 Ideas
 -----------------------------------------------
-11) Scrape preferences from Facebook
-    - cut down activation energy
-    - might not necessarily be representative of current tastes
-    - requires facebook account
-    - not everyone has artists listed
-
-12) Multiple stations
+12)* Multiple stations
     - provides a way to save different groups
-
-13) Link with spotify or last.fm?
-    - not always applicable
-    - ties user to another account
-    - reduces need for configuration
-
-14)* Adhoc / Location Based Stations
-    - cuts down on activation energy
-    - fun, technical challenge
-
-15) Upvote / Downvote
-    - requires more active participation
-    - greater sense of control
 
 16) Crowdsourced skipping?
     - requires more active participation
@@ -47,10 +28,26 @@ Ideas
 18)* Act as "glue" app
     - combine last.fm (official api), spotify (c bindings only), pandora (unofficial api), grooveshark (official api), rdio (official api) data to remove needed activation energy
 
-19) Song updates via chrome extension -- skipping
+13) Link with spotify or last.fm?
+    - not always applicable
+    - ties user to another account
+    - reduces need for configuration
+
+11) Scrape preferences from Facebook
+    - cut down activation energy
+    - might not necessarily be representative of current tastes
+    - requires facebook account
+    - not everyone has artists listed
 
 20) Tie a song to a person or group of people
 
+14)* Location Based Stations
+    - cuts down on activation energy
+    - fun, technical challenge
+
+19) Song updates via chrome extension -- skipping
+
+20) Different preference sets for users
 
 Pitch & Use Case
 ----------------------------------------------

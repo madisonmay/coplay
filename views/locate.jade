@@ -1,0 +1,91 @@
+!!! 5
+html
+  head
+    meta(name='viewport', content='initial-scale=1.0, user-scalable=no')
+
+    style(type='text/css')
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas {
+        height: 100%;
+        //- margin-right: 300px;
+      }
+      #location-info {
+        border: 2px black solid;
+        width: 300px;
+      }
+
+    script(src="http://www.geoplugin.net/javascript.gp", type="text/javascript")
+    script(type='text/javascript', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDfK0mglqhNXHqM_2ztcjNzvPbM0uRRTRM&sensor=false')
+    script(src="/javascripts/infobox.js")
+    script(type='text/javascript')
+
+      var marker;
+
+      function map_setup(map, pos) {
+        map.setCenter(pos);
+        marker = new google.maps.Marker({
+          position: map.getCenter(),
+          map: map,
+          title: "You are here",
+          animation: google.maps.Animation.DROP
+        });
+
+        var labelText = "<div style='background-color: white; color: white; margin-top: -160px; margin-left: -35px;" +
+                        "border-radius: 70px; height: 100px; width: 100px; font-size: 16px; border: 10px #A0A0A0 solid;'>" +
+                        "<img src='/images/home.png' alt='Home' style='width: 60px; margin-top:18px;'></div>";
+
+        var myOptions = {
+           content: labelText,
+           boxStyle: {
+             textAlign: "center",
+             fontSize: "16pt",
+             width: "50px"
+           },
+           disableAutoPan: true,
+           pixelOffset: new google.maps.Size(-25, 0),
+           position: map.getCenter(),
+           closeBoxURL: "",
+           isHidden: false,
+           pane: "mapPane",
+           enableEventPropagation: true
+        };
+
+        var ib = new InfoBox(myOptions);
+
+        google.maps.event.addListener(marker, 'mouseover', function() {
+          ib.open(map, marker);
+        });
+
+        google.maps.event.addListener(marker, 'mouseout', function() {
+          ib.close();
+        });
+      }
+
+      function initialize() {
+
+        var mapOptions = {
+          zoom: 14,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+        if(navigator.geolocation) {
+          console.log("HTML5 compatible")
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            map_setup(map, pos);
+          })
+        } else {
+          console.log("Not HTML5 compatible")
+          var pos = new google.maps.LatLng(geoplugin_latitude(), geoplugin_longitude());
+          map_setup(map, pos);
+        }
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+  body
+    div#map-canvas
+    //- div#location-info
