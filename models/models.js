@@ -17,9 +17,17 @@ var mixSchema = mongoose.Schema({
                     songs: [{name: String, artist: String, weight:Number}]}
 });
 
+var stationSchema = mongoose.Schema({
+    artists: [{name: String, weight: Number}],
+    songs: [{name: String, artist: String, weight:Number}]
+})
+
 
 var User = mongoose.model('User', userSchema);
 var Mix = mongoose.model('Mix', mixSchema);
+var Station = mongoose.model('Station', stationSchema);
 
 exports.User = User;
 exports.Mix = Mix;
+exports.Station = Station;
+// TODO: Modify userSchema
