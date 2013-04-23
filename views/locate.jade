@@ -16,17 +16,20 @@ html
         width: 70%;
         height: 100%;
         display: inline-block;
+        float: left;
       }
 
       #station-info {
-        width: 29%;
+        width: 30%;
         height: 100%;
         display: inline-block;
-        border: 2px black solid;
+        float: right;
       }
 
     script(src="javascripts/geoplugin.gp", type="text/javascript")
-    script(type='text/javascript', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDfK0mglqhNXHqM_2ztcjNzvPbM0uRRTRM&sensor=false')
+    link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css", rel="stylesheet")
+    script(src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/js/bootstrap.min.js")
+    script(type='text/javascript', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCv3GjNM-TpvB0e5B5Uf_yTJFD4UyVRC7o&sensor=false')
     script(src="/javascripts/infobox.js")
     script(type='text/javascript')
 
@@ -99,6 +102,4 @@ html
   body
     div#map-wrapper
       div#map-canvas
-    div#station-info
-      | Testing
-      | Testing
+    div#station-info.hero-unit
