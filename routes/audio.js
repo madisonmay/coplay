@@ -74,7 +74,10 @@ exports.autocomplete = function(req, res) {
         count = 0
         i = 0
         while (count<10 && i<data.length) {
-            if (data[i].album.name.toLowerCase().indexOf(querystring.toLowerCase()) === -1) {
+            if (data[i].artists[0].name.toLowerCase().indexOf(querystring.toLowerCase()) != -1) {
+                result.push({artist:data[i].artists[0].name})
+                count++;
+            } else if (data[i].album.name.toLowerCase().indexOf(querystring.toLowerCase()) === -1) {
                 result.push({name:data[i].name, artist:data[i].artists[0].name})
                 count++;
             }
