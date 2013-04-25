@@ -63,23 +63,23 @@ exports.getPlaylistFromMix = function(req,res){
 };
 
 exports.autocomplete = function(req, res) {
-    //Last.fm api calls for song/artist autocomplete functionality
+    //Spotify api calls for song/artist autocomplete functionality
     var querystring = req.query.q;
-    request('http://www.last.fm/search/autocomplete/?q=' + encodeURIComponent(querystring), function (error, response, body) {
+    request('http://ws.spotify.com/search/1/track.json?q=' + encodeURIComponent(querystring), function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        var data = JSON.parse(body);
-        var data = data.response.docs
+        var data = JSON.parse(body).tracks;
+        console.log(data[1])
         var result = [];
 
-        for (var i=0; i<data.length; i++)
-            if (!('album' in data[i])) {
-                if ('track' in data[i]) {
-                    result.push({'type': 'song', 'title': data[i].track, 'artist': data[i].artist})
-                } else {
-                    result.push({'type': 'artist', 'artist': data[i].artist})
-                }
+        count = 0
+        i = 0
+        while (count<10 && i<data.length) {
+            if (data[i].album.name.toLowerCase().indexOf(querystring.toLowerCase()) === -1) {
+                result.push({name:data[i].name, artist:data[i].artists[0].name})
+                count++;
             }
-
+            i++;
+        }
         res.json(result);
         console.log(result);
       }
