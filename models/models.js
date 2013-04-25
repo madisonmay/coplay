@@ -19,7 +19,9 @@ var mixSchema = mongoose.Schema({
 
 var stationSchema = mongoose.Schema({
     artists: [{name: String, weight: Number}],
-    songs: [{name: String, artist: String, weight:Number}]
+    songs: [{name: String, artist: String, weight:Number}],
+    location: [Number],
+    name: String
 })
 
 

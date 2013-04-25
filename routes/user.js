@@ -1,5 +1,6 @@
 var Models = require('../models/models.js');
 var User = Models.User;
+var Station = Models.Station
 var Mix = Models.Mix
 
 Array.prototype.contains = function(obj) {
@@ -10,6 +11,18 @@ Array.prototype.contains = function(obj) {
         }
     }
     return false;
+}
+
+exports.station = function(req, res) {
+    latitude = req.body.latitude;
+    longitude = req.body.longitude;
+    console.log(req.body)
+    var new_station = Station({name: req.body.name, location: [latitude, longitude]})
+    new_station.save(function(err) {
+        if(err) {
+            console.log("Error: ", err);
+        }
+    });
 }
 
 exports.locate = function(req, res){

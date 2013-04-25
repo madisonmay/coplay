@@ -3,6 +3,7 @@ html
   head
     meta(name='viewport', content='initial-scale=1.0, user-scalable=no')
 
+    link(href='http://fonts.googleapis.com/css?family=Unica+One', rel='stylesheet', type='text/css')
     style(type='text/css')
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
@@ -19,19 +20,72 @@ html
         float: left;
       }
 
-      #station-info {
+      #station-wrapper {
+        float: right;
         width: 30%;
         height: 100%;
+        padding: 0px;
         display: inline-block;
-        float: right;
       }
 
-    script(src="javascripts/geoplugin.gp", type="text/javascript")
+      #station-info {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+        border-radius: 0px;
+      }
+
+      #search-title {
+        padding-top: 15px;
+        text-align: center;
+        font-size: 40px;
+        font-family: Unica One;
+      }
+
+      #smaller {
+        margin-right: 20px;
+        margin-left: 20px;
+      }
+
+      #button-wrapper {
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      #station-title{
+        width: 50%;
+      }
+
+      #add-station {
+        margin-left: 10px;
+        margin-top: -10px;
+      }
+
+
+
+    // script(src="javascripts/geoplugin.gp", type="text/javascript")
     link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css", rel="stylesheet")
     script(src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/js/bootstrap.min.js")
+    script(type='text/javascript', src='http://code.jquery.com/jquery.js')
     script(type='text/javascript', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCv3GjNM-TpvB0e5B5Uf_yTJFD4UyVRC7o&sensor=false')
     script(src="/javascripts/infobox.js")
     script(type='text/javascript')
+
+
+      function distance(lat1, lon1, lat2, lon2) {
+        //- Find the distance between two lat/lon points
+        var R = 6371; // km
+        var dLat = (lat2-lat1).toRad();
+        var dLon = (lon2-lon1).toRad();
+        var lat1 = lat1.toRad();
+        var lat2 = lat2.toRad();
+
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var d = R * c;
+        return d;
+      }
 
       var marker;
 
@@ -75,6 +129,8 @@ html
         });
       }
 
+      var user_pos;
+
       function initialize() {
 
         var mapOptions = {
@@ -92,14 +148,42 @@ html
           })
         } else {
           console.log("Not HTML5 compatible")
+          var user_pos;
           var pos = new google.maps.LatLng(geoplugin_latitude(), geoplugin_longitude());
           map_setup(map, pos);
         }
       }
 
-      google.maps.event.addDomListener(window, 'load', initialize);
+      $(document).ready(function() {
+        initialize();
+        $('#add-station').click(function() {
+          console.log("Station added!");
+          navigator.geolocation.getCurrentPosition(function(position) {
+            $.post('/station', {'latitude': position.coords.latitude, 'longitude': position.coords.longitude,
+                   'name': $('#station-title').val()}, station_created());
+          });
+        });
+      });
+
+
+      function station_created(err, data) {
+        console.log('Called back')
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(data)
+          window.location = '/';
+        }
+      };
 
   body
     div#map-wrapper
       div#map-canvas
-    div#station-info.hero-unit
+    div#station-wrapper
+      div.hero-unit#station-info
+        div#search-title
+          | Local Stations
+        hr#smaller
+        div#button-wrapper
+          input#station-title(type='text', placeholder='Station name...')
+          button.btn.btn-success#add-station() Broadcast
