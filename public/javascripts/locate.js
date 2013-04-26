@@ -137,14 +137,9 @@ function initialize(stations) {
 }
 
 $(document).ready(function() {
-  var station_created = function(err, data) {
+  var station_created = function(data) {
     console.log('Called back')
-    if (err) {
-      console.log('Error')
-      console.log(err);
-    } else {
-      window.location = '/locate'
-    }
+    window.location = data;
   };
   $('#add-station').click(function() {
     console.log("Station added!");

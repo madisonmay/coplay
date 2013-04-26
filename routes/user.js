@@ -25,6 +25,10 @@ exports.getLocation = function(req, res){
     });
 }
 
+exports.play = function(req, res) {
+    res.render('play', { title: 'Now Playing'});
+}
+
 exports.station = function(req, res) {
     latitude = req.body.latitude;
     longitude = req.body.longitude;
@@ -42,15 +46,16 @@ exports.station = function(req, res) {
             new_station.save(function(err) {
                 if(err) {
                     console.log("Error: ", err);
+                    res.send('/locate');
                 } else {
                     console.log("Station saved.");
-                    res.redirect('/locate');
+                    res.send('/play');
                 }
             });
         } else {
             console.log("User must be logged in to create a station.");
+            res.send('/locate');
         }
-        res.send("");
     });
 }
 
@@ -59,9 +64,20 @@ exports.locate = function(req, res){
         if (err) {
             console.log(err)
         } else {
-            User.find({_id: req.session.uid}, function(err, db_user) {
+            User.findOne({_id: req.session.uid}, function(err, db_user) {
                 if (db_user) {
-                    res.render('locate', {'title': 'Stations nearby...', 'stations': db_stations, 'db_user': [db_user]});
+
+                    console.log("User location", db_user)
+
+                    function square(x) {return x*x;}
+                    function dist(x) {
+                        return Math.sqrt(square(x.location[0] - db_user.location[0]) + square(x.location[1] - db_user.location[1]))}
+
+                    db_stations.sort(function(a, b) {
+                       return dist(a) - dist(b)
+                    })
+
+                    res.render('locate', {'title': 'Stations nearby...', 'stations': db_stations});
                 } else {
                     res.redirect('/');
                 }
@@ -192,7 +208,7 @@ function get_friends(fb_id, thisID,req, res, callback){
     });
 }
 
-exports.login = function(req, res){
+exports.login = function(req, res, next){
     //Handles facebook authentication
     console.log("Logged in")
     req.facebook.api('/me', function(err, user) {
@@ -205,7 +221,7 @@ exports.login = function(req, res){
                 get_friends(db_user.fb_id, db_user._id, req, res, function(friend_list){
                     db_user.friend_list = friend_list;
                     db_user.save();
-                    res.redirect('/');
+                    next();
                 });
             }
 
@@ -226,7 +242,7 @@ exports.login = function(req, res){
                             get_friends(new_user.fb_id, new_user._id, req, res, function(friend_list){
                                 new_user.friend_list = friend_list;
                                 new_user.save();
-                                res.redirect('/');
+                                next();
                             });
                         });
                     });

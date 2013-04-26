@@ -1,0 +1,80 @@
+extends layout
+
+//- block d3
+//-     script(type='text/javascript', src="http://d3js.org/d3.v3.min.js")
+//-     script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+//-     script
+//-         $(document).ready(function() {
+
+//-             if(navigator.geolocation) {
+//-               navigator.geolocation.getCurrentPosition(function(position) {
+//-                 $.post('/getLocation', {'latitude': position.coords.latitude, 'longitude': position.coords.longitude})
+//-               })
+//-             }
+
+//-             var new_friends = [];
+//-             $('.friend').click(function() {
+//-                 $(this).remove();
+//-                 new_friends.push($(this).attr("username"));
+//-                 console.log(new_friends);
+//-                 console.log("Removed");
+//-             });
+
+//-             $('.saveMix').click( function() {
+//-                 $.post('/mixUpdate', {new_friends: new_friends}, function(err, data){
+//-                     if (err) {
+//-                         console.log(err);
+//-                     }
+//-                 })
+//-                 //temporary solution
+//-                 setTimeout(function() {
+//-                   location.reload(true);
+//-                 }, 500);
+//-             })
+
+//-             $('.playMix').click( function() {
+//-                 window.location = '/play';
+//-             })
+//-         });
+
+block content
+  script(src='/javascripts/playerControl.js')
+
+  div#player
+    script(src="/javascripts/playerEmbed.js")
+
+  //- div.meta-wrapper
+
+  //-     div.wrapper
+  //-         div.chart_body
+  //-         div.description
+  //-             | Social Listening
+  //-         input(type="button", class="btn btn-success playMix", id="Add", value="♬")
+
+  //-     div.wrapper_right
+  //-         div.user_chart_body
+  //-         div.description_right
+
+
+  //-     div.friends
+  //-         div.friend_title
+  //-             | - Add Friends -
+  //-         div.friend_list
+  //-             each friend in other_friends
+  //-                 p
+  //-                     a(href="#", username="#{friend._id}", class="friend") #{friend.first_name}
+  //-             input(type="button", class="btn btn-success saveMix", id="Add", value="Save Mix")
+
+  //- div.name
+  //- script(src="/javascripts/landing_page.js")
+
+
+  div.center.text-center#text
+    h1 Now Playing
+    p#songName [loading]
+    p#artistName [loading]
+    div
+      div.text-center.inline.half
+        img#playpause(src='images/play.png')
+      div.text-center.inline.half
+        img#next(src='images/next.png')

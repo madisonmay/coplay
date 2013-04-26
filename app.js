@@ -39,12 +39,12 @@ app.configure('development', function(){
 
 var scope = {scope: ['']};
 
-app.get('/', user.landing_page);
 app.get('/newsearch', user.newsearch);
-app.get('/login', Facebook.loginRequired(scope), user.login);
+app.get('/', Facebook.loginRequired(scope), user.login, user.landing_page);
+app.get('/login', Facebook.loginRequired(scope), user.login, user.landing_page);
 app.get('/logout', user.logout);
 app.get('/refresh', user.refresh);
-app.get('/settings', user.settings);
+app.get('/settings', Facebook.loginRequired(scope), user.login, user.settings);
 app.get('/about', user.about);
 app.post('/editArtist', user.editArtist)
 app.post('/addFriend', user.addFriend);
@@ -52,11 +52,9 @@ app.post('/removeArtist', user.removeArtist)
 app.post('/addArtist', user.addArtist);
 app.post('/mixUpdate', user.mixUpdate);
 app.post('/removeFriend', user.removeFriend);
-app.get('/play',function(req, res){
-  res.render('grooveshark', { title: 'Now Playing', logged_in:true });
-});
+app.get('/play',Facebook.loginRequired(scope), user.login, user.play);
 app.get('/getPlaylist', audio.getPlaylistFromMix);
-app.get('/locate', user.locate);
+app.get('/locate', Facebook.loginRequired(scope), user.login, user.locate);
 app.get('/autocomplete', audio.autocomplete);
 app.post('/station', user.station);
 app.post('/getLocation', user.getLocation);
