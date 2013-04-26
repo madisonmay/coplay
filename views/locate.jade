@@ -153,9 +153,8 @@ html
       function add_marker(map, station) {
 
         var pos = new google.maps.LatLng(station.location[0], station.location[1]);
-        console.log(station.location[0], station.location[1]);
         var dist = distance(station.location[0], station.location[1])
-        console.log(dist);
+        console.log(station.name, dist);
 
         var new_marker = new google.maps.Marker({
           position: pos,
@@ -252,7 +251,10 @@ html
         });
 
       });
-
+      function redirect_user(){
+        window.location = '/locate'
+        console.log('Success')
+      }
 
       function station_created(err, data) {
         console.log('Called back')
@@ -260,7 +262,8 @@ html
           console.log('Error')
           console.log(err);
         } else {
-          window.location = '/locate'
+          //Sketchy
+          window.setTimeout(redirect_user, 200)
         }
       };
 
@@ -278,7 +281,9 @@ html
 
         - function square(x) {return x*x;}
         - var new_stations = stations
-        - new_stations.sort(function(a, b) {return square(a.location[0] - '#{db_user.location[0]}') + square(a.location[1] - '#{db_user.location[1]}') - square(b.location[0] - '#{db_user.location[0]}') - square(b.location[1] - '#{db_user.location[1]}')})
+        - new_stations.sort(function(a, b) {
+        -   return - square(a.location[0] - db_user[0].location[0]) - square(a.location[1] - db_user[0].location[1]) + square(b.location[0] - db_user[0].location[0]) + square(b.location[1] - db_user[0].location[1])
+        - })
 
         each station in new_stations
           div.station
