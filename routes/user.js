@@ -14,7 +14,7 @@ Array.prototype.contains = function(obj) {
 }
 
 exports.getLocation = function(req, res){
-    console.log(req.session.uid);
+    console.log('User: ', req.session.uid);
     User.findOne({_id : req.session.uid}).exec(function(err, db_user) {
         if (db_user) {
             db_user.location = [req.body.latitude, req.body.longitude];
@@ -28,7 +28,7 @@ exports.getLocation = function(req, res){
 exports.station = function(req, res) {
     latitude = req.body.latitude;
     longitude = req.body.longitude;
-    console.log('Request body: ', req.body)
+    console.log('Adding station...')
 
     User.findOne({fb_id : req.session.user}).exec(function(err, db_user) {
         if (db_user) {
@@ -44,6 +44,7 @@ exports.station = function(req, res) {
                     console.log("Error: ", err);
                 } else {
                     console.log("Station saved.");
+                    res.redirect('/locate');
                 }
             });
         } else {
@@ -55,15 +56,18 @@ exports.station = function(req, res) {
 
 exports.locate = function(req, res){
     Station.find({}).populate('users').exec(function(err, db_stations) {
-        console.log(err)
-        console.log(db_stations);
-        User.find({_id: req.session.uid}, function(err, db_user) {
-            if (db_user) {
-                res.render('locate', {'title': 'Stations nearby...', 'stations': db_stations, 'db_user': db_user});
-            } else {
-                res.redirect('/');
-            }
-        });
+        if (err) {
+            console.log(err)
+        } else {
+            User.find({_id: req.session.uid}, function(err, db_user) {
+                if (db_user) {
+                    res.render('locate', {'title': 'Stations nearby...', 'stations': db_stations, 'db_user': [db_user]});
+                } else {
+                    res.redirect('/');
+                }
+            });
+        }
+
     });
 }
 

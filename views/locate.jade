@@ -14,7 +14,7 @@ html
     script(src="/javascripts/infobox.js")
     script(src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js")
     script(type='text/javascript',src='javascripts/locate.js')
-
+    
 
   body
     div#map-wrapper
@@ -33,7 +33,9 @@ html
 
         - function square(x) {return x*x;}
         - var new_stations = stations
-        - new_stations.sort(function(a, b) {return square(a.location[0] - '#{db_user.location[0]}') + square(a.location[1] - '#{db_user.location[1]}') - square(b.location[0] - '#{db_user.location[0]}') - square(b.location[1] - '#{db_user.location[1]}')})
+        - new_stations.sort(function(a, b) {
+        -   return - square(a.location[0] - db_user[0].location[0]) - square(a.location[1] - db_user[0].location[1]) + square(b.location[0] - db_user[0].location[0]) + square(b.location[1] - db_user[0].location[1])
+        - })
 
         each station in new_stations
           hr.smaller
