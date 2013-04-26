@@ -59,9 +59,20 @@ exports.locate = function(req, res){
         if (err) {
             console.log(err)
         } else {
-            User.find({_id: req.session.uid}, function(err, db_user) {
+            User.findOne({_id: req.session.uid}, function(err, db_user) {
                 if (db_user) {
-                    res.render('locate', {'title': 'Stations nearby...', 'stations': db_stations, 'db_user': [db_user]});
+
+                    console.log("User location", db_user)
+
+                    function square(x) {return x*x;}
+                    function dist(x) {
+                        return Math.sqrt(square(x.location[0] - db_user.location[0]) + square(x.location[1] - db_user.location[1]))}
+
+                    db_stations.sort(function(a, b) {
+                       return dist(a) - dist(b)
+                    })
+
+                    res.render('locate', {'title': 'Stations nearby...', 'stations': db_stations});
                 } else {
                     res.redirect('/');
                 }
