@@ -42,15 +42,16 @@ exports.station = function(req, res) {
             new_station.save(function(err) {
                 if(err) {
                     console.log("Error: ", err);
+                    res.send('/locate');
                 } else {
                     console.log("Station saved.");
-                    res.redirect('/locate');
+                    res.send('/play');
                 }
             });
         } else {
             console.log("User must be logged in to create a station.");
+            res.send('/locate');
         }
-        res.send("");
     });
 }
 
@@ -199,7 +200,7 @@ function get_friends(fb_id, thisID,req, res, callback){
     });
 }
 
-exports.login = function(req, res){
+exports.login = function(req, res, next){
     //Handles facebook authentication
     console.log("Logged in")
     req.facebook.api('/me', function(err, user) {
@@ -212,7 +213,7 @@ exports.login = function(req, res){
                 get_friends(db_user.fb_id, db_user._id, req, res, function(friend_list){
                     db_user.friend_list = friend_list;
                     db_user.save();
-                    res.redirect('/');
+                    next();
                 });
             }
 
@@ -233,7 +234,7 @@ exports.login = function(req, res){
                             get_friends(new_user.fb_id, new_user._id, req, res, function(friend_list){
                                 new_user.friend_list = friend_list;
                                 new_user.save();
-                                res.redirect('/');
+                                next();
                             });
                         });
                     });
