@@ -58,6 +58,10 @@ html
         width: 50%;
       }
 
+      #station-seed{
+        width: 50%;
+      }
+
       #add-station {
         margin-left: 10px;
         margin-top: -10px;
@@ -239,11 +243,20 @@ html
 
       $(document).ready(function() {
         initialize();
+        var station_created = function(err, data) {
+          console.log('Called back')
+          if (err) {
+            console.log('Error')
+            console.log(err);
+          } else {
+            window.location = '/locate'
+          }
+        };
         $('#add-station').click(function() {
           console.log("Station added!");
           navigator.geolocation.getCurrentPosition(function(position) {
             $.post('/station', {'latitude': position.coords.latitude, 'longitude': position.coords.longitude,
-                   'name': $('#station-title').val()}, station_created());
+                   'name': $('#station-title').val(), 'seed': $('#station-seed').val(), 'seed_type': 'TODO'}, station_created);
           });
         });
 
@@ -254,16 +267,6 @@ html
       });
 
 
-      function station_created(err, data) {
-        console.log('Called back')
-        if (err) {
-          console.log('Error')
-          console.log(err);
-        } else {
-          window.location = '/locate'
-        }
-      };
-
   body
     div#map-wrapper
       div#map-canvas
@@ -272,9 +275,13 @@ html
         div#search-title
           | Local Stations
         hr#smaller
+        hr#smaller
         div#button-wrapper
           input#station-title(type='text', placeholder='Station name...')
-          button.btn.btn-success#add-station() Broadcast
+          br
+          input#station-seed(type='text', placeholder='Station seed (artist or song name)...')
+          br
+          button.btn.btn-success#add-station Broadcast
 
         - function square(x) {return x*x;}
         - var new_stations = stations

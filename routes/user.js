@@ -32,7 +32,13 @@ exports.station = function(req, res) {
 
     User.findOne({fb_id : req.session.user}).exec(function(err, db_user) {
         if (db_user) {
-            var new_station = Station({name: req.body.name, location: [latitude, longitude], active: true, users: [db_user]})
+            var station_data = {name: req.body.name, location: [latitude, longitude], active: true, users: [db_user]};
+            if (req.body.seed_type === 'artist') {
+                station_data.artists = [{name:req.body.seed,weight:1.0}];
+            } else {
+                station_data.songs = [{name:req.body.seed,artist:'?',weight:1.0}];
+            }
+            var new_station = Station(station_data);
             new_station.save(function(err) {
                 if(err) {
                     console.log("Error: ", err);
@@ -43,6 +49,7 @@ exports.station = function(req, res) {
         } else {
             console.log("User must be logged in to create a station.");
         }
+        res.send("");
     });
 }
 
@@ -382,3 +389,4 @@ exports.mixUpdate = function(req, res){
         }
     });
 }
+
