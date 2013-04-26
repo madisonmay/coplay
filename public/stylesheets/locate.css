@@ -1,0 +1,84 @@
+html { height: 100% }
+
+body { height: 100%; margin: 0; padding: 0 }
+
+#map-canvas {
+  height: 100%;
+  width: 100%
+  //- margin-right: 300px;
+}
+
+#map-wrapper {
+  width: 70%;
+  height: 100%;
+  display: inline-block;
+  float: left;
+}
+
+#station-wrapper {
+  float: right;
+  width: 30%;
+  height: 100%;
+  padding: 0px;
+  display: inline-block;
+}
+
+#station-info {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  border-radius: 0px;
+}
+
+#search-title {
+  padding-top: 15px;
+  text-align: center;
+  font-size: 40px;
+  font-family: Unica One;
+}
+
+.smaller {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+#button-wrapper {
+  text-align: center;
+  margin-top: 10px;
+}
+
+#station-title{
+  width: 50%;
+}
+
+#station-seed{
+  width: 50%;
+}
+
+#add-station {
+  margin-left: 10px;
+  margin-top: -10px;
+}
+
+.station {
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.hide-this{
+  height: 0px;
+  overflow: hidden;
+}
+
+.station-name {
+
+}
+
+.even_smaller {
+  margin-left: 15%;
+  margin-right: 15%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

@@ -3,92 +3,7 @@ html
   head
     meta(name='viewport', content='initial-scale=1.0, user-scalable=no')
     link(href='http://fonts.googleapis.com/css?family=Unica+One', rel='stylesheet', type='text/css')
-    style(type='text/css')
-
-      html { height: 100% }
-
-      body { height: 100%; margin: 0; padding: 0 }
-
-      #map-canvas {
-        height: 100%;
-        width: 100%
-        //- margin-right: 300px;
-      }
-
-      #map-wrapper {
-        width: 70%;
-        height: 100%;
-        display: inline-block;
-        float: left;
-      }
-
-      #station-wrapper {
-        float: right;
-        width: 30%;
-        height: 100%;
-        padding: 0px;
-        display: inline-block;
-      }
-
-      #station-info {
-        height: 100%;
-        margin: 0px;
-        padding: 0px;
-        border-radius: 0px;
-      }
-
-      #search-title {
-        padding-top: 15px;
-        text-align: center;
-        font-size: 40px;
-        font-family: Unica One;
-      }
-
-      #smaller {
-        margin-right: 20px;
-        margin-left: 20px;
-      }
-
-      #button-wrapper {
-        text-align: center;
-        margin-top: 10px;
-      }
-
-      #station-title{
-        width: 50%;
-      }
-
-      #station-seed{
-        width: 50%;
-      }
-
-      #add-station {
-        margin-left: 10px;
-        margin-top: -10px;
-      }
-
-      .station {
-        text-align: center;
-        font-size: 30px;
-        margin-bottom: 15px;
-        cursor: pointer;
-      }
-
-      .hide-this{
-        height: 0px;
-        overflow: hidden;
-      }
-
-      .station-name {
-
-      }
-
-      .even_smaller {
-        margin-left: 15%;
-        margin-right: 15%;
-        margin-top: 5px;
-        margin-bottom: 5px;
-      }
+    style(type='text/css' src='stylesheets/locate.css')
 
 
     // script(src="javascripts/geoplugin.gp", type="text/javascript")
@@ -98,173 +13,7 @@ html
     script(type='text/javascript', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCv3GjNM-TpvB0e5B5Uf_yTJFD4UyVRC7o&sensor=false')
     script(src="/javascripts/infobox.js")
     script(src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js")
-    script(type='text/javascript')
-
-      var marker;
-
-      function map_setup(map, pos) {
-        map.setCenter(pos);
-        marker = new google.maps.Marker({
-          position: map.getCenter(),
-          map: map,
-          title: "",
-          animation: google.maps.Animation.DROP
-        });
-
-        var labelText = "<div style='background-color: white; color: white; margin-top: -160px; margin-left: -35px;" +
-                        "border-radius: 70px; height: 100px; width: 100px; font-size: 16px; border: 10px #A0A0A0 solid;'>" +
-                        "<img src='/images/home.png' alt='Home' style='width: 60px; margin-top:18px;'></div>";
-
-        var myOptions = {
-           content: labelText,
-           boxStyle: {
-             textAlign: "center",
-             fontSize: "16pt",
-             width: "50px"
-           },
-           disableAutoPan: true,
-           pixelOffset: new google.maps.Size(-25, 0),
-           position: map.getCenter(),
-           closeBoxURL: "",
-           isHidden: false,
-           pane: "mapPane",
-           enableEventPropagation: true
-        };
-
-        var ib = new InfoBox(myOptions);
-
-        google.maps.event.addListener(marker, 'mouseover', function() {
-          ib.open(map, marker);
-        });
-
-        google.maps.event.addListener(marker, 'mouseout', function() {
-          ib.close();
-        });
-      }
-
-      function distance(lat1, lon1) {
-      // Find the distance between two lat/lon points
-        var lat2 = window.latitude
-        var lon2 = window.longitude
-
-        var dLat = lat2-lat1;
-        var dLon = lon2-lon1;
-
-        dist = Math.sqrt(dLat*dLat + dLon*dLon);
-        return dist;
-      }
-
-      function add_marker(map, station) {
-
-        var pos = new google.maps.LatLng(station.location[0], station.location[1]);
-        console.log(station.location[0], station.location[1]);
-        var dist = distance(station.location[0], station.location[1])
-        console.log(dist);
-
-        var new_marker = new google.maps.Marker({
-          position: pos,
-          map: map,
-          title: "",
-          animation: google.maps.Animation.DROP
-        });
-
-        var labelText = "<div style='background-color: white; overflow: hidden; z-index: 2147483647 !important; color: white; margin-top: -160px; margin-left: -35px;" +
-                        "border-radius: 70px; height: 100px; width: 100px; font-size: 16px; border: 10px #A0A0A0 solid;'>" +
-                        "<img src='https://graph.facebook.com/" + station.users[0].fb_id + "/picture?type=large' alt='Home' style='margin-top:18px;'></div>";
-
-        var myOptions = {
-           content: labelText,
-           boxStyle: {
-             textAlign: "center",
-             fontSize: "16pt",
-             width: "50px"
-           },
-           disableAutoPan: true,
-           pixelOffset: new google.maps.Size(-25, 0),
-           position: pos,
-           closeBoxURL: "",
-           isHidden: false,
-           pane: "mapPane",
-           enableEventPropagation: true
-        };
-
-        var ib = new InfoBox(myOptions);
-
-        google.maps.event.addListener(new_marker, 'mouseover', function() {
-          ib.open(map, new_marker);
-        });
-
-        google.maps.event.addListener(new_marker, 'mouseout', function() {
-          ib.close();
-        });
-
-        google.maps.event.addListener(new_marker, 'click', function() {
-          console.log('#' + station.name);
-          $('.station').children(".station-info[name='" + station.name + "']").toggleClass('hide-this', {duration:500});
-        });
-      }
-
-      var user_pos;
-
-      function initialize() {
-
-        var stations =!{JSON.stringify(stations)}
-
-        var mapOptions = {
-          zoom: 18,
-          disableDefaultUI: true,
-          zoomControl: true,
-          zoomControlOptions: {
-            style: google.maps.ZoomControlStyle.SMALL
-          },
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-
-        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-
-        if(navigator.geolocation) {
-          console.log("HTML5 compatible")
-          navigator.geolocation.getCurrentPosition(function(position) {
-            window.latitude = position.coords.latitude;
-            window.longitude = position.coords.longitude;
-            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            map_setup(map, pos);
-            for (var i = 0; i < stations.length; i++) {
-              add_marker(map, stations[i])
-            }
-          })
-        } else {
-          console.log("Not HTML5 compatible")
-          var user_pos;
-          var pos = new google.maps.LatLng(geoplugin_latitude(), geoplugin_longitude());
-          map_setup(map, pos);
-        }
-      }
-
-      $(document).ready(function() {
-        initialize();
-        var station_created = function(err, data) {
-          console.log('Called back')
-          if (err) {
-            console.log('Error')
-            console.log(err);
-          } else {
-            window.location = '/locate'
-          }
-        };
-        $('#add-station').click(function() {
-          console.log("Station added!");
-          navigator.geolocation.getCurrentPosition(function(position) {
-            $.post('/station', {'latitude': position.coords.latitude, 'longitude': position.coords.longitude,
-                   'name': $('#station-title').val(), 'seed': $('#station-seed').val(), 'seed_type': 'TODO'}, station_created);
-          });
-        });
-
-        $('#station-info').on('click', '.station', function() {
-          $(this).children('.station-info').toggleClass('hide-this', {duration:500});
-        });
-
-      });
+    script(type='text/javascript',src='javascripts/locate.js')
 
 
   body
@@ -274,8 +23,7 @@ html
       div.hero-unit#station-info
         div#search-title
           | Local Stations
-        hr#smaller
-        hr#smaller
+        hr.smaller
         div#button-wrapper
           input#station-title(type='text', placeholder='Station name...')
           br
@@ -288,6 +36,7 @@ html
         - new_stations.sort(function(a, b) {return square(a.location[0] - '#{db_user.location[0]}') + square(a.location[1] - '#{db_user.location[1]}') - square(b.location[0] - '#{db_user.location[0]}') - square(b.location[1] - '#{db_user.location[1]}')})
 
         each station in new_stations
+          hr.smaller
           div.station
             | <b class='station-name'> #{station.name} </b>
             div.hide-this.station-info(name='#{station.name}')
