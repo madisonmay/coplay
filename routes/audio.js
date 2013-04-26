@@ -64,7 +64,7 @@ exports.getPlaylistFromMix = function(req,res){
 
 exports.autocomplete = function(req, res) {
     //Spotify api calls for song/artist autocomplete functionality
-    var querystring = req.query.q;
+    var querystring = req.body.query;
     var type = "track"
     request('http://ws.spotify.com/search/1/track.json?q=' + encodeURIComponent(querystring), function (error, response, body) {
       if (!error && response.statusCode == 200) {
@@ -86,7 +86,7 @@ exports.autocomplete = function(req, res) {
                 }
 
                 if (unique) {
-                    results.push({artist: artist})
+                    results.push({artist: artist,type:"artist"})
                     count++;
                 }
 
@@ -103,13 +103,13 @@ exports.autocomplete = function(req, res) {
                 }
 
                 if (unique && data[i].name.toLowerCase().indexOf(querystring.toLowerCase()) != -1) {
-                    results.push({name:data[i].name, artist:data[i].artists[0].name})
+                    results.push({name:data[i].name, artist:data[i].artists[0].name,type:"track"})
                     count++;
                 }
             }
             i++;
         }
-        res.json(results);
+        res.send(results);
       }
     })
 }

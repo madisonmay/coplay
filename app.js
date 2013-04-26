@@ -39,7 +39,6 @@ app.configure('development', function(){
 
 var scope = {scope: ['']};
 
-app.get('/newsearch', user.newsearch);
 app.get('/', Facebook.loginRequired(scope), user.login, user.landing_page);
 app.get('/login', Facebook.loginRequired(scope), user.login, user.landing_page);
 app.get('/logout', user.logout);
@@ -55,7 +54,8 @@ app.post('/removeFriend', user.removeFriend);
 app.get('/play',Facebook.loginRequired(scope), user.login, user.play);
 app.get('/getPlaylist', audio.getPlaylistFromMix);
 app.get('/locate', Facebook.loginRequired(scope), user.login, user.locate);
-app.get('/autocomplete', audio.autocomplete);
+app.get('/newsearch', user.newsearch);
+app.post('/autocomplete', audio.autocomplete);
 app.post('/station', user.station);
 app.post('/getLocation', user.getLocation);
 

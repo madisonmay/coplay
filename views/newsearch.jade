@@ -27,12 +27,12 @@ block scripts
                 thing1.appendChild(thing2);
                 table.appendChild(thing1);
               }
-              if(data[i].type == "song") {
+              if(data[i].type == "track") {
                 var thing1 = document.createElement("tr");
                 var thing2 = document.createElement("td");
                 var thing3 = document.createElement("a");
                 thing3.className = "thing5"
-                var thing4 = document.createTextNode(data[i].title + " - " + data[i].artist);
+                var thing4 = document.createTextNode(data[i].name + " - " + data[i].artist);
                 thing3.appendChild(thing4);
                 thing2.appendChild(thing3);
                 thing1.appendChild(thing2);
