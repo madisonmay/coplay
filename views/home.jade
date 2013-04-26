@@ -7,6 +7,13 @@ block d3
     script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
     script
         $(document).ready(function() {
+
+            if(navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(function(position) {
+                $.post('/getLocation', {'latitude': position.coords.latitude, 'longitude': position.coords.longitude})
+              })
+            }
+
             var new_friends = [];
             $('.friend').click(function() {
                 $(this).remove();

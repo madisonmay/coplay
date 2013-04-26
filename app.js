@@ -58,6 +58,8 @@ app.get('/getPlaylist', audio.getPlaylistFromMix);
 app.get('/locate', user.locate);
 app.get('/autocomplete', audio.autocomplete);
 app.post('/station', user.station);
+app.post('/getLocation', user.getLocation);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

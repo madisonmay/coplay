@@ -13,20 +13,51 @@ Array.prototype.contains = function(obj) {
     return false;
 }
 
+exports.getLocation = function(req, res){
+    console.log(req.session.uid);
+    User.findOne({_id : req.session.uid}).exec(function(err, db_user) {
+        if (db_user) {
+            db_user.location = [req.body.latitude, req.body.longitude];
+            db_user.save();
+        } else {
+            console.log("Serious error.  Abort.  Abort.  The end is near.");
+        }
+    });
+}
+
 exports.station = function(req, res) {
     latitude = req.body.latitude;
     longitude = req.body.longitude;
-    console.log(req.body)
-    var new_station = Station({name: req.body.name, location: [latitude, longitude]})
-    new_station.save(function(err) {
-        if(err) {
-            console.log("Error: ", err);
+    console.log('Request body: ', req.body)
+
+    User.findOne({fb_id : req.session.user}).exec(function(err, db_user) {
+        if (db_user) {
+            var new_station = Station({name: req.body.name, location: [latitude, longitude], active: true, users: [db_user]})
+            new_station.save(function(err) {
+                if(err) {
+                    console.log("Error: ", err);
+                } else {
+                    console.log("Station saved.");
+                }
+            });
+        } else {
+            console.log("User must be logged in to create a station.");
         }
     });
 }
 
 exports.locate = function(req, res){
-    res.render('locate', {'title': 'Stations nearby...'})
+    Station.find({}).populate('users').exec(function(err, db_stations) {
+        console.log(err)
+        console.log(db_stations);
+        User.find({_id: req.session.uid}, function(err, db_user) {
+            if (db_user) {
+                res.render('locate', {'title': 'Stations nearby...', 'stations': db_stations, 'db_user': db_user});
+            } else {
+                res.redirect('/');
+            }
+        });
+    });
 }
 
 exports.landing_page = function(req, res){
@@ -155,6 +186,7 @@ exports.login = function(req, res){
             //User in database
             if (db_user) {
                 req.session.user = db_user.fb_id;
+                req.session.uid = db_user._id
                 get_friends(db_user.fb_id, db_user._id, req, res, function(friend_list){
                     db_user.friend_list = friend_list;
                     db_user.save();
@@ -174,6 +206,7 @@ exports.login = function(req, res){
                     mix.save(function(err) {
                         new_user.mix = mix;
                         req.session.user = new_user.fb_id;
+                        req.session.uid = new_user._id
                         new_user.save(function (err) {
                             get_friends(new_user.fb_id, new_user._id, req, res, function(friend_list){
                                 new_user.friend_list = friend_list;

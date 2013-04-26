@@ -8,7 +8,9 @@ var userSchema = mongoose.Schema({
     friend_list: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     mix: { type: mongoose.Schema.Types.ObjectId, ref: 'Mix' },
     preferences: {artists: [{name: String, weight:Number}],
-                    songs: [{name: String, artist: String, weight:Number}]}
+                    songs: [{name: String, artist: String, weight:Number}]},
+    location: [Number]
+
 });
 
 var mixSchema = mongoose.Schema({
@@ -21,7 +23,9 @@ var stationSchema = mongoose.Schema({
     artists: [{name: String, weight: Number}],
     songs: [{name: String, artist: String, weight:Number}],
     location: [Number],
-    name: String
+    name: String,
+    active: Boolean,
+    users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 })
 
 
