@@ -25,6 +25,10 @@ exports.getLocation = function(req, res){
     });
 }
 
+exports.play = function(req, res) {
+    res.render('play', { title: 'Now Playing'});
+}
+
 exports.station = function(req, res) {
     latitude = req.body.latitude;
     longitude = req.body.longitude;
