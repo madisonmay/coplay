@@ -1,28 +1,16 @@
-var songList;
-var isPlaying = false;
-
-var playNext = function () {
+var playNewSong = function (song) {
   console.log("playing next");
-  if(songList.length > 0) {
-    var song = songList.pop();
-    var re = /http:\/\/(.+\.grooveshark\.com)/gi;
-    var serverName = re.exec(song.url)[1];
-    console.log(song.StreamKey)
-    console.log(serverName)
-    console.log(song.StreamServerID)
-    window.player.setSongCompleteCallback("playNext");
-    window.player.playStreamKey(song.StreamKey,serverName,song.StreamServerID);
-    isPlaying = true;
-    $("#songName").text("Track: "+song.songName);
-    $("#artistName").text("Artist: "+song.artistName);
-    $("#playpause").attr('src','images/pause.png')
-  } else {
-    isPlaying = false;
-    $("#songName").text("[loading]");
-    $("#artistName").text("[loading]");
-    $("#playpause").attr('src','images/play.png')
-    getNewPlaylist();
-  }
+
+  var re = /http:\/\/(.+\.grooveshark\.com)/gi;
+  var serverName = re.exec(song.url)[1];
+  console.log(song.StreamKey)
+  console.log(serverName)
+  console.log(song.StreamServerID)
+  window.player.setSongCompleteCallback("getNewSong");
+  window.player.playStreamKey(song.StreamKey,serverName,song.StreamServerID);
+  $("#songName").text("Track: "+song.songName);
+  $("#artistName").text("Artist: "+song.artistName);
+  $("#playpause").attr('src','images/pause.png')
 }
 
 var pause_resume = function () {
@@ -37,18 +25,16 @@ var pause_resume = function () {
   }
 }
 
-var getNewPlaylist = function () {
+var getNewSong = function () {
   $.get("/getPlaylist",function(data){
     console.log(data);
-    songList = data;
-    console.log(songList);
-    playNext();
+    playNewSong(data);
     return false;
   });
 }
 
 $(function () {
-  getNewPlaylist();
-  $('#next').on('click',playNext);
+  getNewSong();
+  $('#next').on('click',getNewSong());
   $('#playpause').on('click',pause_resume);
 });
