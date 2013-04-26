@@ -104,10 +104,7 @@ function add_marker(map, station) {
 
 var user_pos;
 
-function initialize() {
-
-  var stations =!{JSON.stringify(stations)}
-
+function initialize(stations) {
   var mapOptions = {
     zoom: 18,
     disableDefaultUI: true,
@@ -140,7 +137,6 @@ function initialize() {
 }
 
 $(document).ready(function() {
-  initialize();
   var station_created = function(err, data) {
     console.log('Called back')
     if (err) {
