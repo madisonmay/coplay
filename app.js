@@ -40,6 +40,7 @@ app.configure('development', function(){
 var scope = {scope: ['']};
 
 app.get('/', user.landing_page);
+app.get('/newsearch', user.newsearch);
 app.get('/login', Facebook.loginRequired(scope), user.login);
 app.get('/logout', user.logout);
 app.get('/refresh', user.refresh);
@@ -59,7 +60,6 @@ app.get('/locate', user.locate);
 app.get('/autocomplete', audio.autocomplete);
 app.post('/station', user.station);
 app.post('/getLocation', user.getLocation);
-
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

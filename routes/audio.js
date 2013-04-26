@@ -65,26 +65,26 @@ exports.getPlaylistFromMix = function(req,res){
 exports.autocomplete = function(req, res) {
     //Spotify api calls for song/artist autocomplete functionality
     var querystring = req.query.q;
+    var type = "track"
     request('http://ws.spotify.com/search/1/track.json?q=' + encodeURIComponent(querystring), function (error, response, body) {
       if (!error && response.statusCode == 200) {
         var data = JSON.parse(body).tracks;
-        console.log(data[1])
+        // console.log(data[1])
         var result = [];
 
         count = 0
         i = 0
-        while (count<10 && i<data.length) {
-            if (data[i].artists[0].name.toLowerCase().indexOf(querystring.toLowerCase()) != -1) {
+        while (i<data.length) {
+            if (type == "artist" && data[i].artists[0].name.toLowerCase().indexOf(querystring.toLowerCase()) != -1) {
                 result.push({artist:data[i].artists[0].name})
                 count++;
-            } else if (data[i].album.name.toLowerCase().indexOf(querystring.toLowerCase()) === -1) {
+            } else if (type == "track" && data[i].album.name.toLowerCase().indexOf(querystring.toLowerCase()) === -1) {
                 result.push({name:data[i].name, artist:data[i].artists[0].name})
                 count++;
             }
             i++;
         }
         res.json(result);
-        console.log(result);
       }
     })
 }

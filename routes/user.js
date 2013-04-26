@@ -71,6 +71,10 @@ exports.locate = function(req, res){
     });
 }
 
+exports.newsearch = function(req, res){
+    res.render('newsearch', {'title': 'Search Page'})
+}
+
 exports.landing_page = function(req, res){
     //Main page for mixing and welcome page
     User.findOne({fb_id : req.session.user}).populate('friend_list').populate('mix').exec(function(err, db_user) {
