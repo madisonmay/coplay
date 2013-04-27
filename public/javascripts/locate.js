@@ -66,7 +66,7 @@ function add_marker(map, station) {
     animation: google.maps.Animation.DROP
   });
 
-  var labelText = "<div style='background-color: white; overflow: hidden; z-index: 2147483647 !important; color: white; margin-top: -160px; margin-left: -35px;" +
+  var labelText = "<div style='background-color: white; overflow: hidden; z-index: 2147483647 !important; -webkit-transform: translateZ(1000); color: white; margin-top: -160px; margin-left: -35px;" +
                   "border-radius: 70px; height: 100px; width: 100px; font-size: 16px; border: 10px #A0A0A0 solid;'>" +
                   "<img src='https://graph.facebook.com/" + station.users[0].fb_id + "/picture?type=large' alt='Home' style='margin-top:18px;'></div>";
 
@@ -127,6 +127,15 @@ function initialize(stations) {
       for (var i = 0; i < stations.length; i++) {
         add_marker(map, stations[i])
       }
+
+      var zIndex100 = $('*').filter(function () {
+        if ($(this).css('z-index') == 100) {
+          $(this).css('z-index', 300);
+          return true;
+        } else {
+          return false;
+        }
+      });
     })
   } else {
     console.log("Not HTML5 compatible")

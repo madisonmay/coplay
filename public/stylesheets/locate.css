@@ -1,6 +1,6 @@
 html { height: 100% }
 
-body { height: 100%; margin: 0; padding: 0 }
+body { height: 100%; margin: 0; padding: 0; overflow: hidden;}
 
 #map-canvas {
   height: 100%;
@@ -28,6 +28,8 @@ body { height: 100%; margin: 0; padding: 0 }
   margin: 0px;
   padding: 0px;
   border-radius: 0px;
+  overflow-x: auto;
+  overflow-y: scroll;
 }
 
 #search-title {
@@ -57,7 +59,7 @@ body { height: 100%; margin: 0; padding: 0 }
 
 #add-station {
   margin-left: 10px;
-  margin-top: -10px;
+  margin-top: 0px;
 }
 
 .station {
