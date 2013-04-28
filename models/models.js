@@ -9,8 +9,8 @@ var userSchema = mongoose.Schema({
     mix: { type: mongoose.Schema.Types.ObjectId, ref: 'Mix' },
     preferences: {artists: [{name: String, weight:Number}],
                     songs: [{name: String, artist: String, weight:Number}]},
-    location: [Number]
-
+    location: [Number],
+    stations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Station'}]
 });
 
 var mixSchema = mongoose.Schema({

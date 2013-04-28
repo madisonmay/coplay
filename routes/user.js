@@ -91,6 +91,63 @@ exports.newsearch = function(req, res){
     res.render('newsearch', {'title': 'Search Page'})
 }
 
+
+exports.station_view = function(req, res){
+
+    //Main page for mixing and welcome page
+
+    Station.findOne({ _id: req.params.station_id }).populate('users').exec(function(err, db_station) {
+        if (err) {
+            res.send('An error occured')
+        } else {
+
+            User.findOne({fb_id: req.session.fb_id}, function(err, db_user) {
+
+                var users = [];
+                var topics = [];
+                var weights = [];
+
+                var populateStation = function (station) {
+                    console.log(station)
+                    for (k in station.users) {
+                        console.log(station.users[k])
+                        users.push({'name': station.users[k].name, 'id': station.users[k]._id})
+                    }
+                    topics.push([]);
+                    weights.push([]);
+                    var i = topics.length-1;
+                    var totalWeight = 0;
+                    for (var j = 0; j < station.songs.length; j++) {
+                        topics[i].push(station.songs[j].name)
+                        weights[i].push(station.songs[j].weight)
+                        totalWeight += weights[i][j];
+                    };
+                    for (var j = 0; j < station.artists.length; j++) {
+                        topics[i].push(station.artists[j].name)
+                        weights[i].push(station.artists[j].weight)
+                        totalWeight += weights[i][j];
+                    };
+
+                    console.log('Total Weight: ', totalWeight)
+
+                    //normalize the weight
+                    for (var j = 0; j < weights[i].length; j++) {
+                        weights[i][j] *= 100.0/totalWeight;
+                    };
+
+                    console.log(weights)
+                    console.log(JSON.stringify({users:users,artist_names:topics,user_counts:weights}))
+                    res.render('new_home', {'title': 'Coplay', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify({users: users, artist_names:topics, user_counts:weights})});
+                }
+
+                populateStation(db_station);
+            });
+
+
+        }
+    });
+};
+
 exports.landing_page = function(req, res){
     //Main page for mixing and welcome page
     User.findOne({fb_id : req.session.user}).populate('friend_list').populate('mix').exec(function(err, db_user) {
@@ -134,13 +191,13 @@ exports.landing_page = function(req, res){
                 };
                 if((i+1)>=db_user.mix.users.length) {
                     console.log(weights)
-                var data = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
-                var data2 = db_user.friend_list;
-                data2 = data2.filter(function(el){
-                    return (!db_user.mix.users.contains(el._id))
-                })
-                console.log(JSON.stringify({users:users,artist_names:topics,user_counts:weights}))
-                res.render('home', {'title': 'Coplay: Social Music At Its Finest', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify({users:users,artist_names:topics,user_counts:weights}), 'other_friends': data2});
+                    var data = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
+                    var data2 = db_user.friend_list;
+                    data2 = data2.filter(function(el){
+                        return (!db_user.mix.users.contains(el._id))
+                    })
+                    console.log(JSON.stringify({users:users,artist_names:topics,user_counts:weights}))
+                    res.render('home', {'title': 'Coplay: Social Music At Its Finest', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify({users:users,artist_names:topics,user_counts:weights}), 'other_friends': data2});
 
                 }
             }

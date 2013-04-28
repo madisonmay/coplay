@@ -13,7 +13,7 @@ block scripts
             console.log(data);
             var table = document.getElementById("results");
             for(var i = table.rows.length; i > 0;i--){
-              table.deleteRow(i -1);
+              table.deleteRow(i - 1);
             }
             for (var i=0;i<data.length;i++) {
               if(data[i].type == "artist") {
@@ -36,7 +36,7 @@ block scripts
                 thing3.appendChild(thing4);
                 thing2.appendChild(thing3);
                 thing1.appendChild(thing2);
-                table.appendChild(thing1);              
+                table.appendChild(thing1);
               }
             }
          });

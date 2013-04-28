@@ -106,7 +106,7 @@ var user_pos;
 
 function initialize(stations) {
   var mapOptions = {
-    zoom: 18,
+    zoom: 20,
     disableDefaultUI: true,
     zoomControl: true,
     zoomControlOptions: {
