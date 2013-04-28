@@ -52,7 +52,7 @@ app.post('/addArtist', user.addArtist);
 app.post('/mixUpdate', user.mixUpdate);
 app.post('/removeFriend', user.removeFriend);
 app.get('/play',Facebook.loginRequired(scope), user.login, user.play);
-app.get('/getPlaylist', audio.getPlaylistFromMix);
+app.get('/getNextSong', audio.getNextSong);
 app.get('/locate', Facebook.loginRequired(scope), user.login, user.locate);
 app.get('/newsearch', user.newsearch);
 app.post('/autocomplete', audio.autocomplete);
