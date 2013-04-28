@@ -31,13 +31,15 @@ html
         div#button-wrapper
           input#station-title(type='text', placeholder='Station name...')
           br
-          input#station-seed(type='text', placeholder='Station seed (artist or song name)...')
+          input#station-seed(type='text', placeholder='Station seed: artist or song...')
           br
           button.btn.btn-success#add-station Broadcast
 
         each station in stations
           hr.smaller
           div.station
+            a(href='/station/#{station._id}')
+              button.btn.btn-success.btn-small.pull-left.mleft(id='#{station._id}') ►
             | <b class='station-name'> #{station.name} </b>
             div.hide-this.station-info(name='#{station.name}')
               hr.even_smaller

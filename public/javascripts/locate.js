@@ -161,5 +161,4 @@ $(document).ready(function() {
   $('#station-info').on('click', '.station', function() {
     $(this).children('.station-info').toggleClass('hide-this', {duration:500});
   });
-
 });

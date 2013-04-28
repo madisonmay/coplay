@@ -56,9 +56,9 @@ app.get('/getNextSong', audio.getNextSong);
 app.get('/locate', Facebook.loginRequired(scope), user.login, user.locate);
 app.get('/newsearch', user.newsearch);
 app.post('/autocomplete', audio.autocomplete);
-app.post('/station', user.station);
+app.post('/station', Facebook.loginRequired(scope), user.station);
 app.post('/getLocation', user.getLocation);
-app.get('/station/:station_id', user.station_view);
+app.get('/station/:station_id', Facebook.loginRequired(scope), user.station_view);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

@@ -14,8 +14,8 @@ Array.prototype.contains = function(obj) {
 }
 
 exports.getLocation = function(req, res){
-    console.log('User: ', req.session.uid);
-    User.findOne({_id : req.session.uid}).exec(function(err, db_user) {
+    console.log(req.session)
+    User.findOne({fb_id : req.session.user_id}).exec(function(err, db_user) {
         if (db_user) {
             db_user.location = [req.body.latitude, req.body.longitude];
             db_user.save();
@@ -38,9 +38,9 @@ exports.station = function(req, res) {
         if (db_user) {
             var station_data = {name: req.body.name, location: [latitude, longitude], active: true, users: [db_user]};
             if (req.body.seed_type === 'artist') {
-                station_data.artists = [{name:req.body.seed,weight:1.0}];
+                station_data.artists = [{name:req.body.seed, weight:1.0}];
             } else {
-                station_data.songs = [{name:req.body.seed,artist:'?',weight:1.0}];
+                station_data.songs = [{name:req.body.seed, artist:'?',weight:1.0}];
             }
             var new_station = Station(station_data);
             new_station.save(function(err) {
@@ -64,7 +64,7 @@ exports.locate = function(req, res){
         if (err) {
             console.log(err)
         } else {
-            User.findOne({_id: req.session.uid}, function(err, db_user) {
+            User.findOne({fb_id: req.session.user}, function(err, db_user) {
                 if (db_user) {
 
                     console.log("User location", db_user)
@@ -98,20 +98,20 @@ exports.station_view = function(req, res){
 
     Station.findOne({ _id: req.params.station_id }).populate('users').exec(function(err, db_station) {
         if (err) {
-            res.send('An error occured')
+            res.send('An error occurred')
         } else {
 
-            User.findOne({fb_id: req.session.fb_id}, function(err, db_user) {
+            User.findOne({fb_id: req.session.user}, function(err, db_user) {
 
                 var users = [];
                 var topics = [];
                 var weights = [];
 
                 var populateStation = function (station) {
-                    console.log(station)
-                    for (k in station.users) {
+                    console.log("Station users: ", station.users)
+                    for (var k=0; k < station.users.length; k++) {
                         console.log(station.users[k])
-                        users.push({'name': station.users[k].name, 'id': station.users[k]._id})
+                        users.push({'name': station.users[k].username, 'id': station.users[k]._id})
                     }
                     topics.push([]);
                     weights.push([]);
@@ -128,16 +128,13 @@ exports.station_view = function(req, res){
                         totalWeight += weights[i][j];
                     };
 
-                    console.log('Total Weight: ', totalWeight)
-
                     //normalize the weight
                     for (var j = 0; j < weights[i].length; j++) {
                         weights[i][j] *= 100.0/totalWeight;
                     };
 
-                    console.log(weights)
-                    console.log(JSON.stringify({users:users,artist_names:topics,user_counts:weights}))
-                    res.render('new_home', {'title': 'Coplay', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify({users: users, artist_names:topics, user_counts:weights})});
+                    console.log('Users: -->', users)
+                    res.render('station', {'title': 'Coplay', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify({users: users, artist_names:topics, user_counts:weights})});
                 }
 
                 populateStation(db_station);
@@ -196,8 +193,8 @@ exports.landing_page = function(req, res){
                     data2 = data2.filter(function(el){
                         return (!db_user.mix.users.contains(el._id))
                     })
-                    console.log(JSON.stringify({users:users,artist_names:topics,user_counts:weights}))
-                    res.render('home', {'title': 'Coplay: Social Music At Its Finest', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify({users:users,artist_names:topics,user_counts:weights}), 'other_friends': data2});
+                    console.log('Users: ', JSON.stringify(users))
+                    res.render('home', {'title': 'Coplay: Social Music At Its Finest', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify({users:users, artist_names:topics,user_counts:weights}), 'other_friends': data2});
 
                 }
             }

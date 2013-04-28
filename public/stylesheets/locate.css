@@ -2,6 +2,11 @@ html { height: 100% }
 
 body { height: 100%; margin: 0; padding: 0; overflow: hidden;}
 
+.mleft {
+  margin-left: 15px;
+  margin-top: 2px;
+}
+
 #map-canvas {
   height: 100%;
   width: 100%
@@ -75,7 +80,7 @@ body { height: 100%; margin: 0; padding: 0; overflow: hidden;}
 }
 
 .station-name {
-
+  margin-left: -40px;
 }
 
 .even_smaller {

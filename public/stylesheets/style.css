@@ -29,10 +29,12 @@ html {
 /* --- basic styles ----*/
 
 body {
-  background-image: url('../images/satinweave.png');
+/*  background-image: url('../images/satinweave.png');*/
+  background-color: #EDEDED;
   text-shadow: 0 1px 0 white;
   font-size: 24px;
   font-family:  Helvetica, Calibri, Arial, sans-serif, sans;
+  overflow-x: hidden;
 }
 
 /* --- for all three examples ----*/
