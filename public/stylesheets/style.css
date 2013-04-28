@@ -210,3 +210,12 @@ body {
 .friend_title {
   margin-bottom: 20px;
 }
+
+#search-btn {
+  margin-left: 10px;
+  margin-top: -10px;
+}
+
+.center-text{
+  text-align: center;
+}

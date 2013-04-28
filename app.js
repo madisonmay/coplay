@@ -60,6 +60,8 @@ app.post('/autocomplete', audio.autocomplete);
 app.post('/station', Facebook.loginRequired(scope), user.station);
 app.post('/getLocation', user.getLocation);
 app.get('/station/:station_id', Facebook.loginRequired(scope), user.station_view);
+app.post('/station/:station_id/addArtist', user.addNewArtist);
+app.post('/station/:station_id/addTrack', user.addNewTrack);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

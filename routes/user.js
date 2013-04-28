@@ -13,16 +13,33 @@ Array.prototype.contains = function(obj) {
     return false;
 }
 
-exports.getLocation = function(req, res){
-    console.log(req.session)
-    User.findOne({fb_id : req.session.user_id}).exec(function(err, db_user) {
-        if (db_user) {
-            db_user.location = [req.body.latitude, req.body.longitude];
-            db_user.save();
+exports.addNewArtist = function(req, res) {
+    console.log('Add new artist');
+    Station.findOne({_id: req.params.station_id}, function(err, db_station) {
+        if (db_station) {
+            db_station.artists.push({'name': req.body.artist, 'weight': 1})
+            db_station.save()
         } else {
-            console.log("Serious error.  Abort.  Abort.  The end is near.");
+            console.log("Station not found: ", req.params.station_id)
         }
     });
+}
+
+exports.addNewTrack = function(req, res){
+    console.log('Add new track');
+}
+
+exports.getLocation = function(req, res){
+    if (req.session.user_id) {
+        User.findOne({fb_id : req.session.user_id}).exec(function(err, db_user) {
+            if (db_user) {
+                db_user.location = [req.body.latitude, req.body.longitude];
+                db_user.save();
+            } else {
+                console.log("User not found: ", req.session.user_id);
+            }
+        });
+    }
 }
 
 exports.play = function(req, res) {
