@@ -11,6 +11,7 @@ var playNewSong = function (song) {
   window.player.setSongCompleteCallback("getNewSong");
   window.player.setErrorCallback("errorCallback");
   window.player.playStreamKey(song.StreamKey,serverName,song.StreamServerID);
+  window.player.setVolume(99);
   isPlaying = true;
   $("#songName").text("Track: "+song.songName);
   $("#artistName").text("Artist: "+song.artistName);
