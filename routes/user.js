@@ -13,6 +13,7 @@ Array.prototype.contains = function(obj) {
     return false;
 }
 
+//Still need to handle case where object with same values already exists
 exports.addNewArtist = function(req, res) {
     console.log('Add new artist');
     Station.findOne({_id: req.params.station_id}, function(err, db_station) {
@@ -27,6 +28,14 @@ exports.addNewArtist = function(req, res) {
 
 exports.addNewTrack = function(req, res){
     console.log('Add new track');
+    Station.findOne({_id: req.params.station_id}, function(err, db_station) {
+        if (db_station) {
+            db_station.songs.push({'artist': req.body.artist, 'name':req.body.track ,'weight': 1})
+            db_station.save()
+        } else {
+            console.log("Station not found: ", req.params.station_id)
+        }
+    });
 }
 
 exports.getLocation = function(req, res){
