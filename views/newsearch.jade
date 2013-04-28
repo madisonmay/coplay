@@ -6,41 +6,60 @@ block scripts
       cursor: pointer;
     }
   script(type='text/javascript')
+    var ready = 0;
     $(document).ready(function() {
-      $('#search').click(function (){
-        var query = $("#searchbox").val();
-        $.post('/autocomplete', {query: query}, function (data) {
-            console.log(data);
-            var table = document.getElementById("results");
-            for(var i = table.rows.length; i > 0;i--){
-              table.deleteRow(i - 1);
-            }
-            for (var i=0;i<data.length;i++) {
-              if(data[i].type == "artist") {
-                var thing1 = document.createElement("tr");
-                var thing2 = document.createElement("td");
-                var thing3 = document.createElement("a");
-                thing3.className = "thing5"
-                var thing4 = document.createTextNode(data[i].artist);
-                thing3.appendChild(thing4);
-                thing2.appendChild(thing3);
-                thing1.appendChild(thing2);
-                table.appendChild(thing1);
+      if (ready == 0) {
+        ready = 1;
+        $('#search').click(function (){
+          var query = $("#searchbox").val();
+          $.post('/autocomplete', {query: query}, function (data) {
+              console.log(data);
+              var table = document.getElementById("results");
+              for(var i = table.rows.length; i > 0;i--){
+                table.deleteRow(i -1);
               }
-              if(data[i].type == "track") {
-                var thing1 = document.createElement("tr");
-                var thing2 = document.createElement("td");
-                var thing3 = document.createElement("a");
-                thing3.className = "thing5"
-                var thing4 = document.createTextNode(data[i].name + " - " + data[i].artist);
-                thing3.appendChild(thing4);
-                thing2.appendChild(thing3);
-                thing1.appendChild(thing2);
-                table.appendChild(thing1);
+              for (var i=0;i<data.length;i++) {
+                if(data[i].type == "artist") {
+                  var trow = document.createElement("tr");
+                  var tdata = document.createElement("td");
+                  var tlink = document.createElement("a");
+                  tlink.className = "musiclink"
+                  var ttext = document.createTextNode(data[i].artist);
+                  tlink.appendChild(ttext);
+                  tlink.setAttribute("artist",data[i].artist);
+                  tlink.setAttribute("type","artist");
+                  tdata.appendChild(tlink);
+                  trow.appendChild(tdata);
+                  table.appendChild(trow);
+                }
+                if(data[i].type == "track") {
+                  var trow = document.createElement("tr");
+                  var tdata = document.createElement("td");
+                  var tlink = document.createElement("a");
+                  tlink.className = "musiclink"
+                  var ttext = document.createTextNode(data[i].name + " - " + data[i].artist);
+                  tlink.appendChild(ttext);
+                  tlink.setAttribute("artist",data[i].artist);
+                  tlink.setAttribute("track",data[i].name);
+                  tlink.setAttribute("type","track");
+                  tdata.appendChild(tlink);
+                  trow.appendChild(tdata);
+                  table.appendChild(trow);
+                }
               }
-            }
-         });
-      });
+           });
+        });
+        $(document).on('click','.musiclink',function () {
+          var artist = $(this).attr("artist");
+          if ($(this).attr("type") == "track") {
+            var track = $(this).attr("track")
+            console.log(track + " - " + artist);
+          }
+          else if ($(this).attr("type") == "artist") {
+            console.log(artist);
+          }
+        });
+      }
     })
 block content
   a.btn(href='#search', role='button', data-toggle='modal') Add Music
@@ -52,6 +71,3 @@ block content
       input#searchbox(type='text')
       button#search(class='btn.btn-success',type='submit') Search
       table#results
-    div.modal-footer
-      button.btn(data-dismiss='modal', aria-hidden='true') Close
-      button.btn.btn-primary Save changes
