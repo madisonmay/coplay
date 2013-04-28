@@ -4,10 +4,12 @@ var playNewSong = function (song) {
 
   var re = /http:\/\/(.+\.grooveshark\.com)/gi;
   var serverName = re.exec(song.url)[1];
-  console.log(song.StreamKey)
-  console.log(serverName)
-  console.log(song.StreamServerID)
+  console.log('obj',song)
+  console.log('streamkey',song.StreamKey)
+  console.log('servername',serverName)
+  console.log('serverID',song.StreamServerID)
   window.player.setSongCompleteCallback("getNewSong");
+  window.player.setErrorCallback("errorCallback");
   window.player.playStreamKey(song.StreamKey,serverName,song.StreamServerID);
   isPlaying = true;
   $("#songName").text("Track: "+song.songName);
@@ -28,15 +30,19 @@ var pause_resume = function () {
 }
 
 var getNewSong = function () {
-  $.get("/getPlaylist",function(data){
-    console.log(data);
+  $.get("/getNextSong",function(data){
     playNewSong(data);
     return false;
   });
 }
 
+var errorCallback = function (error) {
+  console.log(error);
+  getNewSong();
+}
+
 $(function () {
   getNewSong();
-  $('#next').on('click',getNewSong());
+  $('#next').on('click',getNewSong);
   $('#playpause').on('click',pause_resume);
 });

@@ -5,62 +5,63 @@ var Models = require('../models/models.js');
 var User = Models.User;
 var request = require('request')
 
-exports.getPlaylistFromMix = function(req,res){
-    var numSongs;
-    var streamKeys = [];
-    var echonestPlaylistCallback = function(playlist) {
-        numSongs = playlist.length;
-        for (var i = 0; i < playlist.length; i++) {
-            var songInfo = playlist[i].title + " " + playlist[i].artist_name;
-            var songQuery = {method: "getSongSearchResults",
-                            parameters:{query:songInfo,limit:1,
-                                        country:{ID:223,CC1:0,CC2:0,CC3:0,CC4:1073741824,DMA:506,IPR:0}},
-                            header:{wsKey:process.env.GSHARK_KEY,sessionID:"67309bd2c4ad33a96274131c4165cf8a"}}
-            var singleSongLookup = function(query) {
-                setTimeout(function() {gs.make_request(query,groovesharkSongQueryCallback);
-                                        },10*i)
-            }
-            singleSongLookup(songQuery)
-
+exports.getNextSong = function(req,res) {
+    var getPlaylistFromMix = function(callback){
+        var echonestPlaylistCallback = function(playlist) {
+            callback(playlist)
+        }
+        
+        //echo.getPlaylistFromMix(req.session.mix,echonestCallback);
+        //echo.getPlaylistFromMix("5132d5b6e85596b332000005",echonestPlaylistCallback);
+        var userFindCallback = function(err,doc){
+            console.log("Result:")
+            console.log(doc)
+            echo.getPlaylistFromMix(doc.mix,echonestPlaylistCallback);
         };
-    }
-    var groovesharkSongQueryCallback = function(queryResult) {
-        console.log(JSON.stringify(queryResult));
-        if(queryResult.result.songs.length > 0) {
-            var songID = queryResult.result.songs[0].SongID;
-            var streamQuery= {method: "getStreamKeyStreamServer",
-                    parameters:{songID:songID,
-                                country:{ID:223,CC1:0,CC2:0,CC3:0,CC4:1073741824,DMA:506,IPR:0}},
-                    header:{wsKey:process.env.GSHARK_KEY,sessionID:"67309bd2c4ad33a96274131c4165cf8a"}};
-
-            gs.make_request(streamQuery, function (result) {
-                result.result.songName = queryResult.result.songs[0].SongName;
-                result.result.artistName = queryResult.result.songs[0].ArtistName;
-                groovesharkStreamQueryCallback(result);
-            });
-        } else {
-            numSongs -= 1;
-        }
-    }
-
-    var groovesharkStreamQueryCallback = function(queryResult) {
-        numSongs -= 1;
-        streamKeys.push(queryResult.result);
-        if(numSongs<=0){
-            console.log(streamKeys);
-            res.send(streamKeys);
-        }
-    }
-    //echo.getPlaylistFromMix(req.session.mix,echonestCallback);
-    //echo.getPlaylistFromMix("5132d5b6e85596b332000005",echonestPlaylistCallback);
-    var userFindCallback = function(err,doc){
-        console.log("Result:")
-        console.log(doc)
-        echo.getPlaylistFromMix(doc.mix,echonestPlaylistCallback);
+        console.log(req.session.user)
+        User.findOne({fb_id:req.session.user},userFindCallback)
     };
-    console.log(req.session.user)
-    User.findOne({fb_id:req.session.user},userFindCallback)
-};
+
+    var getNextSongCallback = function(playlist) {
+        song = playlist.pop()
+        req.session.playlist = playlist
+
+        var songInfo = song.title + " " + song.artist_name;
+        var songQuery = {method: "getSongSearchResults",
+                        parameters:{query:songInfo,limit:1,
+                                    country:{ID:223,CC1:0,CC2:0,CC3:0,CC4:1073741824,DMA:506,IPR:0}},
+                        header:{wsKey:process.env.GSHARK_KEY,sessionID:"67309bd2c4ad33a96274131c4165cf8a"}}
+
+        var groovesharkSongQueryCallback = function(queryResult) {
+            console.log(JSON.stringify(queryResult));
+            if(queryResult.result.songs.length > 0) {
+                var songID = queryResult.result.songs[0].SongID;
+                var streamQuery= {method: "getStreamKeyStreamServer",
+                        parameters:{songID:songID,
+                                    country:{ID:223,CC1:0,CC2:0,CC3:0,CC4:1073741824,DMA:506,IPR:0}},
+                        header:{wsKey:process.env.GSHARK_KEY,sessionID:"67309bd2c4ad33a96274131c4165cf8a"}};
+
+                gs.make_request(streamQuery, function (result) {
+                    result.result.songName = queryResult.result.songs[0].SongName;
+                    result.result.artistName = queryResult.result.songs[0].ArtistName;
+                    groovesharkStreamQueryCallback(result);
+                });
+            }
+        }
+
+        var groovesharkStreamQueryCallback = function(queryResult) {
+            res.send(queryResult.result);
+        }
+
+        gs.make_request(songQuery,groovesharkSongQueryCallback);
+    }
+
+    if (!req.session.playlist || req.session.playlist.length <= 0) {
+        playlist = getPlaylistFromMix(getNextSongCallback)
+    } else {
+        getNextSongCallback(req.session.playlist)
+    }
+}
 
 exports.autocomplete = function(req, res) {
     //Spotify api calls for song/artist autocomplete functionality

@@ -3,8 +3,9 @@ swfobject.embedSWF("http://grooveshark.com/APIPlayer.swf", "player", "300", "300
   
   if (element) {
     setTimeout(function() {
-      window.player = element;
-      window.player.setVolume(99);
+        console.log('test')
+        window.player = element;
+        window.player.setVolume(99);
     }, 1500);
   }
 });
