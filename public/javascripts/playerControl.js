@@ -1,3 +1,4 @@
+var isPlaying = false;
 var playNewSong = function (song) {
   console.log("playing next");
 
@@ -8,6 +9,7 @@ var playNewSong = function (song) {
   console.log(song.StreamServerID)
   window.player.setSongCompleteCallback("getNewSong");
   window.player.playStreamKey(song.StreamKey,serverName,song.StreamServerID);
+  isPlaying = true;
   $("#songName").text("Track: "+song.songName);
   $("#artistName").text("Artist: "+song.artistName);
   $("#playpause").attr('src','images/pause.png')
