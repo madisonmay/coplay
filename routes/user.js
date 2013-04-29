@@ -14,6 +14,43 @@ Array.prototype.contains = function(obj) {
     return false;
 }
 
+exports.friend_page = function(req, res) {
+    User.findOne({fb_id : req.params.friend_id}).populate('stations').exec(function(err, db_user) {
+        if (db_user) {
+           console.log(db_user);
+           var title = db_user.username + "'s Stations"
+           res.render('friend_page', {'username': db_user.username, 'recent_stations': db_user.stations, 'title': title});
+        } else {
+            console.log("User not found: ", req.session.user_id);
+            res.send('User does not exist')
+        }
+    });
+}
+
+exports.friends = function(req, res) {
+    console.log("Friends");
+    function render_attempt(friends, friend_objects) {
+        if (friend_objects.length == friends.length) {
+            res.render('friends', {'friends': friend_objects, 'title': 'Friends\' Stations'})
+        }
+    }
+
+    User.findOne({fb_id : req.session.user_id}).exec(function(err, db_user) {
+        if (db_user) {
+           var friend_objects = []
+           var friends = db_user.friend_list
+           for (var i=0; i<friends.length; i++) {
+                User.findOne({_id: friends[i]}, function(err, friend) {
+                    friend_objects.push(friend)
+                    render_attempt(friends, friend_objects)
+                });
+           }
+        } else {
+            console.log("User not found: ", req.session.user_id);
+        }
+    });
+}
+
 exports.editSongWeight = function(req, res) {
     console.log('Edit weight');
     Station.findOne({_id: req.params.station_id}, function(err, db_station) {
@@ -120,6 +157,9 @@ exports.station = function(req, res) {
                     console.log("Error: ", err);
                     res.send('/locate');
                 } else {
+                    db_user.stations.push(new_station);
+                    db_user.recent.push(new_staiton);
+                    db_user.save();
                     console.log("Station saved.");
                     res.send('/play');
                 }
@@ -179,10 +219,15 @@ exports.station_view = function(req, res){
                 var topics = [];
                 var weights = [];
 
-                if (! db_station.users.contains(db_user)) {
+                if (!(db_station.users.contains(db_user))) {
+                    console.log('Station user: ', db_user);
                     db_station.users.push(db_user);
                     db_station.save();
+                    db_user.stations.push(db_station);
                 }
+
+                db_user.recent.push(db_station);
+                db_user.save();
 
                 var populateStation = function (station) {
                     console.log("Station users: ", station.users)
@@ -226,70 +271,74 @@ exports.station_view = function(req, res){
 
 exports.landing_page = function(req, res){
     //Main page for mixing and welcome page
-    User.findOne({fb_id : req.session.user}).populate('friend_list').populate('mix').exec(function(err, db_user) {
+    User.findOne({fb_id : req.session.user}).populate('recent').exec(function(err, db_user) {
 
         if (db_user) {
-            console.log(db_user.mix)
-            console.log(db_user.friend_list);
-            var users = [];
-            var topics = [];
-            var weights = [];
+            index = db_user.recent.length-1
+            station = db_user.recent[index]
+            console.log(station._id);
+            res.redirect('/station/' + station._id);
+            // console.log(db_user.mix)
+            // console.log(db_user.friend_list);
+            // var users = [];
+            // var topics = [];
+            // var weights = [];
 
-            var mixPopulateCallback = function (err,doc) {
-                console.log("Callback")
-                console.log(doc)
-                users.push({name:doc.first_name,id:doc._id});
-                topics.push([]);
-                weights.push([]);
-                var i = topics.length-1;
-                var totalWeight = 0;
-                for (var j = 0; j < doc.preferences.songs.length; j++) {
-                    topics[i].push(doc.preferences.songs[j].name)
-                    weights[i].push(doc.preferences.songs[j].weight)
-                    totalWeight += weights[i][j];
-                };
-                for (var j = 0; j < doc.preferences.artists.length; j++) {
-                    topics[i].push(doc.preferences.artists[j].name)
-                    weights[i].push(doc.preferences.artists[j].weight)
-                    totalWeight += weights[i][j];
-                };
+            // var mixPopulateCallback = function (err,doc) {
+            //     console.log("Callback")
+            //     console.log(doc)
+            //     users.push({name:doc.first_name,id:doc._id});
+            //     topics.push([]);
+            //     weights.push([]);
+            //     var i = topics.length-1;
+            //     var totalWeight = 0;
+            //     for (var j = 0; j < doc.preferences.songs.length; j++) {
+            //         topics[i].push(doc.preferences.songs[j].name)
+            //         weights[i].push(doc.preferences.songs[j].weight)
+            //         totalWeight += weights[i][j];
+            //     };
+            //     for (var j = 0; j < doc.preferences.artists.length; j++) {
+            //         topics[i].push(doc.preferences.artists[j].name)
+            //         weights[i].push(doc.preferences.artists[j].weight)
+            //         totalWeight += weights[i][j];
+            //     };
 
-                if (!doc.preferences.artists.length) {
-                    topics[i].push("Taylor Swift")
-                    weights[i].push(1);
-                    totalWeight += 1;
-                }
+            //     if (!doc.preferences.artists.length) {
+            //         topics[i].push("Taylor Swift")
+            //         weights[i].push(1);
+            //         totalWeight += 1;
+            //     }
 
-                console.log(totalWeight)
-                //normalize the weight
-                for (var j = 0; j < weights[i].length; j++) {
-                    weights[i][j] *= 100.0/totalWeight;
-                };
-                if((i+1)>=db_user.mix.users.length) {
-                    console.log(weights)
-                    var data = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
-                    var data2 = db_user.friend_list;
-                    data2 = data2.filter(function(el){
-                        return (!db_user.mix.users.contains(el._id))
-                    })
-                    console.log('Users: ', JSON.stringify(users))
-                    res.render('home', {'title': 'Coplay: Social Music At Its Finest', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify({users:users, artist_names:topics,user_counts:weights}), 'other_friends': data2});
+            //     console.log(totalWeight)
+            //     //normalize the weight
+            //     for (var j = 0; j < weights[i].length; j++) {
+            //         weights[i][j] *= 100.0/totalWeight;
+            //     };
+            //     if((i+1)>=db_user.mix.users.length) {
+            //         console.log(weights)
+            //         var data = [{name: 'Derek', id: 1}, {name: 'Tom', id: 2}, {name:'Madison', id: 3}];
+            //         var data2 = db_user.friend_list;
+            //         data2 = data2.filter(function(el){
+            //             return (!db_user.mix.users.contains(el._id))
+            //         })
+            //         console.log('Users: ', JSON.stringify(users))
+            //         res.render('home', {'title': 'Coplay: Social Music At Its Finest', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify({users:users, artist_names:topics,user_counts:weights}), 'other_friends': data2});
 
-                }
-            }
-            console.log(db_user.mix)
-            console.log(db_user.mix.users[0])
-            for (var i = 0; i < db_user.mix.users.length; i++) {
-                console.log(db_user.mix.users[i])
-                console.log(db_user._id)
-                User.findOne({_id:db_user.mix.users[i]}).exec(mixPopulateCallback);
-            };
+            //     }
+            // }
+            // console.log(db_user.mix)
+            // console.log(db_user.mix.users[0])
+            // for (var i = 0; i < db_user.mix.users.length; i++) {
+            //     console.log(db_user.mix.users[i])
+            //     console.log(db_user._id)
+            //     User.findOne({_id:db_user.mix.users[i]}).exec(mixPopulateCallback);
+            // };
 
 
-            }
+            // }
 
-        else {
-            res.render('landing', {'title': 'Coplay: Social Music At Its Finest', 'logged_in': false});
+        } else {
+            res.redirect('/locate')
         }
     });
 };
@@ -297,7 +346,7 @@ exports.about = function(req, res){
     res.render("about", {title: 'Coplay', logged_in: false});
 };
 
-function get_friends(fb_id, thisID,req, res, callback){
+function get_friends(fb_id, thisID, req, res, callback){
     //Populates the user object with friends who use CoPlay
     var curr = 0;
     var max;
@@ -337,7 +386,6 @@ function get_friends(fb_id, thisID,req, res, callback){
         for (var i=0; i<friends.data.length; i++){
             db_query(friends, friend_list, i);
         }
-
     });
 }
 

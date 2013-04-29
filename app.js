@@ -46,11 +46,11 @@ app.get('/logout', user.logout);
 app.get('/refresh', user.refresh);
 app.get('/settings', Facebook.loginRequired(scope), user.login, user.settings);
 app.get('/about', user.about);
-app.get('/play',Facebook.loginRequired(scope), user.login, user.play);
+app.get('/play', Facebook.loginRequired(scope), user.login, user.play);
 app.get('/locate', Facebook.loginRequired(scope), user.login, user.locate);
 app.get('/newsearch', Facebook.loginRequired(scope), user.newsearch);
 app.get('/getNextSong', audio.getNextSong);
-app.get('/station/:station_id', user.station_view);
+app.get('/station/:station_id', Facebook.loginRequired(scope), user.station_view);
 app.post('/editArtist', user.editArtist)
 app.post('/addFriend', user.addFriend);
 app.post('/removeArtist', user.removeArtist)
@@ -64,6 +64,8 @@ app.get('/station/:station_id', Facebook.loginRequired(scope), user.station_view
 app.post('/station/:station_id/addArtist', user.addNewArtist);
 app.post('/station/:station_id/addTrack', user.addNewTrack);
 app.post('/station/:station_id/edit', user.editSongWeight);
+app.get('/friends', Facebook.loginRequired(scope), user.friends)
+app.get('/friend/:friend_id', Facebook.loginRequired(scope), user.friend_page)
 
 server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

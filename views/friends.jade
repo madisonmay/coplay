@@ -1,0 +1,15 @@
+extends layout
+
+block scripts
+    script
+        $(document).ready(function() {
+            $('.clickable').click(function() {
+                window.location = '/friend/' + $(this).attr('id');
+            });
+        })
+block content
+    div.center-text
+        each friend in friends
+            div.inlined
+                img.fix-width.clickable(src='https://graph.facebook.com/#{friend.fb_id}/picture?width=300&height=300', id='#{friend.fb_id}')
+                div.fix-width.clickable(id='#{friend.fb_id}') #{friend.username}

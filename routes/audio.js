@@ -10,12 +10,14 @@ var getPlaylistFromMix = function(station,callback){
     var echonestPlaylistCallback = function(playlist) {
         callback(playlist)
     }
-    
+
     var stationFindCallback = function(err,doc){
         console.log(station)
         console.log("Result:")
         console.log(doc)
-        echo.getPlaylistFromMix({artists: doc.artists, songs: doc.songs},echonestPlaylistCallback);
+        if ('artists' in doc) {
+            echo.getPlaylistFromMix({artists: doc.artists, songs: doc.songs},echonestPlaylistCallback);
+        }
     };
     Station.findOne({_id:station},stationFindCallback);
 };

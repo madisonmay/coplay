@@ -1,7 +1,12 @@
 .fix-width {
-  width: 150px;
+  width: 100px;
   border-radius: 10px;
   margin-bottom: 5px;
+  margin-right: 20px;
+}
+
+.station-fix-width {
+  margin-right: 0px;
 }
 
 .list_users {
@@ -236,6 +241,27 @@ body {
   text-align: center;
 }
 
+.inlined {
+  display: inline-block;
+}
+
 #move-right {
   margin-left: 70px;
 }
+
+.clickable {
+  cursor: pointer;
+}
+
+.pulled-up {
+  margin-top: -50px;
+}
+
+.smaller-width {
+  margin-right: 15%;
+  margin-left: 15%;
+}
+
+a:hover {
+  text-decoration: None;
+};

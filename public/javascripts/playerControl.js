@@ -64,7 +64,7 @@ var downvote = function() {
   console.log("Downvote");
   name = $('#songName').attr('name');
   artist = $('#songName').attr('artist');
-  base_rul = window.location.pathname;
+  base_url = window.location.pathname;
   $.post(base_url + '/edit', {'name': name, 'artist': artist, 'up': false}, vote_response)
 }
 

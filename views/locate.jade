@@ -3,7 +3,6 @@ html
   head
     meta(name='viewport', content='initial-scale=1.0, user-scalable=no')
     link(href='http://fonts.googleapis.com/css?family=Unica+One', rel='stylesheet', type='text/css')
-    link(type='text/css',rel='stylesheet',href='stylesheets/locate.css')
 
     // script(src="javascripts/geoplugin.gp", type="text/javascript")
     link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css", rel="stylesheet")
@@ -17,6 +16,7 @@ html
         var stations = !{JSON.stringify(stations)};
         initialize(stations);
       });
+    link(type='text/css',rel='stylesheet',href='stylesheets/locate.css')
     script(type='text/javascript',src='javascripts/locate.js')
 
 
@@ -44,4 +44,6 @@ html
             div.hide-this.station-info(name='#{station.name}')
               hr.even_smaller
               each user in station.users
-                | #{user.username}
+                a(href='/friend/#{user.fb_id}')
+                  div
+                    | #{user.username}

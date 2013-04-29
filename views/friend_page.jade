@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    h2.center-text.pulled-up #{title}
+    hr.smaller-width
+    each station in recent_stations
+        div.center-text
+            a(href='/station/#{station._id}')
+                h2(id='#{station._id}') #{station.name}
