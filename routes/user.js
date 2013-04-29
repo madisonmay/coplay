@@ -145,12 +145,14 @@ exports.station = function(req, res) {
 
     User.findOne({fb_id : req.session.user}).exec(function(err, db_user) {
         if (db_user) {
-            var station_data = {name: req.body.name, location: [latitude, longitude], active: true, users: [db_user]};
+            var station_data = {name: req.body.name, location: [latitude, longitude], active: true, host: db_user, users: [db_user], artists: [], songs: []};
+            console.log(req.body)
             if (req.body.seed_type === 'artist') {
-                station_data.artists = [{name:req.body.seed, weight:1.0}];
+                station_data.artists = [{name:req.body.seed.name, weight:1.0}];
             } else {
-                station_data.songs = [{name:req.body.seed, artist:'?',weight:1.0}];
+                station_data.songs = [{name:req.body.seed.name, artist:req.body.seed.artist,weight:1.0}];
             }
+            console.log(station_data);
             var new_station = Station(station_data);
             new_station.save(function(err) {
                 if(err) {
@@ -161,7 +163,7 @@ exports.station = function(req, res) {
                     db_user.recent.push(new_staiton);
                     db_user.save();
                     console.log("Station saved.");
-                    res.send('/play');
+                    res.send('/station/'+new_station._id);
                 }
             });
         } else {
@@ -256,12 +258,18 @@ exports.station_view = function(req, res){
                         weights[i][j] *= 100.0/totalWeight;
                     };
 
-                    console.log(req.session.user);
+                    // req.session.reload(function(err){
+                    //    console.log(err);
+                    //  });
                     console.log('Users: -->', users)
-                    res.render('station', {'title': 'Coplay', 'user': db_user, 'fb_id': req.session.user, 'logged_in': true, 'friends': JSON.stringify({users: users, artist_names:topics, user_counts:weights})});
+                    
+                    var host = db_user._id.equals(db_station.host);
+                    res.render('station', {'title': 'Coplay', 'user': db_user, 
+                                        'fb_id': req.session.user, 'logged_in': true, 'host': host,
+                                        'friends': JSON.stringify({users: users, artist_names:topics, user_counts:weights})});
                 }
-
-                populateStation(db_station);
+                console.log(db_user,db_station)
+                populateStation(db_user,db_station);
             });
 
 

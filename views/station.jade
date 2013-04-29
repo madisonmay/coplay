@@ -28,10 +28,10 @@ block content
                 | Social Music
 
         div.wrapper.pull-left
-            //- if host == true
-            include play_partial
-            //- else
-            //- include play_partial_user
+            if host == true
+                include play_partial
+            else
+                include play_partial_user
             div.center-text#move-right
                 include newsearch
 
