@@ -179,9 +179,9 @@ exports.station_view = function(req, res){
                 var topics = [];
                 var weights = [];
 
-                if (! station.users.contains(db_user)) {
-                    station.users.push(db_user);
-                    station.save();
+                if (! db_station.users.contains(db_user)) {
+                    db_station.users.push(db_user);
+                    db_station.save();
                 }
 
                 var populateStation = function (station) {
