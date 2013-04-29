@@ -9,11 +9,10 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Mix = mongoose.model('Mix');
 
-exports.getPlaylistFromMix = function(mixid,sendPlaylistToClient) {
+exports.getPlaylistFromMix = function(preferences,sendPlaylistToClient) {
     var intervalID;
     var tasteProfileID;
     var tasteProfileTicket;
-    var preferences;
     var makeTasteProfile = function() {
         console.log("pref")
         console.log(preferences)
@@ -87,50 +86,11 @@ exports.getPlaylistFromMix = function(mixid,sendPlaylistToClient) {
             if (err) return console.log(err);
             console.log("------------------");
             console.log("Playlist:");
-            console.log(json.response.songs);
             sendPlaylistToClient(json.response.songs);
             echo('catalog/delete').post({
                 id: tasteProfileID
             });
         });
     };
-    console.log('breakpoint1')
-    var findMixCallback = function (err,doc){
-            console.log('breakpoint2')
-            console.log("Callback")
-            console.log(doc)
-            var songs = [];
-            var artists = [];
-            for (var i = 0; i < doc.users.length; i++) {
-                var totalWeight = 0;
-                var artisttemp = [];
-                var songtemp = [];
-                console.log(doc.users[i].preferences)
-                for (var j = 0; j < doc.users[i].preferences.songs.length; j++) {
-                    songtemp.push(doc.users[i].preferences.songs[j])
-                    totalWeight += doc.users[i].preferences.songs[j].weight;
-                };
-                for (var j = 0; j < doc.users[i].preferences.artists.length; j++) {
-                    artisttemp.push(doc.users[i].preferences.artists[j])
-                    totalWeight += doc.users[i].preferences.artists[j].weight;
-                };
-
-                console.log(totalWeight)
-                //normalize the weight
-                for (var j = 0; j < songtemp.length; j++) {
-                    songtemp[j].weight *= 100.0/totalWeight;
-                };
-                for (var j = 0; j < artisttemp.length; j++) {
-                    artisttemp[j].weight *= 100.0/totalWeight;
-                };
-                console.log(songtemp)
-                songs=songs.concat(songtemp)
-                artists=artists.concat(artisttemp)
-            };
-        console.log(songs)
-        //preferences = doc.preferences;
-        preferences = {artists:artists,songs:songs};
-        makeTasteProfile();
-    };
-    Mix.findOne({_id:mixid}).populate('users').exec(findMixCallback);
+    makeTasteProfile();
 };

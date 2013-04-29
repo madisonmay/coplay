@@ -2,6 +2,7 @@ var Models = require('../models/models.js');
 var User = Models.User;
 var Station = Models.Station
 var Mix = Models.Mix
+var audio = require('./audio');
 
 Array.prototype.contains = function(obj) {
     var i = this.length;
@@ -49,10 +50,16 @@ exports.editSongWeight = function(req, res) {
 //Still need to handle case where object with same values already exists
 exports.addNewArtist = function(req, res) {
     console.log('Add new artist');
+    var updatePlaylistCallback = function(playlist) {
+        console.log(playlist);
+        req.session.playlist = playlist;
+        res.send('');
+    }
     Station.findOne({_id: req.params.station_id}, function(err, db_station) {
         if (db_station) {
             db_station.artists.push({'name': req.body.artist, 'weight': 1})
             db_station.save()
+            audio.generateNewPlaylist(req.session.station,updatePlaylistCallback);
         } else {
             console.log("Station not found: ", req.params.station_id)
         }
@@ -61,10 +68,16 @@ exports.addNewArtist = function(req, res) {
 
 exports.addNewTrack = function(req, res){
     console.log('Add new track');
+    var updatePlaylistCallback = function(playlist) {
+        console.log(playlist);
+        req.session.playlist = playlist;
+        res.send('');
+    }
     Station.findOne({_id: req.params.station_id}, function(err, db_station) {
         if (db_station) {
             db_station.songs.push({'artist': req.body.artist, 'name':req.body.track ,'weight': 1})
             db_station.save()
+            audio.generateNewPlaylist(req.session.station,updatePlaylistCallback);
         } else {
             console.log("Station not found: ", req.params.station_id)
         }
@@ -154,12 +167,12 @@ exports.newsearch = function(req, res){
 exports.station_view = function(req, res){
 
     //Main page for mixing and welcome page
-
+    console.log('id',req.params.station_id)
     Station.findOne({ _id: req.params.station_id }).populate('users').exec(function(err, db_station) {
         if (err) {
             res.send('An error occurred')
         } else {
-
+            req.session.station = req.params.station_id;
             User.findOne({fb_id: req.session.user}, function(err, db_user) {
 
                 var users = [];

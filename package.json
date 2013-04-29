@@ -11,7 +11,9 @@
     "mongoose": "3.x",
     "fb": "0.1.0",
     "facebook-node-sdk": "~0.2.0",
-    "echojs": "~0.1.4"
+    "echojs": "~0.1.4",
+    "mongo-watch": "*",
+    "socket.io": "*"
   },
   "engines": {
     "node": "0.8.14 ",

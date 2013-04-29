@@ -13,6 +13,7 @@ var express = require('express')
   , audio = require('./routes/audio')
   , echoWrapper = require('./echonest')
   , gs = require('./grooveshark');
+  //, MongoWatch = require('mongo-watch');
 
 var app = express();
 mongoose.connect((process.env.MONGOLAB_URI||'mongodb://localhost/coplay'));
@@ -63,6 +64,18 @@ app.get('/station/:station_id', Facebook.loginRequired(scope), user.station_view
 app.post('/station/:station_id/addArtist', user.addNewArtist);
 app.post('/station/:station_id/addTrack', user.addNewTrack);
 app.post('/station/:station_id/edit', user.editSongWeight);
-http.createServer(app).listen(app.get('port'), function(){
+
+server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+
+/*var io = require('socket.io').listen(server);
+io.sockets.on('connection', function (socket) {
+  // set up socket
+  console.log('beep');
+  var watcher = MongoWatch({format: 'pretty',onDebug: console.log});
+  console.log(watcher);
+  //watcher.watch('coplay.stations', console.log);
+});*/
+
+

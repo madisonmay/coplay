@@ -25,9 +25,9 @@ var stationSchema = mongoose.Schema({
     location: [Number],
     name: String,
     active: Boolean,
+    current: {song: String, artist: String},
     users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 })
-
 
 var User = mongoose.model('User', userSchema);
 var Mix = mongoose.model('Mix', mixSchema);

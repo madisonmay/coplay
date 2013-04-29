@@ -3,28 +3,39 @@ var gs = require('../grooveshark'),
 
 var Models = require('../models/models.js');
 var User = Models.User;
+var Station = Models.Station;
 var request = require('request')
 
-exports.getNextSong = function(req,res) {
-    var getPlaylistFromMix = function(callback){
-        var echonestPlaylistCallback = function(playlist) {
-            callback(playlist)
-        }
-
-        //echo.getPlaylistFromMix(req.session.mix,echonestCallback);
-        //echo.getPlaylistFromMix("5132d5b6e85596b332000005",echonestPlaylistCallback);
-        var userFindCallback = function(err,doc){
-            console.log("Result:")
-            console.log(doc)
-            echo.getPlaylistFromMix(doc.mix,echonestPlaylistCallback);
-        };
-        console.log(req.session.user)
-        User.findOne({fb_id:req.session.user},userFindCallback)
+var getPlaylistFromMix = function(station,callback){
+    var echonestPlaylistCallback = function(playlist) {
+        callback(playlist)
+    }
+    
+    var stationFindCallback = function(err,doc){
+        console.log(station)
+        console.log("Result:")
+        console.log(doc)
+        echo.getPlaylistFromMix({artists: doc.artists, songs: doc.songs},echonestPlaylistCallback);
     };
+    Station.findOne({_id:station},stationFindCallback);
+};
 
+exports.generateNewPlaylist = getPlaylistFromMix;
+
+
+exports.getNextSong = function(req,res) {
     var getNextSongCallback = function(playlist) {
+        console.log(playlist)
+        console.log(req.session.playlist)
         song = playlist.pop()
         req.session.playlist = playlist
+
+        var setNewSongInDataBase = function(err,doc) {
+            doc.current = {song: song.title, artist: song.artist_name};
+            doc.save();
+        }
+
+        Station.findOne({_id:req.session.station},setNewSongInDataBase);
 
         var songInfo = song.title + " " + song.artist_name;
         var songQuery = {method: "getSongSearchResults",
@@ -59,9 +70,9 @@ exports.getNextSong = function(req,res) {
     }
 
     if (!req.session.playlist || req.session.playlist.length <= 0) {
-        playlist = getPlaylistFromMix(getNextSongCallback)
+        playlist = getPlaylistFromMix(req.session.station,getNextSongCallback);
     } else {
-        getNextSongCallback(req.session.playlist)
+        getNextSongCallback(req.session.playlist);
     }
 }
 
