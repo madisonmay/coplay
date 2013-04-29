@@ -1,3 +1,18 @@
+.fix-width {
+  width: 150px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+}
+
+.list_users {
+  margin-top: 15px;
+}
+
+.album-art {
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
 #map-canvas {
   margin-right: 200px;
 }
@@ -218,4 +233,8 @@ body {
 
 .center-text{
   text-align: center;
+}
+
+#move-right {
+  margin-left: 70px;
 }

@@ -1,13 +1,9 @@
 Coplay Todo List
 -------------------------------------------------
-
-1) Fix glitch where music loops single song.
 2) Fix window resizing issues
 3) More ajax calls
-4) Remove Taylor Swift default -- better default behavior for new users
 5) Fix about page
-6) Add songs/albums if possible
-7) General UI improvements
+6) General UI improvements
 8) Persistent sessions
 9) Social aspect -- sharing
 10) Gmail contacts?
@@ -55,3 +51,9 @@ Democratic approach to music
 Minimal maintenance
 Diversify your music interests
 
+Immediate Needs
+----------------------------------------------
+Album Art
+List of Users
+Switch between album art and d3 view
+Logout working again?

@@ -10,7 +10,7 @@ exports.getNextSong = function(req,res) {
         var echonestPlaylistCallback = function(playlist) {
             callback(playlist)
         }
-        
+
         //echo.getPlaylistFromMix(req.session.mix,echonestCallback);
         //echo.getPlaylistFromMix("5132d5b6e85596b332000005",echonestPlaylistCallback);
         var userFindCallback = function(err,doc){
@@ -33,9 +33,10 @@ exports.getNextSong = function(req,res) {
                         header:{wsKey:process.env.GSHARK_KEY,sessionID:"67309bd2c4ad33a96274131c4165cf8a"}}
 
         var groovesharkSongQueryCallback = function(queryResult) {
-            console.log(JSON.stringify(queryResult));
+            console.log("Song: ", JSON.stringify(queryResult));
             if(queryResult.result.songs.length > 0) {
                 var songID = queryResult.result.songs[0].SongID;
+                var albumArt = queryResult.result.songs[0].CoverArtFilename;
                 var streamQuery= {method: "getStreamKeyStreamServer",
                         parameters:{songID:songID,
                                     country:{ID:223,CC1:0,CC2:0,CC3:0,CC4:1073741824,DMA:506,IPR:0}},
@@ -44,6 +45,7 @@ exports.getNextSong = function(req,res) {
                 gs.make_request(streamQuery, function (result) {
                     result.result.songName = queryResult.result.songs[0].SongName;
                     result.result.artistName = queryResult.result.songs[0].ArtistName;
+                    result.result.albumArt = queryResult.result.songs[0].CoverArtFilename;
                     groovesharkStreamQueryCallback(result);
                 });
             }
@@ -53,7 +55,7 @@ exports.getNextSong = function(req,res) {
             res.send(queryResult.result);
         }
 
-        gs.make_request(songQuery,groovesharkSongQueryCallback);
+        gs.make_request(songQuery, groovesharkSongQueryCallback);
     }
 
     if (!req.session.playlist || req.session.playlist.length <= 0) {

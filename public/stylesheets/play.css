@@ -3,3 +3,30 @@
   margin-left: 10%;
   margin-right: auto;
 }
+#vote {
+  cursor: pointer;
+  width: 65px;
+}
+
+.adjust-margin {
+ /* margin-right: -10px;
+*/}
+
+#next {
+  cursor: pointer;
+  width: 45px;
+}
+
+#playpause {
+  cursor: pointer;
+  width: 45px;
+}
+
+.album-art {
+  width: 300px;
+  height: 300px;
+}
+
+.push-down {
+  margin-top: 40px;
+}

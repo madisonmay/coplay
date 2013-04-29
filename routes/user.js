@@ -137,7 +137,8 @@ exports.station_view = function(req, res){
                     console.log("Station users: ", station.users)
                     for (var k=0; k < station.users.length; k++) {
                         console.log(station.users[k])
-                        users.push({'name': station.users[k].username, 'id': station.users[k]._id})
+                        users.push({'name': station.users[k].username, 'id': station.users[k]._id,
+                                    'fb_id': station.users[k].fb_id})
                     }
                     topics.push([]);
                     weights.push([]);
@@ -159,8 +160,9 @@ exports.station_view = function(req, res){
                         weights[i][j] *= 100.0/totalWeight;
                     };
 
+                    console.log(req.session.user);
                     console.log('Users: -->', users)
-                    res.render('station', {'title': 'Coplay', 'user': db_user, 'logged_in': true, 'friends': JSON.stringify({users: users, artist_names:topics, user_counts:weights})});
+                    res.render('station', {'title': 'Coplay', 'user': db_user, 'fb_id': req.session.user, 'logged_in': true, 'friends': JSON.stringify({users: users, artist_names:topics, user_counts:weights})});
                 }
 
                 populateStation(db_station);

@@ -20,7 +20,3 @@
 #line1{
   margin-bottom: 56px;
 }
-//Disables the text area resizing in Chrome but why would you do that
-// textarea{
-  // resize: none
-// }

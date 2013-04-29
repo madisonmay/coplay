@@ -13,9 +13,18 @@ var playNewSong = function (song) {
   window.player.playStreamKey(song.StreamKey,serverName,song.StreamServerID);
   window.player.setVolume(99);
   isPlaying = true;
-  $("#songName").text("Track: "+song.songName);
-  $("#artistName").text("Artist: "+song.artistName);
-  $("#playpause").attr('src','images/pause.png')
+  $("#songName").text(song.songName + ' by ' + song.artistName);
+  $("#album-art").html("");
+  // $("#album-art").html("<img src='http://beta.grooveshark.com/static/albums/500_album.png" +
+  //                       "' class='album-art'></img>");
+  if (song.albumArt) {
+    $("#album-art").append("<img src='http://beta.grooveshark.com/static/amazonart/l" +
+                            song.albumArt + "' class='album-art'></img>")
+  } else {
+    $("#album-art").html("<img src='http://beta.grooveshark.com/static/albums/500_album.png" +
+                         "' class='album-art'></img>");
+  }
+  $("#playpause").attr('src','/images/pause.png')
 }
 
 var pause_resume = function () {

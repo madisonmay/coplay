@@ -2,6 +2,9 @@
 
 extends layout
 
+block scripts
+    link(href="/stylesheets/play.css", rel="stylesheet")
+
 block d3
     script(type='text/javascript', src="http://d3js.org/d3.v3.min.js")
     script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
@@ -49,12 +52,25 @@ block content
                 | Social Listening
             input(type="button", class="btn btn-success playMix", id="Add", value="♬")
 
+        div.wrapper.pull-left
+            include play_partial
+            div.center-text#move-right
+                include newsearch
+
         div.wrapper_right
-            include newsearch
+            div.list_users
 
     script
 
         var user_list = !{friends};
+        var user_id = '#{fb_id}'
+        var users = user_list.users
+        for (var i=0; i<users.length; i++) {
+            if (users[i].fb_id != user_id) {
+                $('.list_users').append("<img src='https://graph.facebook.com/" + users[i].fb_id + "/picture?type=large' class='fix-width'>")
+                $('.list_users').append("<div>" + users[i].name + "</div>")
+            }
+        }
 
     div.name
     script(src="/javascripts/station.js")
