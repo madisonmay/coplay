@@ -10,6 +10,7 @@
 
 .album-art {
   border-radius: 20px;
+  border: 5px black solid;
   margin-bottom: 10px;
 }
 

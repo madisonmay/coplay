@@ -89,7 +89,7 @@ function maingraph(input_counts, names) {
         })
         .on("mouseout", function(){
             d3.select(this).style("fill", function() { return d3.select(this).attr("base_color"); });
-            $(".description").html("Social Listening");
+            $(".description").html("Social Music");
         });
 
 }
