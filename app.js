@@ -26,9 +26,9 @@ app.configure(function(){
   app.use(express.favicon());
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
-  app.use(express.methodOverride());
   app.use(express.cookieParser(process.env.COOKIE_SECRET));
   app.use(express.session());
+  app.use(express.methodOverride());
   app.use(Facebook.middleware({appId: process.env.FB_APPID, secret: process.env.FB_SECRET}));
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
@@ -48,9 +48,8 @@ app.get('/settings', Facebook.loginRequired(scope), user.login, user.settings);
 app.get('/about', user.about);
 app.get('/play',Facebook.loginRequired(scope), user.login, user.play);
 app.get('/locate', Facebook.loginRequired(scope), user.login, user.locate);
-app.get('/newsearch', Facebook.loginRequired(scope), user.newsearch);
+app.get('/newsearch', Facebook.loginRequired(scope), user.login, user.newsearch);
 app.get('/getNextSong', audio.getNextSong);
-app.get('/station/:station_id', user.station_view);
 app.post('/editArtist', user.editArtist)
 app.post('/addFriend', user.addFriend);
 app.post('/removeArtist', user.removeArtist)
@@ -58,9 +57,9 @@ app.post('/addArtist', user.addArtist);
 app.post('/mixUpdate', user.mixUpdate);
 app.post('/removeFriend', user.removeFriend);
 app.post('/autocomplete', audio.autocomplete);
-app.post('/station', Facebook.loginRequired(scope), user.station);
+app.post('/station', user.station);
 app.post('/getLocation', user.getLocation);
-app.get('/station/:station_id', Facebook.loginRequired(scope), user.station_view);
+app.get('/station/:station_id', Facebook.loginRequired(scope), user.login, user.station_view);
 app.post('/station/:station_id/addArtist', user.addNewArtist);
 app.post('/station/:station_id/addTrack', user.addNewTrack);
 app.post('/station/:station_id/edit', user.editSongWeight);

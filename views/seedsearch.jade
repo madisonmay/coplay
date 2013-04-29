@@ -1,0 +1,92 @@
+link(type='text/css', rel='stylesheet', href='/stylesheets/style.css')
+style(type='text/css')
+  a:hover{
+    cursor: hand;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+script(type='text/javascript')
+  var ready = 0;
+  $(document).ready(function() {
+    if (ready == 0) {
+      ready = 1;
+      $('#search').click(function (){
+        var query = $("#searchbox").val();
+        $.post('/autocomplete', {query: query}, function (data) {
+            console.log(data);
+            var table = document.getElementById("results");
+            for(var i = table.rows.length; i > 0;i--){
+              table.deleteRow(i -1);
+            }
+            for (var i=0;i<data.length;i++) {
+              if(data[i].type == "artist") {
+                var trow = document.createElement("tr");
+                var tdata = document.createElement("td");
+                var tlink = document.createElement("a");
+                tlink.className = "musiclink"
+                var ttext = document.createTextNode(data[i].artist);
+                tlink.appendChild(ttext);
+                tlink.setAttribute("artist",data[i].artist);
+                tlink.setAttribute("type","artist");
+                tdata.appendChild(tlink);
+                trow.appendChild(tdata);
+                table.appendChild(trow);
+              }
+              if(data[i].type == "track") {
+                var trow = document.createElement("tr");
+                var tdata = document.createElement("td");
+                var tlink = document.createElement("a");
+                tlink.className = "musiclink"
+                var ttext = document.createTextNode(data[i].name + " - " + data[i].artist);
+                tlink.appendChild(ttext);
+                tlink.setAttribute("artist",data[i].artist);
+                tlink.setAttribute("track",data[i].name);
+                tlink.setAttribute("type","track");
+                tdata.appendChild(tlink);
+                trow.appendChild(tdata);
+                table.appendChild(trow);
+              }
+            }
+         });
+      });
+
+      $(document).on('click','.musiclink',function () {
+        var artist = $(this).attr("artist");
+        
+        var station_created = function(data) {
+          console.log('Called back')
+          console.log(data)
+          window.location = data;
+        };
+
+        console.log("Station added!");
+
+        var type = $(this).attr("type");
+        var track = $(this).attr("track");
+
+        navigator.geolocation.getCurrentPosition(function(position) {
+          console.log(position.coords);
+          if (type == "artist") {
+            $.post('/station', {'latitude': position.coords.latitude, 'longitude': position.coords.longitude,
+                   'name': $('#station-title').val(), 'seed': {'name': artist}, 'seed_type': 'artist'}, station_created);
+          }
+          else if (type == "track") {
+            $.post('/station', {'latitude': position.coords.latitude, 'longitude': position.coords.longitude,
+                   'name': $('#station-title').val(), 'seed': {'name': track, 'artist': artist}, 'seed_type': 'track'}, station_created);
+            }
+        });
+      });
+    }
+  })
+
+div.button-wrapper.center-text
+  a.btn.btn-success.add-music(href='#search', role='button', data-toggle='modal') Broadcast
+div#search.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='searchLabel', aria-hidden='true')
+  div.modal-header
+    button.close(type='button', data-dismiss='modal', aria-hidden='true') x
+    h3#searchLabel Search for Artists and Tracks to Add
+  div.modal-body
+    input#searchbox.span4(type='text')
+    button.btn.btn-success#search-btn(class='btn.btn-success',type='submit') Search
+    table#results
