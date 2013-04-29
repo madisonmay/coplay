@@ -52,6 +52,7 @@ script(type='text/javascript')
       });
 
       $(document).on('click','.musiclink',function () {
+        $('.close').trigger('click');
         var artist = $(this).attr("artist");
         if ($(this).attr("type") == "track") {
           var track = $(this).attr("track")
