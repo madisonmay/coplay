@@ -16,30 +16,6 @@ block d3
                 $.post('/getLocation', {'latitude': position.coords.latitude, 'longitude': position.coords.longitude})
               })
             }
-
-            var new_friends = [];
-            $('.friend').click(function() {
-                $(this).remove();
-                new_friends.push($(this).attr("username"));
-                console.log(new_friends);
-                console.log("Removed");
-            });
-
-            $('.saveMix').click( function() {
-                $.post('/mixUpdate', {new_friends: new_friends}, function(err, data){
-                    if (err) {
-                        console.log(err);
-                    }
-                })
-                //temporary solution
-                setTimeout(function() {
-                  location.reload(true);
-                }, 500);
-            })
-
-            $('.playMix').click( function() {
-                window.location = '/play';
-            })
         });
 
 block content
@@ -77,4 +53,4 @@ block content
         }
 
     div.name
-    script(src="/javascripts/station.js")
+    include d3_wheel
