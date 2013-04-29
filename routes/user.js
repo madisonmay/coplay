@@ -231,7 +231,7 @@ exports.station_view = function(req, res){
                 db_user.recent.push(db_station);
                 db_user.save();
 
-                var populateStation = function (station) {
+                var populateStation = function (db_user, station) {
                     console.log("Station users: ", station.users)
                     for (var k=0; k < station.users.length; k++) {
                         console.log(station.users[k])
@@ -262,9 +262,9 @@ exports.station_view = function(req, res){
                     //    console.log(err);
                     //  });
                     console.log('Users: -->', users)
-                    
+
                     var host = db_user._id.equals(db_station.host);
-                    res.render('station', {'title': 'Coplay', 'user': db_user, 
+                    res.render('station', {'title': 'Coplay', 'user': db_user,
                                         'fb_id': req.session.user, 'logged_in': true, 'host': host,
                                         'friends': JSON.stringify({users: users, artist_names:topics, user_counts:weights})});
                 }
@@ -279,13 +279,17 @@ exports.station_view = function(req, res){
 
 exports.landing_page = function(req, res){
     //Main page for mixing and welcome page
-    User.findOne({fb_id : req.session.user}).populate('recent').exec(function(err, db_user) {
+    User.findOne({fb_id : req.session.user}).populate('stations').exec(function(err, db_user) {
 
         if (db_user) {
             index = db_user.recent.length-1
-            station = db_user.recent[index]
-            console.log(station._id);
-            res.redirect('/station/' + station._id);
+            if (index != 0) {
+                station = db_user.recent[index]
+                console.log(station._id);
+                res.redirect('/station/' + station._id);
+            } else {
+                res.redirect('/locate')
+            }
             // console.log(db_user.mix)
             // console.log(db_user.friend_list);
             // var users = [];
