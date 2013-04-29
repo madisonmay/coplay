@@ -13,6 +13,39 @@ Array.prototype.contains = function(obj) {
     return false;
 }
 
+exports.editSongWeight = function(req, res) {
+    console.log('Edit weight');
+    Station.findOne({_id: req.params.station_id}, function(err, db_station) {
+        var up = req.body.up;
+        console.log(req.body);
+        var edited = false;
+        if (db_station) {
+            for (var i=0; i<db_station.songs.length; i++) {
+                if (db_station.songs[i].artist == req.body.artist) {
+                    if (db_station.songs[i].name == req.body.name) {
+                        if (up) {db_station.songs[i].weight *= 1.15;}
+                        else {db_station.songs[i].weight /= 1.15;}
+                        edited = true;
+                        break;
+                    }
+                }
+            }
+            if (!edited) {
+                if (up == 'true') {
+                    console.log('Upvote')
+                    db_station.songs.push({'name': req.body.name, 'artist': req.body.artist, 'weight': .5})
+                } else {
+                    console.log('Downvote')
+                    db_station.songs.push({'name': req.body.name, 'artist': req.body.artist, 'weight': -0.5})
+                }
+            }
+            db_station.save()
+        } else {
+            console.log("Station not found: ", req.params.station_id)
+        }
+    });
+}
+
 //Still need to handle case where object with same values already exists
 exports.addNewArtist = function(req, res) {
     console.log('Add new artist');

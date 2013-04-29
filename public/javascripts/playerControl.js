@@ -14,6 +14,7 @@ var playNewSong = function (song) {
   window.player.setVolume(99);
   isPlaying = true;
   $("#songName").text(song.songName + ' by ' + song.artistName);
+  $("#songName").attr({'name': song.songName, 'artist': song.artistName});
   $("#album-art").html("");
   // $("#album-art").html("<img src='http://beta.grooveshark.com/static/albums/500_album.png" +
   //                       "' class='album-art'></img>");
@@ -31,11 +32,11 @@ var pause_resume = function () {
   if(isPlaying) {
     window.player.pauseStream();
     isPlaying = false;
-    $("#playpause").attr('src','images/play.png')
+    $("#playpause").attr('src','/images/play.png')
   } else {
     window.player.resumeStream();
     isPlaying = true;
-    $("#playpause").attr('src','images/pause.png')
+    $("#playpause").attr('src','/images/pause.png')
   }
 }
 
@@ -51,8 +52,30 @@ var errorCallback = function (error) {
   getNewSong();
 }
 
+var upvote = function() {
+  console.log("Upvote");
+  name = $('#songName').attr('name');
+  artist = $('#songName').attr('artist');
+  base_url = window.location.pathname;
+  $.post(base_url + '/edit', {'name': name, 'artist': artist, 'up': true}, vote_response)
+}
+
+var downvote = function() {
+  console.log("Downvote");
+  name = $('#songName').attr('name');
+  artist = $('#songName').attr('artist');
+  base_rul = window.location.pathname;
+  $.post(base_url + '/edit', {'name': name, 'artist': artist, 'up': false}, vote_response)
+}
+
+var vote_response = function(data) {
+  console.log(data);
+}
+
 $(function () {
   getNewSong();
   $('#next').on('click',getNewSong);
   $('#playpause').on('click',pause_resume);
+  $('.upvote').on('click', upvote);
+  $('.downvote').on('click', downvote);
 });

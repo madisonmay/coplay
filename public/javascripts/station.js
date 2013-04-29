@@ -31,10 +31,14 @@ function maingraph(input_counts, names) {
 
     //Combine counts and names into dictionary
     for (i in counts) {
-        if (artist_names[i] in map) {
-            map[artist_names[i]] += parseInt(counts[i]);
-        } else {
-            map[artist_names[i]] = parseInt(counts[i]);
+
+        //Leave out negative values
+        if (counts[i] > 0) {
+            if (artist_names[i] in map) {
+                map[artist_names[i]] += parseInt(counts[i]);
+            } else {
+                map[artist_names[i]] = parseInt(counts[i]);
+            }
         }
     }
 
@@ -89,7 +93,6 @@ function maingraph(input_counts, names) {
         });
 
 }
-
 counts = user_list.user_counts;
 artists = user_list.artist_names;
 maingraph(counts, artists);
