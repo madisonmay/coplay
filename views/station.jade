@@ -50,10 +50,12 @@ block content
             div.chart_body
             div.description
                 | Social Listening
-            input(type="button", class="btn btn-success playMix", id="Add", value="♬")
 
         div.wrapper.pull-left
-            include play_partial
+            if host == true
+                include play_partial
+            else
+                include play_partial_user
             div.center-text#move-right
                 include newsearch
 
