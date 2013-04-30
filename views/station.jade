@@ -45,10 +45,12 @@ block content
         var users = user_list.users
         for (var i=0; i<users.length; i++) {
             if (users[i].fb_id != user_id) {
-                $('.list_users').append("<img src='https://graph.facebook.com/" +
-                    users[i].fb_id + "/picture?width=300&height=300' class='fix-width station-fix-width'>")
-                $('.list_users').append("<a href='/friend/" + users[i].fb_id + "'><div style='margin-bottom:15px;'>"
-                                        + users[i].name + "</div></a>")
+                if (users[i].fb_id) {
+                    $('.list_users').append("<img src='https://graph.facebook.com/" +
+                        users[i].fb_id + "/picture?width=300&height=300' class='fix-width station-fix-width'>")
+                    $('.list_users').append("<a href='/friend/" + users[i].fb_id + "'><div style='margin-bottom:15px;'>"
+                                            + users[i].name + "</div></a>")
+                }
             }
         }
 

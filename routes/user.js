@@ -216,7 +216,7 @@ exports.station_view = function(req, res){
             res.send('An error occurred')
         } else {
             req.session.station = req.params.station_id;
-            User.findOne({fb_id: req.session.user}, function(err, db_user) {
+            User.findOne({fb_id: req.session.user}).populate('stations').exec(function(err, db_user) {
 
                 var users = [];
                 var topics = [];
@@ -226,6 +226,10 @@ exports.station_view = function(req, res){
                     console.log('Station user: ', db_user);
                     db_station.users.push(db_user);
                     db_station.save();
+                    db_user.stations.push(db_station);
+                }
+
+                if (!(db_user.stations.contains(db_station))) {
                     db_user.stations.push(db_station);
                 }
 
@@ -283,8 +287,8 @@ exports.landing_page = function(req, res){
     User.findOne({fb_id : req.session.user}).populate('stations').exec(function(err, db_user) {
 
         if (db_user) {
-            index = db_user.stations.length-1
-            console.log(index)
+            var index = db_user.stations.length-1
+            console.log("Index: \n\n\n\n\n\n\n", index)
             if (index > 0) {
                 station = db_user.stations[index]
                 console.log(station._id);
