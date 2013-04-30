@@ -1,5 +1,5 @@
 $(function() {
-    var socket = io.connect('http://localhost:5000');
+    var socket = io.connect('coplay.herokuapp.com');
     socket.emit('addToStation',$('#stationID').attr('stationID'));
     socket.on('update', function (data) {
         $("#songName").text(data.title + ' by ' + data.artist);
