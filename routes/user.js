@@ -351,7 +351,7 @@ exports.landing_page = function(req, res){
             // }
 
         } else {
-            res.redirect('/locate')
+            res.render('landing', {'title': 'Coplay'})
         }
     });
 };
@@ -454,7 +454,8 @@ exports.login = function(req, res, next){
 exports.logout = function(req, res){
 
     req.session.destroy();
-    res.redirect('/');
+    res.user = null;
+    res.render('landing', {'title': 'Coplay'});
 };
 
 exports.refresh = function(req, res){
