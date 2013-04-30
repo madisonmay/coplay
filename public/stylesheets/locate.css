@@ -6,6 +6,11 @@ a:hover {
   text-decoration: None;
 }
 
+.mright {
+  margin-right: 15px;
+  margin-top: 2px;
+}
+
 .mleft {
   margin-left: 15px;
   margin-top: 2px;
@@ -85,6 +90,10 @@ a:hover {
 
 .station-name {
   margin-left: -40px;
+}
+
+.pull-name-right {
+  margin-right: -40px;
 }
 
 .even_smaller {

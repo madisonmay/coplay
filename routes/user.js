@@ -30,6 +30,17 @@ Array.prototype.containsObject = function(obj) {
     return false;
 }
 
+exports.deleteStation = function(req, res) {
+    Station.remove({_id: req.params.station_id}, function(err, db_station) {
+        if (err) {
+            console.log(err);
+            res.redirect('/locate');
+        } else {
+            res.redirect('/locate');
+        }
+    });
+}
+
 exports.friend_page = function(req, res) {
     User.findOne({fb_id : req.params.friend_id}).populate('stations').exec(function(err, db_user) {
         if (db_user) {
@@ -187,7 +198,7 @@ exports.station = function(req, res) {
 }
 
 exports.locate = function(req, res){
-    Station.find({}).populate('users').exec(function(err, db_stations) {
+    Station.find({}).populate('users').populate('host').exec(function(err, db_stations) {
         if (err) {
             console.log(err)
         } else {
@@ -204,7 +215,7 @@ exports.locate = function(req, res){
                        return dist(a) - dist(b)
                     })
 
-                    res.render('locate', {'title': 'Stations nearby...', 'stations': db_stations});
+                    res.render('locate', {'title': 'Stations nearby...', 'stations': db_stations, 'db_user': db_user});
                 } else {
                     res.redirect('/');
                 }

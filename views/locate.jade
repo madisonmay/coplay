@@ -15,8 +15,11 @@ html
 
     script(type="text/javascript")
       $(document).ready(function() {
-        var stations = !{JSON.stringify(stations)};
-        initialize(stations);
+        if ((window.count) != 1) {
+          var stations = !{JSON.stringify(stations)};
+          initialize(stations);
+        }
+        window.count = 1;
       });
     script(type='text/javascript',src='javascripts/locate.js')
 
@@ -37,10 +40,17 @@ html
 
         each station in stations
           hr.smaller
-          div.station
+          div.station(class='#{station._id}')
             a(href='/station/#{station._id}')
               button.btn.btn-success.btn-small.pull-left.mleft(id='#{station._id}') ►
             | <b class='station-name'> #{station.name} </b>
+            script
+              if ('#{station.host._id}'.toString() === '#{db_user._id}'.toString()) {
+                console.log('#{station.host._id}'.toString())
+                console.log('#{db_user._id}'.toString())
+                $('.#{station._id}').append("<a href='/station/#{station._id}/delete'><button class='btn btn-danger btn-small pull-right mright', id='#{station._id}'> - </button></a> ");
+                $('.#{station._id}').children('.station-name').addClass('pull-name-right');
+              }
             div.hide-this.station-info(name='#{station.name}')
               hr.even_smaller
               each user in station.users

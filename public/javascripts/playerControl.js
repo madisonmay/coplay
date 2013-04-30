@@ -52,22 +52,6 @@ var errorCallback = function (error) {
   getNewSong();
 }
 
-var upvote = function() {
-  console.log("Upvote");
-  name = $('#songName').attr('name');
-  artist = $('#songName').attr('artist');
-  base_url = window.location.pathname;
-  $.post(base_url + '/edit', {'name': name, 'artist': artist, 'up': true}, vote_response)
-}
-
-var downvote = function() {
-  console.log("Downvote");
-  name = $('#songName').attr('name');
-  artist = $('#songName').attr('artist');
-  base_url = window.location.pathname;
-  $.post(base_url + '/edit', {'name': name, 'artist': artist, 'up': false}, vote_response)
-}
-
 var vote_response = function(data) {
   console.log(data);
 }
@@ -76,6 +60,4 @@ $(function () {
   getNewSong();
   $('#next').on('click',getNewSong);
   $('#playpause').on('click',pause_resume);
-  $('.upvote').on('click', upvote);
-  $('.downvote').on('click', downvote);
 });
