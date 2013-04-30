@@ -154,13 +154,14 @@ exports.station = function(req, res) {
             }
             console.log(station_data);
             var new_station = Station(station_data);
+            req.session.station = new_station._id;
             new_station.save(function(err) {
                 if(err) {
                     console.log("Error: ", err);
                     res.send('/locate');
                 } else {
                     db_user.stations.push(new_station);
-                    db_user.recent.push(new_staiton);
+                    db_user.recent.push(new_station);
                     db_user.save();
                     console.log("Station saved.");
                     res.send('/station/'+new_station._id);
