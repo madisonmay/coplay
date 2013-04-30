@@ -54,4 +54,5 @@ html
             div.hide-this.station-info(name='#{station.name}')
               hr.even_smaller
               each user in station.users
-                | #{user.username}
+                div
+                  | <a href='/friend/#{user.fb_id}'> #{user.username} </a>
