@@ -22,19 +22,13 @@ var getPlaylistFromMix = function(station,callback){
 exports.generateNewPlaylist = getPlaylistFromMix;
 
 
-exports.getNextSong = function(req,res) {
+exports.getNextSong = function(req,res,io) {
     var getNextSongCallback = function(playlist) {
         console.log(playlist)
         console.log(req.session.playlist)
+
         song = playlist.pop()
         req.session.playlist = playlist
-
-        var setNewSongInDataBase = function(err,doc) {
-            doc.current = {song: song.title, artist: song.artist_name};
-            doc.save();
-        }
-
-        Station.findOne({_id:req.session.station},setNewSongInDataBase);
 
         var songInfo = song.title + " " + song.artist_name;
         var songQuery = {method: "getSongSearchResults",
@@ -57,6 +51,26 @@ exports.getNextSong = function(req,res) {
                     result.result.artistName = queryResult.result.songs[0].ArtistName;
                     result.result.albumArt = queryResult.result.songs[0].CoverArtFilename;
                     groovesharkStreamQueryCallback(result);
+
+                    var setNewSongInDataBase = function(err,doc) {
+                        var artwork = queryResult.result.songs[0].CoverArtFilename;
+                        if (artwork) {
+                            artwork = 'http://beta.grooveshark.com/static/amazonart/l' + artwork;
+                        } else {
+                            artwork = 'http://beta.grooveshark.com/static/albums/500_album.png';
+                        }
+                        doc.current = {song: queryResult.result.songs[0].SongName, 
+                            artist: queryResult.result.songs[0].ArtistName, 
+                            artwork:artwork};
+                        doc.save();
+                    }
+
+                    Station.findOne({_id:req.session.station},setNewSongInDataBase);
+
+                    io.sockets.in(req.session.station).emit('update',{
+                                        title:queryResult.result.songs[0].SongName,
+                                        artist:queryResult.result.songs[0].ArtistName,
+                                        artwork:queryResult.result.songs[0].CoverArtFilename});
                 });
             } else {
                 if (playlist.length <= 0) {

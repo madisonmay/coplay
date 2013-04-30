@@ -13,11 +13,11 @@ var express = require('express')
   , audio = require('./routes/audio')
   , echoWrapper = require('./echonest')
   , gs = require('./grooveshark');
-  //, MongoWatch = require('mongo-watch');
 
 var app = express();
 mongoose.connect((process.env.MONGOLAB_URI||'mongodb://localhost/coplay'));
 var models = require('./models/models');
+var Station = models.Station;
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -38,6 +38,12 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+server = http.createServer(app).listen(app.get('port'), function(){
+  console.log("Express server listening on port " + app.get('port'));
+});
+
+var io = require('socket.io').listen(server);
+
 var scope = {scope: ['']};
 
 app.get('/', Facebook.loginRequired(scope), user.login, user.landing_page);
@@ -49,7 +55,7 @@ app.get('/about', user.about);
 app.get('/play', Facebook.loginRequired(scope), user.login, user.play);
 app.get('/locate', Facebook.loginRequired(scope), user.login, user.locate);
 app.get('/newsearch', Facebook.loginRequired(scope), user.login, user.newsearch);
-app.get('/getNextSong', audio.getNextSong);
+app.get('/getNextSong', function(res,req) {audio.getNextSong(res,req,io)});
 app.get('/getPlaylist', audio.generateNewPlaylist);
 app.get('/station/:station_id', Facebook.loginRequired(scope), user.login, user.station_view);
 app.post('/editArtist', user.editArtist)
@@ -69,17 +75,14 @@ app.post('/station/:station_id/edit', user.editSongWeight);
 app.get('/friends', Facebook.loginRequired(scope), user.login, user.friends)
 app.get('/friend/:friend_id', Facebook.loginRequired(scope), user.login, user.friend_page)
 
-server = http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
-});
+app.get('/testing',function(req,res){res.render('userStation',{title:'testing'})})
 
-/*var io = require('socket.io').listen(server);
 io.sockets.on('connection', function (socket) {
-  // set up socket
-  console.log('beep');
-  var watcher = MongoWatch({format: 'pretty',onDebug: console.log});
-  console.log(watcher);
-  //watcher.watch('coplay.stations', console.log);
-});*/
+  // put the socket into the station's room
+  socket.on('addToStation', function (stationID) {
+    socket.set('stationID',stationID);
+    socket.join(stationID);
+  });
+});
 
 

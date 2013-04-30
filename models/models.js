@@ -26,7 +26,7 @@ var stationSchema = mongoose.Schema({
     location: [Number],
     name: String,
     active: Boolean,
-    current: {song: String, artist: String},
+    current: {song: String, artist: String, artwork: String},
     host: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 })

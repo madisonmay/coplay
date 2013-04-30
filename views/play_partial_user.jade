@@ -1,9 +1,11 @@
 div.text-center#text.push-down
-  p#songName(style='display: inline-block') [loading]
+  p#songName(style='display: inline-block') #{title} by #{artist}
   div#album-art
+    img.album-art(src=artwork)
   div
     div.text-center.inline.quarter
       img.adjust-margin#vote.upvote(src='/images/up.png')
     div.text-center.inline.quarter
       img#vote.downvote(src='/images/down.png')
 
+script(src="/javascripts/userSockets.js")
