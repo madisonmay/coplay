@@ -36,7 +36,22 @@ exports.deleteStation = function(req, res) {
             console.log(err);
             res.redirect('/locate');
         } else {
-            res.redirect('/locate');
+            console.log("DBSTATION: ", db_station)
+            User.findOne({fb_id: req.session.user_id}).populate('stations').exec(function(err, db_user) {
+                if (err) {
+                    console.log("Err: ", err);
+                } else {
+                    for (var i=0; i<db_user.stations.length; i++) {
+                        console.log(db_user.stations[i]);
+                        console.log(db_station._id);
+                        if (db_user.stations[i]._id.toString() === req.params.station_id.toString()){
+                            db_user.stations.splice(i,1);
+                            db_user.save();
+                        }
+                    }
+                }
+                res.redirect('/locate');
+            })
         }
     });
 }
