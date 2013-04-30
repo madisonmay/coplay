@@ -7,7 +7,23 @@ var audio = require('./audio');
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {
-        if (this[i].toString() === obj.toString() || (this[i].equals(obj))) {
+        console.log("Obj: ", obj)
+        console.log("This[i]: ", this[i]);
+        if (this[i].toString() === obj.toString()) {
+            console.log("Match found!")
+            return true;
+        }
+    }
+    return false;
+}
+
+Array.prototype.containsObject = function(obj) {
+    var i = this.length;
+    while (i--) {
+        console.log("Obj: ", obj._id)
+        console.log("This[i]: ", this[i]._id);
+        if (this[i]._id.toString() === obj._id.toString()) {
+            console.log("Match found!")
             return true;
         }
     }
@@ -224,15 +240,12 @@ exports.station_view = function(req, res){
                 var topics = [];
                 var weights = [];
 
-                if (!(db_station.users.contains(db_user))) {
+                if (!(db_station.users.containsObject(db_user))) {
                     console.log('Station user: ', db_user);
                     db_station.users.push(db_user);
                     db_station.save();
                     db_user.stations.push(db_station);
-                }
-
-                if (!(db_user.stations.contains(db_station))) {
-                    db_user.stations.push(db_station);
+                    db_user.save();
                 }
 
                 db_user.recent.push(db_station);
