@@ -77,6 +77,11 @@ app.get('/friend/:friend_id', Facebook.loginRequired(scope), user.login, user.fr
 
 app.get('/testing',function(req,res){res.render('userStation',{title:'testing'})})
 
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
+
 io.sockets.on('connection', function (socket) {
   // put the socket into the station's room
   socket.on('addToStation', function (stationID) {
