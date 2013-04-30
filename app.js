@@ -50,7 +50,7 @@ app.get('/play', Facebook.loginRequired(scope), user.login, user.play);
 app.get('/locate', Facebook.loginRequired(scope), user.login, user.locate);
 app.get('/newsearch', Facebook.loginRequired(scope), user.login, user.newsearch);
 app.get('/getNextSong', audio.getNextSong);
-app.get('/getPlaylist', audio.getPlaylistFromMix);
+app.get('/getPlaylist', audio.generateNewPlaylist);
 app.get('/station/:station_id', Facebook.loginRequired(scope), user.login, user.station_view);
 app.post('/editArtist', user.editArtist)
 app.post('/addFriend', user.addFriend);
