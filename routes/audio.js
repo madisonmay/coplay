@@ -58,6 +58,12 @@ exports.getNextSong = function(req,res) {
                     result.result.albumArt = queryResult.result.songs[0].CoverArtFilename;
                     groovesharkStreamQueryCallback(result);
                 });
+            } else {
+                if (playlist.length <= 0) {
+                    playlist = getPlaylistFromMix(req.session.station,getNextSongCallback);
+                } else {
+                    getNextSongCallback(playlist);
+                }
             }
         }
 
