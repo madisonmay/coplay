@@ -5,6 +5,10 @@
   margin-right: 20px;
 }
 
+.YAWrapper{
+  min-width: 800px;
+}
+
 .station-fix-width {
   margin-right: 0px;
 }
@@ -62,9 +66,11 @@ body {
   text-align: center;
   overflow: hidden;
   margin: 2em auto;
-  margin-top: 7px;
+  margin-top: 2px;
   width: 480px;
-  position: relative; }
+  position: relative;
+  min-width: 480px;
+}
   .nav a {
     display: block;
     position: relative;
@@ -148,7 +154,7 @@ body {
   height: 600px;
   width: 400px;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 
 .description_right {
