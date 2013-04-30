@@ -89,10 +89,12 @@ function maingraph(input_counts, names) {
         })
         .on("mouseout", function(){
             d3.select(this).style("fill", function() { return d3.select(this).attr("base_color"); });
-            $(".description").html("Social Music");
+            $(".description").html(currentText);
         });
 
 }
+
+window.currentText = $(".description").text();
 counts = user_list.user_counts;
 artists = user_list.artist_names;
 maingraph(counts, artists);
