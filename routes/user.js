@@ -7,7 +7,7 @@ var audio = require('./audio');
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {
-        if (this[i].toString() === obj.toString()) {
+        if (this[i].toString() === obj.toString() || (this[i].equals(obj))) {
             return true;
         }
     }
@@ -145,7 +145,7 @@ exports.station = function(req, res) {
 
     User.findOne({fb_id : req.session.user}).exec(function(err, db_user) {
         if (db_user) {
-            var station_data = {name: req.body.name, location: [latitude, longitude], active: true, host: db_user, users: [db_user], artists: [], songs: []};
+            var station_data = {name: req.body.name, location: [latitude, longitude], active: true, host: db_user._id, users: [db_user], artists: [], songs: []};
             console.log(req.body)
             if (req.body.seed_type === 'artist') {
                 station_data.artists = [{name:req.body.seed.name, weight:1.0}];
@@ -216,8 +216,10 @@ exports.station_view = function(req, res){
             res.send('An error occurred')
         } else {
             req.session.station = req.params.station_id;
-            User.findOne({fb_id: req.session.user_id}).populate('stations').exec(function(err, db_user) {
-
+            req.session.save(console.log);
+            req.session.reload(console.log);
+            console.log(req.session);
+            User.findOne({fb_id: req.session.user}).populate('stations').exec(function(err, db_user) {
                 var users = [];
                 var topics = [];
                 var weights = [];
@@ -410,6 +412,8 @@ function get_friends(fb_id, thisID, req, res, callback){
 exports.login = function(req, res, next){
     //Handles facebook authentication
     console.log("Logged in")
+    console.log()
+    console.log()
     req.facebook.api('/me', function(err, user) {
         User.findOne({fb_id : user.id}).exec(function(err, db_user) {
 
