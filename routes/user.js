@@ -283,7 +283,7 @@ exports.station_view = function(req, res){
                     console.log('Users: -->', users)
 
                     var host = db_user._id.equals(db_station.host);
-                    res.render('station', {'title': 'Coplay', 'user': db_user,
+                    res.render('station', {'title': 'Coplay', 'user': db_user, 'station': db_station.name,
                                         'fb_id': req.session.user, 'logged_in': true, 'host': host,
                                         'friends': JSON.stringify({users: users, artist_names:topics, user_counts:weights})});
                 }
