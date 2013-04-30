@@ -7,7 +7,7 @@ var audio = require('./audio');
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {
-        if (this[i].toString() === obj.toString() || (this[i].equals(obj))) {
+        if (this[i].toString() === obj.toString()) {
             return true;
         }
     }
@@ -17,7 +17,6 @@ Array.prototype.contains = function(obj) {
 exports.friend_page = function(req, res) {
     User.findOne({fb_id : req.params.friend_id}).populate('stations').exec(function(err, db_user) {
         if (db_user) {
-           console.log(db_user);
            var title = db_user.username + "'s Stations"
            res.render('friend_page', {'username': db_user.username, 'recent_stations': db_user.stations, 'title': title});
         } else {
@@ -55,7 +54,6 @@ exports.editSongWeight = function(req, res) {
     console.log('Edit weight');
     Station.findOne({_id: req.params.station_id}, function(err, db_station) {
         var up = req.body.up;
-        console.log(req.body);
         var edited = false;
         if (db_station) {
             for (var i=0; i<db_station.songs.length; i++) {
@@ -146,13 +144,11 @@ exports.station = function(req, res) {
     User.findOne({fb_id : req.session.user}).exec(function(err, db_user) {
         if (db_user) {
             var station_data = {name: req.body.name, location: [latitude, longitude], active: true, host: db_user._id, users: [db_user], artists: [], songs: []};
-            console.log(req.body)
             if (req.body.seed_type === 'artist') {
                 station_data.artists = [{name:req.body.seed.name, weight:1.0}];
             } else {
                 station_data.songs = [{name:req.body.seed.name, artist:req.body.seed.artist,weight:1.0}];
             }
-            console.log(station_data);
             var new_station = Station(station_data);
             req.session.station = new_station._id;
             new_station.save(function(err) {
@@ -211,6 +207,7 @@ exports.station_view = function(req, res){
 
     //Main page for mixing and welcome page
     console.log('id',req.params.station_id)
+    console.log(req.session)
     Station.findOne({ _id: req.params.station_id }).populate('users').exec(function(err, db_station) {
         if (err) {
             res.send('An error occurred')
@@ -218,8 +215,10 @@ exports.station_view = function(req, res){
             req.session.station = req.params.station_id;
             req.session.save(console.log);
             req.session.reload(console.log);
-            console.log(req.session);
             User.findOne({fb_id: req.session.user}).populate('stations').exec(function(err, db_user) {
+                if (err) {
+                    console.log(err);
+                }
                 var users = [];
                 var topics = [];
                 var weights = [];
@@ -412,15 +411,16 @@ function get_friends(fb_id, thisID, req, res, callback){
 exports.login = function(req, res, next){
     //Handles facebook authentication
     console.log("Logged in")
-    console.log()
-    console.log()
     req.facebook.api('/me', function(err, user) {
         User.findOne({fb_id : user.id}).exec(function(err, db_user) {
 
             //User in database
             if (db_user) {
+                console.log(db_user.fb_id, '------------')
                 req.session.user = db_user.fb_id;
                 req.session.uid = db_user._id
+                req.session.save(console.log);
+                req.session.reload(console.log); 
                 get_friends(db_user.fb_id, db_user._id, req, res, function(friend_list){
                     db_user.friend_list = friend_list;
                     db_user.save();
@@ -441,6 +441,8 @@ exports.login = function(req, res, next){
                         new_user.mix = mix;
                         req.session.user = new_user.fb_id;
                         req.session.uid = new_user._id
+                        req.session.save(console.log);
+                        req.session.reload(console.log);
                         new_user.save(function (err) {
                             get_friends(new_user.fb_id, new_user._id, req, res, function(friend_list){
                                 new_user.friend_list = friend_list;
@@ -451,7 +453,6 @@ exports.login = function(req, res, next){
                     });
                 });
             }
-
             //Something else unexpected happens
             else {
                 res.send("Coplay is currently experiencing issues.");
