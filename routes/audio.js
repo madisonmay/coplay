@@ -12,7 +12,6 @@ var getPlaylistFromMix = function(station,callback){
     }
 
     var stationFindCallback = function(err,doc){
-        console.log(station)
         console.log("Result:")
         console.log(doc)
         echo.getPlaylistFromMix({artists: doc.artists, songs: doc.songs},echonestPlaylistCallback);
@@ -70,7 +69,6 @@ exports.getNextSong = function(req,res) {
     }
 
     if (!req.session.playlist || req.session.playlist.length <= 0) {
-        console.log('station',req.session.station)
         playlist = getPlaylistFromMix(req.session.station,getNextSongCallback);
     } else {
         getNextSongCallback(req.session.playlist);
