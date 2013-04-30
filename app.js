@@ -64,8 +64,8 @@ app.get('/station/:station_id', Facebook.loginRequired(scope), user.login, user.
 app.post('/station/:station_id/addArtist', user.addNewArtist);
 app.post('/station/:station_id/addTrack', user.addNewTrack);
 app.post('/station/:station_id/edit', user.editSongWeight);
-app.get('/friends', Facebook.loginRequired(scope), user.friends)
-app.get('/friend/:friend_id', Facebook.loginRequired(scope), user.friend_page)
+app.get('/friends', Facebook.loginRequired(scope), user.login, user.friends)
+app.get('/friend/:friend_id', Facebook.loginRequired(scope), user.login, user.friend_page)
 
 server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
