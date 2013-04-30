@@ -216,7 +216,7 @@ exports.station_view = function(req, res){
             res.send('An error occurred')
         } else {
             req.session.station = req.params.station_id;
-            User.findOne({fb_id: req.session.user}).populate('stations').exec(function(err, db_user) {
+            User.findOne({fb_id: req.session.user_id}).populate('stations').exec(function(err, db_user) {
 
                 var users = [];
                 var topics = [];
