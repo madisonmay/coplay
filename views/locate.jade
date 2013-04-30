@@ -3,20 +3,21 @@ html
   head
     meta(name='viewport', content='initial-scale=1.0, user-scalable=no')
     link(href='http://fonts.googleapis.com/css?family=Unica+One', rel='stylesheet', type='text/css')
+    link(type='text/css',rel='stylesheet',href='stylesheets/locate.css')
 
     // script(src="javascripts/geoplugin.gp", type="text/javascript")
-    link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css", rel="stylesheet")
-    script(src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/js/bootstrap.min.js")
     script(type='text/javascript', src='http://code.jquery.com/jquery.js')
     script(type='text/javascript', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCv3GjNM-TpvB0e5B5Uf_yTJFD4UyVRC7o&sensor=false')
     script(src="/javascripts/infobox.js")
     script(src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js")
+    link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css", rel="stylesheet")
+    script(src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/js/bootstrap.min.js")
+
     script(type="text/javascript")
       $(document).ready(function() {
         var stations = !{JSON.stringify(stations)};
         initialize(stations);
       });
-    link(type='text/css',rel='stylesheet',href='stylesheets/locate.css')
     script(type='text/javascript',src='javascripts/locate.js')
 
 
@@ -30,6 +31,8 @@ html
         hr.smaller
         div#button-wrapper
           input#station-title(type='text', placeholder='Station name...')
+          br
+          div.center
           include seedsearch
 
         each station in stations
@@ -41,6 +44,4 @@ html
             div.hide-this.station-info(name='#{station.name}')
               hr.even_smaller
               each user in station.users
-                a(href='/friend/#{user.fb_id}')
-                  div
-                    | #{user.username}
+                | #{user.username}
