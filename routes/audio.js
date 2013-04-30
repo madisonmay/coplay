@@ -70,6 +70,7 @@ exports.getNextSong = function(req,res) {
     }
 
     if (!req.session.playlist || req.session.playlist.length <= 0) {
+        console.log('station',req.session.station)
         playlist = getPlaylistFromMix(req.session.station,getNextSongCallback);
     } else {
         getNextSongCallback(req.session.playlist);
