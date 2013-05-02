@@ -14,6 +14,7 @@ var playNewSong = function (song) {
   window.player.setVolume(99);
   isPlaying = true;
   $("#songName").text(song.songName + ' by ' + song.artistName);
+  window.document.title = song.songName.toString();
   $("#songName").attr({'name': song.songName, 'artist': song.artistName});
   $("#album-art").html("");
   // $("#album-art").html("<img src='http://beta.grooveshark.com/static/albums/500_album.png" +

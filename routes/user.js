@@ -36,7 +36,6 @@ exports.deleteStation = function(req, res) {
             console.log(err);
             res.redirect('/locate');
         } else {
-            console.log("DBSTATION: ", db_station)
             User.findOne({fb_id: req.session.user_id}).populate('stations').exec(function(err, db_user) {
                 if (err) {
                     console.log("Err: ", err);
@@ -326,13 +325,13 @@ exports.station_view = function(req, res){
 
 exports.landing_page = function(req, res){
     //Main page for mixing and welcome page
-    User.findOne({fb_id : req.session.user}).populate('stations').exec(function(err, db_user) {
+    User.findOne({fb_id : req.session.user}).populate('stations').populate('recent').exec(function(err, db_user) {
 
         if (db_user) {
-            var index = db_user.stations.length-1
+            var index = db_user.recent.length-1
             console.log("Index: \n\n\n\n\n\n\n", index)
             if (index > 0) {
-                station = db_user.stations[index]
+                station = db_user.recent[index]
                 console.log(station._id);
                 res.redirect('/station/' + station._id);
             } else {
