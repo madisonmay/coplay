@@ -9,6 +9,7 @@ style(type='text/css')
 script(type='text/javascript')
   var ready = 0;
   $(document).ready(function() {
+
     if (ready == 0) {
       ready = 1;
       $('#search').click(function (){
@@ -68,11 +69,18 @@ script(type='text/javascript')
           })
         }
       });
+
+      $(document).keypress(function(e){
+        if (e.which == 13){
+          $("#search-btn").click();
+        }
+      });
+
     }
   })
 
 div.button-wrapper.center-text
-  a.btn.btn-success.add-music(href='#search', role='button', data-toggle='modal') Add Music
+  a.btn.btn-success.add-music#station-add(href='#search', role='button', data-toggle='modal') Add Music
 div#search.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='searchLabel', aria-hidden='true')
   div.modal-header
     button.close(type='button', data-dismiss='modal', aria-hidden='true') x

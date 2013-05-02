@@ -20,6 +20,13 @@ html
           initialize(stations);
         }
         window.count = 1;
+
+        $(document).keypress(function(e){
+          if (e.which == 13){
+            $(".add-music").click();
+          }
+        });
+
       });
     script(type='text/javascript',src='javascripts/locate.js')
 
