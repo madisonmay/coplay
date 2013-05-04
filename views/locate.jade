@@ -29,7 +29,13 @@ html
 
       });
     script(type='text/javascript',src='javascripts/locate.js')
-
+    style
+      .logout {
+        position: fixed;
+        right: 20px;
+        bottom: 5px;
+      }
+        
 
   body
     div#map-wrapper
@@ -63,3 +69,8 @@ html
               each user in station.users
                 div
                   | <a href='/friend/#{user.fb_id}'> #{user.username} </a>
+                | #{user.username}
+        div.logout
+          hr.smaller
+          a(href="/logout")
+            | Log Out
