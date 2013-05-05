@@ -65,7 +65,7 @@ block content
   div(id='addBox')
     h3(id='line1') Add an Artist:
     textarea(rows="1", cols="20", id="newArtist", style="margin-top:-80px")
-    input(type="button", class="btn btn-success addArtist", id="Add", value="Submit", style="margin-top:-60px")
+    input(type="button", class="btn btn-info addArtist", id="Add", value="Submit", style="margin-top:-60px")
 
   div(id='settingsBox')
     h3 Artists in your Mix
@@ -78,7 +78,7 @@ block content
             | #{artist.name}
           div(class="slider", style="margin-left:0px;", weight="#{artist.weight}")
 
-    input(type="button", class="btn btn-success save", id="Save", value="Save Mix")
+    input(type="button", class="btn btn-info save", id="Save", value="Save Mix")
 
   script
     $('div.slider').each(function() {

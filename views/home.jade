@@ -47,7 +47,7 @@ block content
             div.chart_body
             div.description
                 | Social Listening
-            input(type="button", class="btn btn-success playMix", id="Add", value="♬")
+            input(type="button", class="btn btn-info playMix", id="Add", value="♬")
 
         div.wrapper_right
             div.user_chart_body
@@ -61,7 +61,7 @@ block content
                 each friend in other_friends
                     p
                         a(href="#", username="#{friend._id}", class="friend") #{friend.first_name}
-                input(type="button", class="btn btn-success saveMix", id="Add", value="Save Mix")
+                input(type="button", class="btn btn-info saveMix", id="Add", value="Save Mix")
 
     script
 

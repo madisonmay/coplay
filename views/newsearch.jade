@@ -80,12 +80,12 @@ script(type='text/javascript')
   })
 
 div.button-wrapper.center-text
-  a.btn.btn-success.add-music#station-add(href='#search', role='button', data-toggle='modal') Add Music
+  a.btn.btn-info.add-music#station-add(href='#search', role='button', data-toggle='modal') Add Music
 div#search.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='searchLabel', aria-hidden='true')
   div.modal-header
     button.close(type='button', data-dismiss='modal', aria-hidden='true') x
     h3#searchLabel Search for Artists and Tracks
   div.modal-body
     input#searchbox.span4(type='text')
-    button.btn.btn-success#search-btn(class='btn.btn-success',type='submit') Search
+    button.btn.btn-info#search-btn(class='btn.btn-info',type='submit') Search
     table#results

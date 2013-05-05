@@ -5,6 +5,9 @@ style(type='text/css')
     cursor: pointer;
     text-decoration: none;
   }
+  .button-wrapper{
+    margin-top: 6px;
+  }
 
 script(type='text/javascript')
   var ready = 0;
@@ -81,12 +84,12 @@ script(type='text/javascript')
   })
 
 div.button-wrapper.center-text
-  a.btn.btn-success.add-music(href='#search', role='button', data-toggle='modal') Broadcast
+  a.btn.btn-info.add-music(href='#search', role='button', data-toggle='modal') Broadcast
 div#search.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='searchLabel', aria-hidden='true')
   div.modal-header
     button.close(type='button', data-dismiss='modal', aria-hidden='true') x
     h3#searchLabel Search for Artists and Tracks to Add
   div.modal-body
     input#searchbox.span4(type='text')
-    button.btn.btn-success#search-btn(class='btn.btn-success',type='submit') Search
+    button.btn.btn-info#search-btn(class='btn.btn-info',type='submit') Search
     table#results

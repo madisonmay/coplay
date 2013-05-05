@@ -32,10 +32,9 @@ html
     style
       .logout {
         position: fixed;
-        right: 20px;
-        bottom: 5px;
+        right: 35px;
+        bottom: 17px;
       }
-        
 
   body
     div#map-wrapper
@@ -55,7 +54,7 @@ html
           hr.smaller
           div.station(class='#{station._id}')
             a(href='/station/#{station._id}')
-              button.btn.btn-success.btn-small.pull-left.mleft(id='#{station._id}') ►
+              button.btn.btn-info.btn-small.pull-left.mleft(id='#{station._id}') ►
             | <b class='station-name'> #{station.name} </b>
             script
               if ('#{station.host._id}'.toString() === '#{db_user._id}'.toString()) {
@@ -71,6 +70,4 @@ html
                   | <a href='/friend/#{user.fb_id}'> #{user.username} </a>
                 | #{user.username}
         div.logout
-          hr.smaller
-          a(href="/logout")
-            | Log Out
+          a.btn.btn-info(href='/logout') Log Out
