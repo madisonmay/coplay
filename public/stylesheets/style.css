@@ -1,3 +1,17 @@
+.error {
+  margin-top: 250px;
+  width: 100%;
+  text-align: center;
+}
+
+.blocked {
+  display: inline-block;
+}
+
+.error-message {
+  margin-top: 25px;
+}
+
 .fix-width {
   width: 100px;
   border-radius: 10px;
@@ -61,7 +75,7 @@ body {
 /* --- for all three examples ----*/
 
 .nav {
-  font-family: "Unica One";
+  font-family: 'Quattrocento Sans', sans-serif;
   font-size: 24px;
   text-align: center;
   overflow: hidden;

@@ -5,7 +5,9 @@
 }
 #vote {
   cursor: pointer;
-  width: 65px;
+  width: 45px;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .adjust-margin {
@@ -15,11 +17,16 @@
 #next {
   cursor: pointer;
   width: 45px;
+  margin-right: 10px;
+  margin-left: 15px;
 }
 
 #playpause {
   cursor: pointer;
   width: 45px;
+  margin-right: 15px;
+  margin-left: 10px;
+  margin-bottom: 15px;
 }
 
 .album-art {

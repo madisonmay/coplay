@@ -2,7 +2,7 @@
 html
   head
     meta(name='viewport', content='initial-scale=1.0, user-scalable=no')
-    link(href='http://fonts.googleapis.com/css?family=Unica+One', rel='stylesheet', type='text/css')
+    link(href='http://fonts.googleapis.com/css?family=Quattrocento+Sans', rel='stylesheet', type='text/css')
     link(type='text/css',rel='stylesheet',href='stylesheets/locate.css')
 
     // script(src="javascripts/geoplugin.gp", type="text/javascript")
@@ -68,6 +68,5 @@ html
               each user in station.users
                 div
                   | <a href='/friend/#{user.fb_id}'> #{user.username} </a>
-                | #{user.username}
         div.logout
           a.btn.btn-info(href='/logout') Log Out

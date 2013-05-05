@@ -30,6 +30,10 @@ Array.prototype.containsObject = function(obj) {
     return false;
 }
 
+exports.error_page = function(req, res) {
+    res.render('404', {'title': 'Something is wrong'})
+}
+
 exports.deleteStation = function(req, res) {
     Station.remove({_id: req.params.station_id}, function(err, db_station) {
         if (err) {
