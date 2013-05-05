@@ -27,6 +27,8 @@ var playNewSong = function (song) {
                          "' class='album-art'></img>");
   }
   $("#playpause").attr('src','/images/pause.png')
+
+  //Reset voting buttons to the default -->
   $('.downvote').attr('src', '/images/down.png')
   $('.upvote').attr('src', '/images/up.png')
 }
