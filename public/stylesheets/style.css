@@ -9,10 +9,7 @@
 }
 
 .error-message {
-  display: inline-block;
-}
-
-.pull-50px {
+  margin-top: 25px;
 }
 
 .fix-width {
@@ -78,7 +75,7 @@ body {
 /* --- for all three examples ----*/
 
 .nav {
-  font-family: "Unica One";
+  font-family: 'Quattrocento Sans', sans-serif;
   font-size: 24px;
   text-align: center;
   overflow: hidden;

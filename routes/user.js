@@ -31,7 +31,7 @@ Array.prototype.containsObject = function(obj) {
 }
 
 exports.error_page = function(req, res) {
-    res.render('500', {'title': 'Something is wrong'})
+    res.render('404', {'title': 'Something is wrong'})
 }
 
 exports.deleteStation = function(req, res) {

@@ -1,6 +1,12 @@
 html { height: 100% }
 
-body { height: 100%; margin: 0; padding: 0; overflow: hidden;}
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Quattrocento Sans', sans-serif;
+  }
 
 a:hover {
   text-decoration: None;
@@ -19,7 +25,6 @@ a:hover {
 #map-canvas {
   height: 100%;
   width: 100%
-  //- margin-right: 300px;
 }
 
 #map-wrapper {
