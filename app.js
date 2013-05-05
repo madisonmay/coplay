@@ -74,12 +74,13 @@ app.get('/station/:station_id/delete', user.deleteStation);
 app.post('/station/:station_id/edit', user.editSongWeight);
 app.get('/friends', Facebook.loginRequired(scope), user.login, user.friends)
 app.get('/friend/:friend_id', Facebook.loginRequired(scope), user.login, user.friend_page)
+app.get('/error', user.error_page)
 
 app.get('/testing',function(req,res){res.render('userStation',{title:'testing'})})
 
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
+io.configure(function () {
+  io.set("transports", ["xhr-polling"]);
+  io.set("polling duration", 10);
 });
 
 io.sockets.on('connection', function (socket) {

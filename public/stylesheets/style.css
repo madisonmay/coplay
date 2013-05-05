@@ -1,3 +1,20 @@
+.error {
+  margin-top: 250px;
+  width: 100%;
+  text-align: center;
+}
+
+.blocked {
+  display: inline-block;
+}
+
+.error-message {
+  display: inline-block;
+}
+
+.pull-50px {
+}
+
 .fix-width {
   width: 100px;
   border-radius: 10px;
