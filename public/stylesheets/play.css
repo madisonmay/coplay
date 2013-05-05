@@ -8,6 +8,7 @@
   width: 45px;
   margin-right: 5px;
   margin-left: 5px;
+  margin-bottom: 10px;
 }
 
 .adjust-margin {
@@ -19,6 +20,7 @@
   width: 45px;
   margin-right: 10px;
   margin-left: 15px;
+  margin-bottom: 10px;
 }
 
 #playpause {
@@ -26,7 +28,7 @@
   width: 45px;
   margin-right: 15px;
   margin-left: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .album-art {
