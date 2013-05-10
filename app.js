@@ -86,6 +86,14 @@ io.sockets.on('connection', function (socket) {
     socket.set('stationID',stationID);
     socket.join(stationID);
   });
+  socket.on('disconnect', function (socket){
+    socket.get('stationID',function (id){
+      // TODO: implement the following
+      /// leave room
+      /// check if this was the host
+      /// if so, delete station and broadcast a redirect to clients
+    })
+  })
 });
 
 
