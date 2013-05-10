@@ -92,6 +92,7 @@ io.sockets.on('connection', function (socket) {
       /// leave room
       /// check if this was the host
       /// if so, delete station and broadcast a redirect to clients
+        //io.sockets.in(id).emit('redirect',{url:'/locate'});
     })
   })
 });
