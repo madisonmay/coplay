@@ -75,9 +75,6 @@ app.get('/friends', Facebook.loginRequired(scope), user.login, user.friends)
 app.get('/friend/:friend_id', Facebook.loginRequired(scope), user.login, user.friend_page)
 app.get('/error', user.error_page)
 
-//Must be last route
-app.get('*', user.error_page)
-
 io.configure(function () {
   io.set("transports", ["xhr-polling"]);
   io.set("polling duration", 10);
