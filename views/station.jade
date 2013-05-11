@@ -9,39 +9,6 @@ block scripts
 block d3
     script(type='text/javascript', src="http://d3js.org/d3.v3.min.js")
     script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
-    script
-        $(document).ready(function() {
-
-            if(navigator.geolocation) {
-              navigator.geolocation.getCurrentPosition(function(position) {
-                $.post('/getLocation', {'latitude': position.coords.latitude, 'longitude': position.coords.longitude})
-              })
-            }
-
-            var upvote = function() {
-              console.log("Upvote");
-              name = $('#songName').attr('name');
-              artist = $('#songName').attr('artist');
-              base_url = window.location.pathname;
-              $('.downvote').attr('src', '/images/down.png')
-              $('.upvote').attr('src', '/images/up_green.png')
-              $.post(base_url + '/edit', {'name': name, 'artist': artist, 'up': true}, vote_response)
-            }
-
-            var downvote = function() {
-              console.log("Downvote");
-              name = $('#songName').attr('name');
-              artist = $('#songName').attr('artist');
-              base_url = window.location.pathname;
-              $('.downvote').attr('src', '/images/down_red.png')
-              $('.upvote').attr('src', '/images/up.png')
-              $.post(base_url + '/edit', {'name': name, 'artist': artist, 'up': false}, vote_response)
-            }
-
-            $('.upvote').on('click', upvote);
-            $('.downvote').on('click', downvote);
-
-        });
 
 block content
 

@@ -96,6 +96,50 @@ function maingraph(input_counts, names) {
 
 window.currentText = $(".description").text();
 counts = user_list.user_counts;
-artists = user_list.artist_names;
-maingraph(counts, artists);
+names = user_list.artist_names;
+console.log("Counts: ", counts);
+console.log("Names: ", names);
+maingraph(counts, names);
 
+$(document).ready(function() {
+
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        $.post('/getLocation', {'latitude': position.coords.latitude, 'longitude': position.coords.longitude});
+      });
+    }
+
+    function vote_response(data) {
+      data = JSON.parse(data);
+      counts = data.user_counts;
+      names = data.artist_names;
+      console.log("Counts: ", counts);
+      console.log("Names: ", names);
+      $('.chart_body').html("");
+      maingraph(counts, names);
+    }
+
+    var upvote = function() {
+      console.log("Upvote");
+      name = $('#songName').attr('name');
+      artist = $('#songName').attr('artist');
+      base_url = window.location.pathname;
+      $('.downvote').attr('src', '/images/down.png');
+      $('.upvote').attr('src', '/images/up_green.png');
+      $.post(base_url + '/edit', {'name': name, 'artist': artist, 'up': true}, vote_response);
+    };
+
+    var downvote = function() {
+      console.log("Downvote");
+      name = $('#songName').attr('name');
+      artist = $('#songName').attr('artist');
+      base_url = window.location.pathname;
+      $('.downvote').attr('src', '/images/down_red.png');
+      $('.upvote').attr('src', '/images/up.png');
+      $.post(base_url + '/edit', {'name': name, 'artist': artist, 'up': false}, vote_response);
+    }
+
+    $('.upvote').on('click', upvote);
+    $('.downvote').on('click', downvote);
+
+});

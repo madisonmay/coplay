@@ -66,38 +66,38 @@ exports.friend_page = function(req, res) {
            res.render('friend_page', {'username': db_user.username, 'recent_stations': db_user.stations, 'title': title});
         } else {
             console.log("User not found: ", req.session.user_id);
-            res.send('User does not exist')
+            res.send('User does not exist');
         }
     });
-}
+};
 
 exports.friends = function(req, res) {
     console.log("Friends");
     function render_attempt(friends, friend_objects) {
         if (friend_objects.length == friends.length) {
-            res.render('friends', {'friends': friend_objects, 'title': 'Friends\' Stations'})
+            res.render('friends', {'friends': friend_objects, 'title': 'Friends\' Stations'});
         }
     }
 
     User.findOne({fb_id : req.session.user_id}).exec(function(err, db_user) {
         if (db_user) {
-           var friend_objects = []
-           var friends = db_user.friend_list
+           var friend_objects = [];
+           var friends = db_user.friend_list;
            for (var i=0; i<friends.length; i++) {
                 User.findOne({_id: friends[i]}, function(err, friend) {
-                    friend_objects.push(friend)
-                    render_attempt(friends, friend_objects)
+                    friend_objects.push(friend);
+                    render_attempt(friends, friend_objects);
                 });
            }
         } else {
             console.log("User not found: ", req.session.user_id);
         }
     });
-}
+};
 
 exports.editSongWeight = function(req, res) {
     console.log('Edit weight');
-    Station.findOne({_id: req.params.station_id}, function(err, db_station) {
+    Station.findOne({_id: req.params.station_id}).exec(function(err, db_station) {
         var up = req.body.up;
         var edited = false;
         if (db_station) {
@@ -113,19 +113,60 @@ exports.editSongWeight = function(req, res) {
             }
             if (!edited) {
                 if (up == 'true') {
-                    console.log('Upvote')
-                    db_station.songs.push({'name': req.body.name, 'artist': req.body.artist, 'weight': .5})
-                } else {
-                    console.log('Downvote')
-                    db_station.songs.push({'name': req.body.name, 'artist': req.body.artist, 'weight': -0.5})
+                    console.log('Upvote');
+                    db_station.songs.push({'name': req.body.name, 'artist': req.body.artist, 'weight': 0.5});
                 }
             }
-            db_station.save()
+
+            for (var i=0; i<db_station.artists.length; i++) {
+                if (db_station.artists[i].name == req.body.artist) {
+                    if (up) {db_station.artists[i].weight *= 1.15;}
+                    else {db_station.artists[i].weight /= 1.15;}
+                    break;
+                }
+            }
+            db_station.save(function(err, station) {
+                var topics = [];
+                var weights = [];
+                topics.push([]);
+                weights.push([]);
+                var i = topics.length-1;
+                var totalWeight = 0;
+                for (var j = 0; j < station.songs.length; j++) {
+                    topics[i].push(station.songs[j].name);
+                    weights[i].push(station.songs[j].weight);
+                    totalWeight += weights[i][j];
+                    console.log('--------------------------');
+                    console.log(topics);
+                    console.log(weights);
+                };
+                for (var j = 0; j < station.artists.length; j++) {
+                    topics[i].push(station.artists[j].name);
+                    weights[i].push(station.artists[j].weight);
+                    totalWeight += weights[i][j];
+                    console.log('--------------------------');
+                    console.log(topics);
+                    console.log(weights);
+                };
+
+                //normalize the weight
+                for (var j = 0; j < weights[i].length; j++) {
+                    weights[i][j] *= 100.0/totalWeight;
+                };
+                console.log('--------------------------');
+                data = JSON.stringify({artist_names:topics, user_counts:weights});
+                console.log("Final: ");
+                console.log(data);
+                res.send(data);
+
+            });         
+
         } else {
-            console.log("Station not found: ", req.params.station_id)
+            console.log("Station not found: ", req.params.station_id);
+            res.send("Error: station not found");
         }
     });
-}
+};
 
 //Still need to handle case where object with same values already exists
 exports.addNewArtist = function(req, res) {
@@ -138,7 +179,7 @@ exports.addNewArtist = function(req, res) {
     Station.findOne({_id: req.params.station_id}, function(err, db_station) {
         if (db_station) {
             db_station.artists.push({'name': req.body.artist, 'weight': 1})
-            db_station.save()
+            db_station.save();
             audio.generateNewPlaylist(req.session.station,updatePlaylistCallback);
         } else {
             console.log("Station not found: ", req.params.station_id)

@@ -2,7 +2,7 @@ swfobject.embedSWF("http://grooveshark.com/APIPlayer.swf", "player", "300", "300
   var element = e.ref;
   
   if (element) {
-    console.log('test')
+    console.log('test');
     window.player = element;
   }
 });
