@@ -53,7 +53,7 @@ exports.deleteStation = function(req, res) {
                         }
                     }
                 }
-                res.redirect('/locate');
+                // res.redirect('/locate');
             })
         }
     });

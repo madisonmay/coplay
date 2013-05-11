@@ -27,6 +27,12 @@ html
           }
         });
 
+        $(document).on('click', '.mright', function() {
+          var url = '/station/' + $(this).attr('id') + '/delete';
+          $.post(url);
+          $(this).parent().prev().remove();
+          $(this).parent().remove();
+        });
       });
     script(type='text/javascript',src='javascripts/locate.js')
     style
@@ -35,6 +41,7 @@ html
         right: 35px;
         bottom: 17px;
       }
+
 
   body
     div#map-wrapper
@@ -53,14 +60,14 @@ html
         each station in stations
           hr.smaller
           div.station(class='#{station._id}')
-            a(href='/station/#{station._id}')
+            a.station-button(href='/station/#{station._id}')
               button.btn.btn-info.btn-small.pull-left.mleft(id='#{station._id}') ►
             | <b class='station-name'> #{station.name} </b>
             script
               if ('#{station.host._id}'.toString() === '#{db_user._id}'.toString()) {
                 console.log('#{station.host._id}'.toString())
                 console.log('#{db_user._id}'.toString())
-                $('.#{station._id}').append("<a href='/station/#{station._id}/delete'><button class='btn btn-danger btn-small pull-right mright', id='#{station._id}'> - </button></a> ");
+                $('.#{station._id}').append("<button class='btn btn-danger btn-small pull-right mright', id='#{station._id}'> - </button>");
                 $('.#{station._id}').children('.station-name').addClass('pull-name-right');
               }
             div.hide-this.station-info(name='#{station.name}')

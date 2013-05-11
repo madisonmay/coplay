@@ -115,8 +115,8 @@ function map_setup(map, pos) {
 
 function distance(lat1, lon1) {
 // Find the distance between two lat/lon points
-  var lat2 = window.latitude
-  var lon2 = window.longitude
+  var lat2 = window.latitude;
+  var lon2 = window.longitude;
 
   var dLat = lat2-lat1;
   var dLon = lon2-lon1;
@@ -129,7 +129,7 @@ function add_marker(map, station) {
 
   var pos = new google.maps.LatLng(station.location[0], station.location[1]);
   console.log(station.location[0], station.location[1]);
-  var dist = distance(station.location[0], station.location[1])
+  var dist = distance(station.location[0], station.location[1]);
   console.log(dist);
 
   var new_marker = new google.maps.Marker({
@@ -191,14 +191,14 @@ function initialize(stations) {
   var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
   if(navigator.geolocation) {
-    console.log("HTML5 compatible")
+    console.log("HTML5 compatible");
     navigator.geolocation.getCurrentPosition(function(position) {
       window.latitude = position.coords.latitude;
       window.longitude = position.coords.longitude;
       var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       map_setup(map, pos);
       for (var i = 0; i < stations.length; i++) {
-        add_marker(map, stations[i])
+        add_marker(map, stations[i]);
       }
 
       var zIndex100 = $('*').filter(function () {
@@ -209,9 +209,9 @@ function initialize(stations) {
           return false;
         }
       });
-    })
+    });
   } else {
-    console.log("Not HTML5 compatible")
+    console.log("Not HTML5 compatible");
     var user_pos;
     var pos = new google.maps.LatLng(geoplugin_latitude(), geoplugin_longitude());
     map_setup(map, pos);
@@ -220,7 +220,7 @@ function initialize(stations) {
 
 $(document).ready(function() {
   var station_created = function(data) {
-    console.log('Called back')
+    console.log('Called back');
     window.location = data;
   };
   $('#add-station').click(function() {
@@ -231,7 +231,7 @@ $(document).ready(function() {
     });
   });
 
-  $('#station-info').on('click', '.station', function() {
-    $(this).children('.station-info').toggleClass('hide-this', {duration:500});
+  $('#station-info').on('click', '.station-name', function() {
+    $(this).parent().children('.station-info').toggleClass('hide-this', {duration:500});
   });
 });
