@@ -13,11 +13,16 @@ html
       #logodiv{
         left:50%;
         margin-left:-177px;
+        margin-top: 20%;
+      }
+      #logo {
+        cursor: pointer;
+        display: inline-block;
       }
       #blurb{
         margin-left: 27%;
         width: 310px;
-        margin-top: 250px;
+        margin-top: 1000px;
         text-align: right;
         height: 200px;
       }
@@ -30,9 +35,15 @@ html
       padding-left: 30px;
       }
       
+      #description-text  {
+        margin-left: 25px;
+        font-size: 30px;
+      }
+
       body{
         background-image:url("images/earbuds.jpg");
-        background-size: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
       }
     
     script(type='text/javascript')
@@ -49,26 +60,28 @@ html
   body
     div(id='logodiv')
       img(id='logo', src='images/coplay_logo.png', width='354px', height='204px')
-    div(id='blurb')
-      h2
-        | What is Coplay?
-      p
-        | Coplay is social music at its finest. Customize your own personal mix, then add and drop friends' music on the fly.
-    div(id='logindiv')
-      h2
-        | Get Started:
-      a(href='/login')
-        img(id='loginbutton', src='images/facebook_login.png',)
-    div(id='carousel')
-      div.text-center
-        h3 Coplay is 100% free - no subscriptions!
-      div.text-center
-        h3 Powered by Grooveshark: Access all your favorite music.
-      div.text-center
-        h3 No more arguing over music: effortlessly equal representation.
-    div.center.half
-      h3 Powered by:
-      div.half.inline.text-center
-        img(src='/images/echo-nest-logo.png')
-      div.half.inline.text-center
-        img(src='/images/grooveshark_logo.png',height='300')
+      div#description-text
+        | Social music at its finest.
+    //- div(id='blurb')
+    //-   h2
+    //-     | What is Coplay?
+    //-   p
+    //-     | Coplay is social music at its finest. Customize your own personal mix, then add and drop friends' music on the fly.
+    //- div(id='logindiv')
+    //-   h2
+    //-     | Get Started:
+    //-   a(href='/login')
+    //-     img(id='loginbutton', src='images/facebook_login.png',)
+    //- div(id='carousel')
+    //-   div.text-center
+    //-     h3 Coplay is 100% free - no subscriptions!
+    //-   div.text-center
+    //-     h3 Powered by Grooveshark: Access all your favorite music.
+    //-   div.text-center
+    //-     h3 No more arguing over music: effortlessly equal representation.
+    //- div.center.half
+    //-   h3 Powered by:
+    //-   div.half.inline.text-center
+    //-     img(src='/images/echo-nest-logo.png')
+    //-   div.half.inline.text-center
+    //-     img(src='/images/grooveshark_logo.png',height='300')
