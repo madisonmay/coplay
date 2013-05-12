@@ -16,9 +16,9 @@ block content
 
         div.wrapper
             div.chart_body
-            div.description
-                | Listening to:
-                | #{station}
+            div.description Listening to:
+              br
+              div.stationName #{station}
 
         div.wrapper.pull-left
             if host == true

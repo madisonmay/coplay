@@ -13,7 +13,7 @@ var playNewSong = function (song) {
   window.player.playStreamKey(song.StreamKey,serverName,song.StreamServerID);
   window.player.setVolume(99);
   isPlaying = true;
-  $("#songName").text(song.songName + ' by ' + song.artistName);
+  $("#songName").html(song.songName + '<br />' + song.artistName);
   window.document.title = song.songName.toString();
   $("#songName").attr({'name': song.songName, 'artist': song.artistName});
   $("#album-art").html("");

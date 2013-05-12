@@ -94,7 +94,8 @@ function maingraph(input_counts, names) {
 
 }
 
-window.currentText = $(".description").text();
+window.currentText = $(".description").html();
+console.log(window.currentText);
 counts = user_list.user_counts;
 names = user_list.artist_names;
 console.log("Counts: ", counts);

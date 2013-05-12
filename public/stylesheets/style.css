@@ -146,9 +146,14 @@ body {
   text-align: center;
   position: relative;
   margin-top: -265px;
-  font-size: 30px;
+  font-size: 24px;
   margin-left: 270px;
   width: 258px;
+}
+
+.stationName{
+  font-size: 30px;
+  font-weight: bold;
 }
 
 .playMix {
