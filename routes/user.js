@@ -83,6 +83,9 @@ exports.friends = function(req, res) {
         if (db_user) {
            var friend_objects = [];
            var friends = db_user.friend_list;
+           if (friends.length == 0) {
+              res.render('friends', {'friends': friend_objects, 'title': 'Friends\' Stations'});
+           }
            for (var i=0; i<friends.length; i++) {
                 User.findOne({_id: friends[i]}, function(err, friend) {
                     friend_objects.push(friend);
