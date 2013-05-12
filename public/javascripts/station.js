@@ -126,7 +126,7 @@ $(document).ready(function() {
       base_url = window.location.pathname;
       $('.downvote').attr('src', '/images/down.png');
       $('.upvote').attr('src', '/images/up_green.png');
-      $.post(base_url + '/edit', {'name': name, 'artist': artist, 'up': true}, vote_response);
+      $.post(base_url + '/edit', {'name': name, 'artist': artist, 'up': 1}, vote_response);
     };
 
     var downvote = function() {
@@ -136,7 +136,7 @@ $(document).ready(function() {
       base_url = window.location.pathname;
       $('.downvote').attr('src', '/images/down_red.png');
       $('.upvote').attr('src', '/images/up.png');
-      $.post(base_url + '/edit', {'name': name, 'artist': artist, 'up': false}, vote_response);
+      $.post(base_url + '/edit', {'name': name, 'artist': artist, 'up': 0}, vote_response);
     }
 
     $('.upvote').on('click', upvote);

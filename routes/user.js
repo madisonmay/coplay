@@ -104,15 +104,17 @@ exports.editSongWeight = function(req, res) {
             for (var i=0; i<db_station.songs.length; i++) {
                 if (db_station.songs[i].artist == req.body.artist) {
                     if (db_station.songs[i].name == req.body.name) {
-                        if (up) {db_station.songs[i].weight *= 1.15;}
-                        else {db_station.songs[i].weight /= 1.15;}
+                        if (up == 1) {db_station.songs[i].weight *= 1.15;}
+                        else {
+                            db_station.songs[i].weight /= 1.15;
+                        }
                         edited = true;
                         break;
                     }
                 }
             }
             if (!edited) {
-                if (up == 'true') {
+                if (up == 1) {
                     console.log('Upvote');
                     db_station.songs.push({'name': req.body.name, 'artist': req.body.artist, 'weight': 0.5});
                 }
@@ -120,7 +122,7 @@ exports.editSongWeight = function(req, res) {
 
             for (var i=0; i<db_station.artists.length; i++) {
                 if (db_station.artists[i].name == req.body.artist) {
-                    if (up) {db_station.artists[i].weight *= 1.15;}
+                    if (up == 1) {db_station.artists[i].weight *= 1.15;}
                     else {db_station.artists[i].weight /= 1.15;}
                     break;
                 }
