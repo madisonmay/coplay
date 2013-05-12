@@ -69,7 +69,7 @@ body {
   text-shadow: 0 1px 0 white;
   font-size: 24px;
   font-family:  Helvetica, Calibri, Arial, sans-serif, sans;
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 
 /* --- for all three examples ----*/
@@ -168,7 +168,7 @@ body {
   height: 600px;
   width: 400px;
   overflow-y: auto;
-  overflow-x: auto;
+  overflow - x: auto;
 }
 
 .description_right {
@@ -178,6 +178,10 @@ body {
 .user_chart_body {
   height: 600px;
   width: 300px;
+}
+
+.chart_body {
+  width: 700px;
 }
 
 .welcome {
