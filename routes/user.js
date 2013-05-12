@@ -519,7 +519,7 @@ function get_friends(fb_id, thisID, req, res, callback){
                 friend_list.push(db_user);
                 // console.log("Friend list:", friend_list);
                 db_user.friend_list.push(thisID);
-                db_user.save(console.log);
+                db_user.save();
             }
             return save_try(friends, friend_list);
         };
@@ -737,7 +737,7 @@ exports.mixUpdate = function(req, res){
                             if (err) {
                                 console.log(err);
                             } else {
-                                console.log(mix);
+                                // console.log(mix);
                             }
                         });
                     }
