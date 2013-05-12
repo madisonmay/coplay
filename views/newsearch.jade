@@ -6,6 +6,12 @@ style(type='text/css')
     text-decoration: none;
   }
 
+  #results {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
 script(type='text/javascript')
   var ready = 0;
   $(document).ready(function() {
@@ -57,24 +63,6 @@ script(type='text/javascript')
               }
             }
          });
-      });
-
-      $(document).on('click','.musiclink',function () {
-        $('.close').trigger('click');
-        var artist = $(this).attr("artist");
-        if ($(this).attr("type") == "track") {
-          var track = $(this).attr("track")
-          $.post(window.location.pathname + '/addTrack', {'track': track, 'artist': artist}, function(data) {
-            console.log(track + " - " + artist);
-            console.log(data)
-          })
-        }
-        else if ($(this).attr("type") == "artist") {
-          $.post(window.location.pathname + '/addArtist', {'artist': artist}, function(data) {
-            console.log(artist);
-            console.log(data);
-          })
-        }
       });
     }
   })

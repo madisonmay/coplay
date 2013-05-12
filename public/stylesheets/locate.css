@@ -35,7 +35,6 @@ a:hover {
 }
 
 #station-wrapper {
-  min-width: 300px;
   float: right;
   width: 30%;
   height: 100%;
@@ -44,7 +43,6 @@ a:hover {
 }
 
 #station-info {
-  min-width: 300px;
   height: 100%;
   margin: 0px;
   padding: 0px;

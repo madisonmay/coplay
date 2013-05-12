@@ -92,28 +92,26 @@ app.get('/friend/:friend_id', Facebook.loginRequired(scope), user.login, user.fr
 
 io.set('log level', 1); // reduce logging
 
-// io.sockets.on('connection', function (socket) {
-//   // put the socket into the station's room
-//   socket.on('addToStation', function (stationID) {
-//     console.log('add to station')
-//     socket.set('stationID',stationID);
-//     socket.join(stationID);
-//   });
-//   socket.on('setHost', function (host) {
-//     console.log('set host')
-//     socket.set('host',host);
-//   })
-//   socket.on('disconnect', function (socket){
-//     socket.get('stationID',function (id){
-//       socket.get('host',function (host) {
-//         socket.leave(stationID);
-//         if (host) {
-//           io.sockets.in(id).emit('redirect',{url:'/locate'});
-//           Station.remove({_id: id});
-//         }
-//       });
-//     });
-//   });
-// });
+io.sockets.on('connection', function (socket) {
+  // put the socket into the station's room
+  socket.on('addToStation', function (stationID) {
+    socket.set('stationID',stationID);
+    socket.join(stationID);
+  });
+  socket.on('setHost', function (host) {
+    socket.set('host',host);
+  })
+  socket.on('disconnect', function (){
+    socket.get('stationID',function (err,id){
+      socket.get('host',function (err,host) {
+        socket.leave(id);
+        if (host) {
+          io.sockets.in(id).emit('redirect',{url:'/locate'});
+          // Station.remove({_id: id});
+        }
+      });
+    });
+  });
+});
 
 

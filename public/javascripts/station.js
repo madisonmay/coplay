@@ -140,6 +140,18 @@ $(document).ready(function() {
       $.post(base_url + '/edit', {'name': name, 'artist': artist, 'up': 0}, vote_response);
     }
 
+    $(document).on('click','.musiclink',function () {
+      $('.close').trigger('click');
+      var artist = $(this).attr("artist");
+      if ($(this).attr("type") == "track") {
+        var track = $(this).attr("track")
+        $.post(window.location.pathname + '/addTrack', {'track': track, 'artist': artist}, vote_response);
+      }
+      else if ($(this).attr("type") == "artist") {
+        $.post(window.location.pathname + '/addArtist', {'artist': artist}, vote_response);
+      }
+    });
+
     $('.upvote').on('click', upvote);
     $('.downvote').on('click', downvote);
 

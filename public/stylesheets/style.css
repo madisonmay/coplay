@@ -1,3 +1,4 @@
+
 .error {
   margin-top: 250px;
   width: 100%;
@@ -132,7 +133,8 @@ body {
 
 .meta-wrapper {
   /*border: 2px black solid;*/
-  min-width: 1600px;
+
+  min-width: 1500px;
   min-height: 600px;
 }
 
