@@ -68,9 +68,9 @@ app.get('/newsearch', Facebook.loginRequired(scope), user.login, user.newsearch)
 app.get('/getNextSong', function(res,req) {audio.getNextSong(res,req,io)});
 app.get('/getPlaylist', audio.generateNewPlaylist);
 app.get('/station/:station_id', Facebook.loginRequired(scope), user.login, user.station_view);
-app.post('/editArtist', user.editArtist)
+app.post('/editArtist', user.editArtist);
 app.post('/addFriend', user.addFriend);
-app.post('/removeArtist', user.removeArtist)
+app.post('/removeArtist', user.removeArtist);
 app.post('/addArtist', user.addArtist);
 app.post('/mixUpdate', user.mixUpdate);
 app.post('/removeFriend', user.removeFriend);
@@ -82,8 +82,8 @@ app.post('/station/:station_id/addArtist', user.addNewArtist);
 app.post('/station/:station_id/addTrack', user.addNewTrack);
 app.post('/station/:station_id/delete', user.deleteStation);
 app.post('/station/:station_id/edit', user.editSongWeight);
-app.get('/friends', Facebook.loginRequired(scope), user.login, user.friends)
-app.get('/friend/:friend_id', Facebook.loginRequired(scope), user.login, user.friend_page)
+app.get('/friends', Facebook.loginRequired(scope), user.login, user.friends);
+app.get('/friend/:friend_id', Facebook.loginRequired(scope), user.login, user.friend_page);
 
 io.configure(function () {
   io.set("transports", ["xhr-polling"]);

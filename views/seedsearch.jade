@@ -16,9 +16,15 @@ script(type='text/javascript')
       ready = 1;
       $('#broadcast').click(function (){
         console.log("Modal showing if textbox not blank.");
-        if($('#station-title').val() !== ""){
-          console.log($('#station-title').val());
-          $('#search').modal();
+        var station_name = $('#station-title').val();
+        if(station_name !== ""){
+          if (station_name.length > 20) {
+            console.log("Station name too long");
+            $('#station-title').val("20 chararacters or under, please!");
+          } else {
+            console.log($('#station-title').val());
+            $('#search').modal();
+          }
         }
       });
 
