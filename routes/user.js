@@ -246,6 +246,9 @@ exports.station = function(req, res) {
                     console.log("Error: ", err);
                     res.send('/locate');
                 } else {
+                    req.session.playlist = [];
+                    req.session.save(console.log);
+                    req.session.reload(console.log);
                     db_user.stations.push(new_station);
                     db_user.recent.push(new_station);
                     db_user.save();
