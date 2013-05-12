@@ -12,6 +12,13 @@ script(type='text/javascript')
 
     if (ready == 0) {
       ready = 1;
+
+      $(document).keypress(function(e){
+        if (e.which == 13){
+          $("#search").click();
+        }
+      });
+
       $('#search').click(function (){
         var query = $("#searchbox").val();
         $.post('/autocomplete', {query: query}, function (data) {
@@ -69,13 +76,6 @@ script(type='text/javascript')
           })
         }
       });
-
-      $(document).keypress(function(e){
-        if (e.which == 13){
-          $("#search-btn").click();
-        }
-      });
-
     }
   })
 

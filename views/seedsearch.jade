@@ -21,6 +21,13 @@ script(type='text/javascript')
           $('#search').modal();
         }
       });
+
+      $(document).keypress(function(e){
+        if (e.which == 13){
+          $("#search").click();
+        }
+      });
+
       $('#search').click(function (){
         var query = $("#searchbox").val();
         $.post('/autocomplete', {query: query}, function (data) {

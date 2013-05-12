@@ -297,13 +297,6 @@ exports.station_view = function(req, res){
 
     //Main page for mixing and welcome page
     console.log('id',req.params.station_id);
-    console.log('-----------------------------------');
-    console.log('-----------------------------------');
-    console.log('-----------------------------------');
-    console.log(req.session);
-    console.log('-----------------------------------');
-    console.log('-----------------------------------');
-    console.log('-----------------------------------');
     Station.findOne({ _id: req.params.station_id }).populate('users').exec(function(err, db_station) {
         if (err) {
             res.send('An error occurred')
