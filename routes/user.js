@@ -36,6 +36,9 @@ exports.deleteStation = function(req, res) {
             console.log(err);
             res.redirect('/locate');
         } else {
+            req.session.playlist = [];
+            req.session.save(console.log);
+            req.session.reload(console.log);
             User.findOne({fb_id: req.session.user_id}).populate('stations').exec(function(err, db_user) {
                 if (err) {
                     console.log("Err: ", err);
