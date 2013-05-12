@@ -14,13 +14,8 @@ exports.getPlaylistFromMix = function(preferences,sendPlaylistToClient) {
     var tasteProfileID;
     var tasteProfileTicket;
     var makeTasteProfile = function() {
-        console.log("pref")
-        console.log(preferences)
-        console.log(JSON.stringify({
-            api_key: process.env.ECHONEST_KEY,
-            type: "general",
-            name: Math.random().toString(36).substr(2,10)
-        }));
+        // console.log("pref")
+        // console.log(preferences)
         echo('catalog/create').post({
             type: 'general',
             name: Math.random().toString(36).substr(2,10)
@@ -28,7 +23,7 @@ exports.getPlaylistFromMix = function(preferences,sendPlaylistToClient) {
     };
     var tasteProfileCreateCallback = function (err, json) {
         var items=[];
-        console.log(json);
+        // console.log(json);
         tasteProfileID = json.response.id;
         for (var i = 0; i < preferences.artists.length; i++) {
             items.push({item: {
@@ -48,7 +43,7 @@ exports.getPlaylistFromMix = function(preferences,sendPlaylistToClient) {
                         });
         };
 
-        console.log(items);
+        // console.log(items);
 
 
         echo('catalog/update').post({
@@ -57,7 +52,7 @@ exports.getPlaylistFromMix = function(preferences,sendPlaylistToClient) {
         }, tasteProfileUpdateCallback);
     };
     var tasteProfileUpdateCallback = function (err, json) {
-        console.log(json);
+        // console.log(json);
         tasteProfileTicket = json.response.ticket;
         intervalID = setInterval(checkTasteProfileStatus,150);
     };
@@ -67,7 +62,7 @@ exports.getPlaylistFromMix = function(preferences,sendPlaylistToClient) {
         }, checkStatusCallback);
     };
     var checkStatusCallback = function (err,json) {
-        console.log(json);
+        // console.log(json);
         if(json.response.ticket_status==="complete") {
             clearInterval(intervalID);
             getPlaylistFromTasteProfile();
@@ -84,8 +79,8 @@ exports.getPlaylistFromMix = function(preferences,sendPlaylistToClient) {
             results: 6
         }, function (err,json) {
             if (err) return console.log(err);
-            console.log("------------------");
-            console.log("Playlist:");
+            // console.log("------------------");
+            // console.log("Playlist:");
             sendPlaylistToClient(json.response.songs);
             echo('catalog/delete').post({
                 id: tasteProfileID

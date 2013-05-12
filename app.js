@@ -85,26 +85,44 @@ app.post('/station/:station_id/edit', user.editSongWeight);
 app.get('/friends', Facebook.loginRequired(scope), user.login, user.friends)
 app.get('/friend/:friend_id', Facebook.loginRequired(scope), user.login, user.friend_page)
 
-io.configure(function () {
-  io.set("transports", ["xhr-polling"]);
-  io.set("polling duration", 10);
-});
+// io.configure(function () {
+//   io.set("transports", ["xhr-polling"]);
+//   io.set("polling duration", 10);
+// });
+
+io.set('log level', 1); // reduce logging
 
 io.sockets.on('connection', function (socket) {
   // put the socket into the station's room
+  console.log('----------------------------------------------')
+  console.log('connected')
+  console.log('----------------------------------------------')
   socket.on('addToStation', function (stationID) {
+    console.log('add to station')
     socket.set('stationID',stationID);
     socket.join(stationID);
   });
+  socket.on('setHost', function (host) {
+    console.log('set host')
+    socket.set('host',host);
+  })
   socket.on('disconnect', function (socket){
     socket.get('stationID',function (id){
-      // TODO: implement the following
-      /// leave room
-      /// check if this was the host
-      /// if so, delete station and broadcast a redirect to clients
-        //io.sockets.in(id).emit('redirect',{url:'/locate'});
-    })
-  })
+      socket.get('host',function (host) {
+        console.log('----------------------------------------------')
+        console.log('disconnect');
+        console.log('----------------------------------------------')
+        socket.leave(stationID);
+        if (host) {
+          console.log('----------------------------------------------')
+          console.log('redirecting');
+          console.log('----------------------------------------------')
+          io.sockets.in(id).emit('redirect',{url:'/locate'});
+          Station.remove({_id: id});
+        }
+      });
+    });
+  });
 });
 
 

@@ -37,15 +37,15 @@ exports.deleteStation = function(req, res) {
             res.redirect('/locate');
         } else {
             req.session.playlist = [];
-            req.session.save(console.log);
+            // req.session.save(console.log);
             req.session.reload(console.log);
             User.findOne({fb_id: req.session.user_id}).populate('stations').exec(function(err, db_user) {
                 if (err) {
                     console.log("Err: ", err);
                 } else {
                     for (var i=0; i<db_user.stations.length; i++) {
-                        console.log(db_user.stations[i]);
-                        console.log(db_station._id);
+                        // console.log(db_user.stations[i]);
+                        // console.log(db_station._id);
                         if (db_user.stations[i]._id.toString() === req.params.station_id.toString()){
                             db_user.stations.splice(i,1);
                             db_user.save();
@@ -71,7 +71,7 @@ exports.friend_page = function(req, res) {
 };
 
 exports.friends = function(req, res) {
-    console.log("Friends");
+    // console.log("Friends");
     function render_attempt(friends, friend_objects) {
         if (friend_objects.length == friends.length) {
             res.render('friends', {'friends': friend_objects, 'title': 'Friends\' Stations'});
@@ -98,7 +98,7 @@ exports.friends = function(req, res) {
 };
 
 exports.editSongWeight = function(req, res) {
-    console.log('Edit weight');
+    // console.log('Edit weight');
     Station.findOne({_id: req.params.station_id}).exec(function(err, db_station) {
         var up = req.body.up;
         var edited = false;
@@ -117,7 +117,7 @@ exports.editSongWeight = function(req, res) {
             }
             if (!edited) {
                 if (up == 1) {
-                    console.log('Upvote');
+                    // console.log('Upvote');
                     db_station.songs.push({'name': req.body.name, 'artist': req.body.artist, 'weight': 0.5});
                 }
             }
@@ -140,27 +140,27 @@ exports.editSongWeight = function(req, res) {
                     topics[i].push(station.songs[j].name);
                     weights[i].push(station.songs[j].weight);
                     totalWeight += weights[i][j];
-                    console.log('--------------------------');
-                    console.log(topics);
-                    console.log(weights);
+                    // console.log('--------------------------');
+                    // console.log(topics);
+                    // console.log(weights);
                 };
                 for (var j = 0; j < station.artists.length; j++) {
                     topics[i].push(station.artists[j].name);
                     weights[i].push(station.artists[j].weight);
                     totalWeight += weights[i][j];
-                    console.log('--------------------------');
-                    console.log(topics);
-                    console.log(weights);
+                    // console.log('--------------------------');
+                    // console.log(topics);
+                    // console.log(weights);
                 };
 
                 //normalize the weight
                 for (var j = 0; j < weights[i].length; j++) {
                     weights[i][j] *= 100.0/totalWeight;
                 };
-                console.log('--------------------------');
+                // console.log('--------------------------');
                 data = JSON.stringify({artist_names:topics, user_counts:weights});
-                console.log("Final: ");
-                console.log(data);
+                // console.log("Final: ");
+                // console.log(data);
                 res.send(data);
 
             });         
@@ -174,9 +174,9 @@ exports.editSongWeight = function(req, res) {
 
 //Still need to handle case where object with same values already exists
 exports.addNewArtist = function(req, res) {
-    console.log('Add new artist');
+    // console.log('Add new artist');
     var updatePlaylistCallback = function(playlist) {
-        console.log(playlist);
+        // console.log(playlist);
         req.session.playlist = playlist;
         res.send('');
     }
@@ -192,9 +192,9 @@ exports.addNewArtist = function(req, res) {
 }
 
 exports.addNewTrack = function(req, res){
-    console.log('Add new track');
+    // console.log('Add new track');
     var updatePlaylistCallback = function(playlist) {
-        console.log(playlist);
+        // console.log(playlist);
         req.session.playlist = playlist;
         res.send('');
     }
@@ -229,7 +229,7 @@ exports.play = function(req, res) {
 exports.station = function(req, res) {
     latitude = req.body.latitude;
     longitude = req.body.longitude;
-    console.log('Adding station...')
+    // console.log('Adding station...')
 
     User.findOne({fb_id : req.session.user}).exec(function(err, db_user) {
         if (db_user) {
@@ -252,7 +252,7 @@ exports.station = function(req, res) {
                     db_user.stations.push(new_station);
                     db_user.recent.push(new_station);
                     db_user.save();
-                    console.log("Station saved.");
+                    // console.log("Station saved.");
                     res.send('/station/'+new_station._id);
                 }
             });
@@ -271,7 +271,7 @@ exports.locate = function(req, res){
             User.findOne({fb_id: req.session.user}, function(err, db_user) {
                 if (db_user) {
 
-                    console.log("User location", db_user)
+                    // console.log("User location", db_user)
 
                     function square(x) {return x*x;}
                     function dist(x) {
@@ -299,7 +299,7 @@ exports.newsearch = function(req, res){
 exports.station_view = function(req, res){
 
     //Main page for mixing and welcome page
-    console.log('id',req.params.station_id);
+    // console.log('id',req.params.station_id);
     Station.findOne({ _id: req.params.station_id }).populate('users').exec(function(err, db_station) {
         if (err) {
             res.send('An error occurred')
@@ -316,7 +316,7 @@ exports.station_view = function(req, res){
                 var weights = [];
 
                 if (!(db_station.users.containsObject(db_user))) {
-                    console.log('Station user: ', db_user);
+                    // console.log('Station user: ', db_user);
                     db_station.users.push(db_user);
                     db_station.save();
                     db_user.stations.push(db_station);
@@ -327,9 +327,9 @@ exports.station_view = function(req, res){
                 db_user.save();
 
                 var populateStation = function (db_user, station) {
-                    console.log("Station users: ", station.users)
+                    // console.log("Station users: ", station.users)
                     for (var k=0; k < station.users.length; k++) {
-                        console.log(station.users[k])
+                        // console.log(station.users[k])
                         users.push({'name': station.users[k].username, 'id': station.users[k]._id,
                                     'fb_id': station.users[k].fb_id})
                     }
@@ -356,7 +356,7 @@ exports.station_view = function(req, res){
                     // req.session.reload(function(err){
                     //    console.log(err);
                     //  });
-                    console.log('Users: -->', users)
+                    // console.log('Users: -->', users)
 
                     var host = db_user._id.equals(db_station.host);
                     res.render('station', {'user': db_user, 'station': db_station.name,
@@ -365,7 +365,7 @@ exports.station_view = function(req, res){
                                         'artist': station.current.artist, 'artwork': station.current.artwork,
                                         'friends': JSON.stringify({users: users, artist_names:topics, user_counts:weights})});
                 }
-                console.log(db_user,db_station)
+                // console.log(db_user,db_station)
                 populateStation(db_user,db_station);
             });
 
@@ -380,10 +380,10 @@ exports.landing_page = function(req, res){
 
         if (db_user) {
             var index = db_user.recent.length-1
-            console.log("Index: \n\n\n\n\n\n\n", index)
+            // console.log("Index: \n\n\n\n\n\n\n", index)
             if (index > 0) {
                 station = db_user.recent[index]
-                console.log(station._id);
+                // console.log(station._id);
                 res.redirect('/station/' + station._id);
             } else {
                 res.redirect('/locate')
@@ -465,9 +465,9 @@ function get_friends(fb_id, thisID, req, res, callback){
     function save_try(friends, friend_list, i) {
         curr += 1;
         if (curr == max){
-            console.log(friend_list);
-            console.log("Friend list: ", friend_list);
-            console.log("Callback:", callback);
+            // console.log(friend_list);
+            // console.log("Friend list: ", friend_list);
+            // console.log("Callback:", callback);
             //save to user friend_list
             callback(friend_list);
         }
@@ -477,10 +477,10 @@ function get_friends(fb_id, thisID, req, res, callback){
         //Query database for fb_ids
         var queryCallback = function(err, db_user){
             if (db_user) {
-                console.log(friends.data[i].id)
-                console.log("DB_USER", db_user);
+                // console.log(friends.data[i].id)
+                // console.log("DB_USER", db_user);
                 friend_list.push(db_user);
-                console.log("Friend list:", friend_list);
+                // console.log("Friend list:", friend_list);
                 db_user.friend_list.push(thisID);
                 db_user.save(console.log);
             }
@@ -501,13 +501,13 @@ function get_friends(fb_id, thisID, req, res, callback){
 
 exports.login = function(req, res, next){
     //Handles facebook authentication
-    console.log("Logged in")
+    // console.log("Logged in")
     req.facebook.api('/me', function(err, user) {
         User.findOne({fb_id : user.id}).exec(function(err, db_user) {
 
             //User in database
             if (db_user) {
-                console.log(db_user.fb_id, '------------')
+                // console.log(db_user.fb_id, '------------')
                 req.session.user = db_user.fb_id;
                 req.session.uid = db_user._id
                 req.session.save(console.log);
@@ -585,20 +585,20 @@ exports.settings = function(req, res){
 };
 
 exports.addFriend = function(req, res){
-    console.log(req.body['friend'])
-    console.log("Friend added");
+    // console.log(req.body['friend'])
+    // console.log("Friend added");
 }
 
 exports.addArtist = function(req, res){
     //Grab user id from session variables
     //Add artist to user preferences
     user_id = req.session.user;
-    console.log("Artist added");
+    // console.log("Artist added");
     var artist_name = req.body['artist']
-    console.log(artist_name);
+    // console.log(artist_name);
     User.findOne({'fb_id': user_id}, function(err, db_user) {
         if (err) {
-            console.log(err);
+            // console.log(err);
         } else {
             db_user.preferences.artists.push({"name": artist_name, "weight": 50})
             db_user.save()
@@ -609,12 +609,12 @@ exports.addArtist = function(req, res){
 exports.editArtist = function(req, res){
     //Edit user preferences
     user_id = req.session.user
-    console.log("Artist values edited");
+    // console.log("Artist values edited");
     artists = req.body['artists'];
-    console.log(artists);
+    // console.log(artists);
     User.findOne({'fb_id': user_id}, function(err, db_user) {
         if (err) {
-            console.log(err);
+            // console.log(err);
         } else {
             db_user.preferences.artists = artists;
             db_user.save();
@@ -625,15 +625,15 @@ exports.editArtist = function(req, res){
 exports.removeArtist = function(req, res){
     //Remove an artist from user preferences
     user_id = req.session.user;
-    console.log("Artist removed");
+    // console.log("Artist removed");
     var artist_name = req.body['artist'];
-    console.log(artist_name);
+    // console.log(artist_name);
     User.findOne({'fb_id': user_id}, function(err, db_user) {
         if (err) {
             console.log(err);
         } else {
             for (var i =0; i < db_user.preferences.artists.length; i++) {
-                console.log(db_user.preferences.artists[i].name)
+                // console.log(db_user.preferences.artists[i].name)
                 if (db_user.preferences.artists[i].name == artist_name) {
                     db_user.preferences.artists.splice(i,1);
                     db_user.save(function(err, data) {
@@ -652,18 +652,18 @@ exports.removeFriend = function(req, res){
 
     //Remove a friend from user's mix
     friend = req.body['friend']
-    console.log("Friend: ", friend)
+    // console.log("Friend: ", friend)
     user_id = req.session.user;
-    console.log("Friend removed");
+    // console.log("Friend removed");
     User.findOne({'fb_id': user_id}).exec(function(err, db_user) {
         if (err) {
             console.log(err);
         } else if (!(db_user._id == friend)){
              Mix.findOne({"_id": db_user.mix}).exec(function(err, mix) {
                 //Right now only works with 1 user at a time.
-                console.log(mix.users)
+                // console.log(mix.users)
                 for (var i =0; i < mix.users.length; i++) {
-                    console.log(mix.users[i], " | ", friend)
+                    // console.log(mix.users[i], " | ", friend)
                     if (mix.users[i] == friend) {
                         mix.users.splice(i,1);
                         mix.save(function(err, mix) {
@@ -682,16 +682,16 @@ exports.removeFriend = function(req, res){
 
 exports.mixUpdate = function(req, res){
     new_friends = req.body['new_friends']
-    console.log(new_friends);
+    // console.log(new_friends);
     user_id = req.session.user;
     User.findOne({'fb_id': user_id}).exec(function(err, db_user) {
         if (err) {
             console.log(err);
         } else {
             Mix.findOne({"_id": db_user.mix}).exec(function(err, mix) {
-                console.log("Mix: ", mix.users);
-                console.log("UID: ", new_friends[0])
-                console.log("In List: ", mix.users.contains(new_friends[0]));
+                // console.log("Mix: ", mix.users);
+                // console.log("UID: ", new_friends[0])
+                // console.log("In List: ", mix.users.contains(new_friends[0]));
                 //Right now only works with 1 user at a time.
                 for(var i=0; i<new_friends.length; i++) {
                     if (!mix.users.contains(new_friends[i])) {

@@ -12,8 +12,8 @@ var getPlaylistFromMix = function(station,callback){
     }
 
     var stationFindCallback = function(err,doc){
-        console.log("Result:")
-        console.log(doc)
+        // console.log("Result:")
+        // console.log(doc)
         echo.getPlaylistFromMix({artists: doc.artists, songs: doc.songs},echonestPlaylistCallback);
     };
     Station.findOne({_id:station},stationFindCallback);
@@ -24,8 +24,8 @@ exports.generateNewPlaylist = getPlaylistFromMix;
 
 exports.getNextSong = function(req,res,io) {
     var getNextSongCallback = function(playlist) {
-        console.log(playlist)
-        console.log(req.session.playlist)
+        // console.log(playlist)
+        // console.log(req.session.playlist)
 
         song = playlist.pop()
         req.session.playlist = playlist
@@ -37,7 +37,7 @@ exports.getNextSong = function(req,res,io) {
                         header:{wsKey:process.env.GSHARK_KEY,sessionID:"67309bd2c4ad33a96274131c4165cf8a"}}
 
         var groovesharkSongQueryCallback = function(queryResult) {
-            console.log("Song: ", JSON.stringify(queryResult));
+            // console.log("Song: ", JSON.stringify(queryResult));
             if(queryResult.result.songs.length > 0) {
                 var songID = queryResult.result.songs[0].SongID;
                 var albumArt = queryResult.result.songs[0].CoverArtFilename;
