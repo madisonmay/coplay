@@ -13,7 +13,7 @@ html
       #logodiv{
         left:50%;
         margin-left:-177px;
-        margin-top: 20%;
+        margin-top: 2%;
       }
       #logo {
         cursor: pointer;
@@ -31,19 +31,44 @@ html
         margin-left: 55%;
       }
       #carousel{
-      margin-left: 20%;
-      padding-left: 30px;
+        margin-left: 20%;
+        padding-left: 30px;
       }
       
       #description-text  {
         margin-left: 25px;
+        margin-bottom: 20px;
         font-size: 30px;
       }
 
+      #move-right {
+        margin-left: 55px;
+      }
+
+      .page-center {
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 50px;   
+        width: 100%
+      }
+
+      #powered {
+        margin-bottom: 25px;
+        font-size: 30px;
+      }
+
+      .fixed-footer {
+        position: absolute;
+        bottom: 25px;
+        cursor: pointer;
+      }
+
       body{
-        background-image:url("images/earbuds.jpg");
-        background-size: cover;
+        background-image: url("images/earbuds.jpg");
+        background-size: 100%;
         background-repeat: no-repeat;
+        overflow-y: auto;
       }
     
     script(type='text/javascript')
@@ -57,11 +82,14 @@ html
           auto: {enabled: true, direction: "next", interval: 3500}
         });
       });
+
   body
     div(id='logodiv')
       img(id='logo', src='images/coplay_logo.png', width='354px', height='204px')
       div#description-text
         | Social music at its finest.
+      a#move-right(href='/login')
+        img(id='loginbutton', src='images/facebook_login.png',)
     //- div(id='blurb')
     //-   h2
     //-     | What is Coplay?
@@ -70,8 +98,6 @@ html
     //- div(id='logindiv')
     //-   h2
     //-     | Get Started:
-    //-   a(href='/login')
-    //-     img(id='loginbutton', src='images/facebook_login.png',)
     //- div(id='carousel')
     //-   div.text-center
     //-     h3 Coplay is 100% free - no subscriptions!
@@ -79,9 +105,70 @@ html
     //-     h3 Powered by Grooveshark: Access all your favorite music.
     //-   div.text-center
     //-     h3 No more arguing over music: effortlessly equal representation.
-    //- div.center.half
-    //-   h3 Powered by:
-    //-   div.half.inline.text-center
-    //-     img(src='/images/echo-nest-logo.png')
-    //-   div.half.inline.text-center
-    //-     img(src='/images/grooveshark_logo.png',height='300')
+    img.fixed-footer.scrolldown(src='images/down_arrow.png');
+    div.page-center
+      div.text-center#powered
+        | Powered by:
+      div.text-center
+        img(src='/images/echonest.gif')
+      div.text-center
+        img(src='/images/grooveshark_logo.png')
+      div.text-center
+        img(src='/images/spotify_logo.png')
+
+    script      
+
+      function getBackgroundSize(selector, callback) {
+        var img = new Image(),
+            // here we will place image's width and height
+            width, height,
+            // here we get the size of the background and split it to array
+            backgroundSize = $(selector).css('background-size').split(' ');
+
+        // checking if width was set to pixel value
+        if (/px/.test(backgroundSize[0])) width = parseInt(backgroundSize[0]);
+        // checking if width was set to percent value
+        if (/%/.test(backgroundSize[0])) width = $(selector).parent().width() * (parseInt(backgroundSize[0]) / 100);
+        // checking if height was set to pixel value
+        if (/px/.test(backgroundSize[1])) height = parseInt(backgroundSize[1]);
+        // checking if height was set to percent value
+        if (/%/.test(backgroundSize[1])) height = $(selector).parent().height() * (parseInt(backgroundSize[0]) / 100);
+
+        img.onload = function () {
+          // check if width was set earlier, if not then set it now
+          if (typeof width == 'undefined') width = this.width;
+          // do the same with height
+          if (typeof height == 'undefined') height = this.height;
+          // call the callback
+          callback({ width: width, height: height });
+        }
+        // extract image source from css using one, simple regex
+        // src should be set AFTER onload handler
+        img.src = $(selector).css('background-image').replace(/url\('*(.*?)'*\)/g, '$1');
+      }
+
+
+
+      $(document).ready(function() {
+        getBackgroundSize('body', function(background) {
+          var background_height = background.height*($(window).width()/3264);
+          $('.page-center').css('margin-top', background_height + 50);
+          $('.fixed-footer').css('left', $(window).width()/2 - 25);
+          console.log('Moved');
+        });
+      });
+
+      $(window).resize(function() {
+        getBackgroundSize('body', function(background) {
+          console.log(background.height);
+          console.log(background.width);
+          console.log($(window).width());
+          console.log($(window).width()/3264);
+          var background_height = background.height*($(window).width()/3264);
+          $('.page-center').css('margin-top', background_height + 50);
+        });
+      })  
+
+      $('.scrolldown').click(function() {
+        $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+      });
