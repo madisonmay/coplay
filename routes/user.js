@@ -172,6 +172,41 @@ exports.editSongWeight = function(req, res) {
     });
 };
 
+function updateD3(station, res) {
+    var topics = [];
+    var weights = [];
+    topics.push([]);
+    weights.push([]);
+    var i = topics.length-1;
+    var totalWeight = 0;
+    for (var j = 0; j < station.songs.length; j++) {
+        topics[i].push(station.songs[j].name);
+        weights[i].push(station.songs[j].weight);
+        totalWeight += weights[i][j];
+        // console.log('--------------------------');
+        // console.log(topics);
+        // console.log(weights);
+    };
+    for (var j = 0; j < station.artists.length; j++) {
+        topics[i].push(station.artists[j].name);
+        weights[i].push(station.artists[j].weight);
+        totalWeight += weights[i][j];
+        // console.log('--------------------------');
+        // console.log(topics);
+        // console.log(weights);
+    };
+
+    //normalize the weight
+    for (var j = 0; j < weights[i].length; j++) {
+        weights[i][j] *= 100.0/totalWeight;
+    };
+    // console.log('--------------------------');
+    data = JSON.stringify({artist_names:topics, user_counts:weights});
+    // console.log("Final: ");
+    // console.log(data);
+    res.send(data);
+}
+
 //Still need to handle case where object with same values already exists
 exports.addNewArtist = function(req, res) {
     // console.log('Add new artist');
@@ -185,6 +220,7 @@ exports.addNewArtist = function(req, res) {
             db_station.artists.push({'name': req.body.artist, 'weight': 1})
             db_station.save();
             audio.generateNewPlaylist(req.session.station,updatePlaylistCallback);
+            updateD3(db_station, res);
         } else {
             console.log("Station not found: ", req.params.station_id)
         }
@@ -203,6 +239,7 @@ exports.addNewTrack = function(req, res){
             db_station.songs.push({'artist': req.body.artist, 'name':req.body.track ,'weight': 1})
             db_station.save()
             audio.generateNewPlaylist(req.session.station,updatePlaylistCallback);
+            updateD3(db_station, res);
         } else {
             console.log("Station not found: ", req.params.station_id)
         }
