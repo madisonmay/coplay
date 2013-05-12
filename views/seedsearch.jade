@@ -14,6 +14,13 @@ script(type='text/javascript')
   $(document).ready(function() {
     if (ready == 0) {
       ready = 1;
+      $('#broadcast').click(function (){
+        console.log("Modal showing if textbox not blank.");
+        if($('#station-title').val() !== ""){
+          console.log($('#station-title').val());
+          $('#search').modal();
+        }
+      });
       $('#search').click(function (){
         var query = $("#searchbox").val();
         $.post('/autocomplete', {query: query}, function (data) {
@@ -84,8 +91,8 @@ script(type='text/javascript')
   })
 
 div.button-wrapper.center-text
-  a.btn.btn-info.add-music(href='#search', role='button', data-toggle='modal') Broadcast
-div#search.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='searchLabel', aria-hidden='true')
+  a.btn.btn-info.add-music(href='#search', role='button', id="broadcast") Broadcast
+div#search.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='searchLabel')
   div.modal-header
     button.close(type='button', data-dismiss='modal', aria-hidden='true') x
     h3#searchLabel Search for Artists and Tracks to Add

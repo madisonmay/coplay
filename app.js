@@ -45,7 +45,7 @@ var io = require('socket.io').listen(server);
 
 var scope = {scope: ['']};
 
-app.get('/', Facebook.loginRequired(scope), user.login, user.landing_page);
+app.get('/', user.landing_page);
 app.get('/login', Facebook.loginRequired(scope), user.login, user.landing_page);
 app.get('/logout', user.logout);
 app.get('/refresh', user.refresh);
