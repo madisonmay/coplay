@@ -5,7 +5,8 @@ function map_setup(map, pos) {
   marker = new google.maps.Marker({
     position: map.getCenter(),
     map: map,
-    title: "",
+    title: "",    
+    icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
     animation: google.maps.Animation.DROP
   });
 

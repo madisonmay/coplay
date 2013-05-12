@@ -1,9 +1,11 @@
 !!! 5
 html
   head
+    title #{title}
     meta(name='viewport', content='initial-scale=1.0, user-scalable=no')
     link(href='http://fonts.googleapis.com/css?family=Quattrocento+Sans', rel='stylesheet', type='text/css')
     link(type='text/css',rel='stylesheet',href='stylesheets/locate.css')
+    link(rel='icon', type='image/png', href='/images/favicon.ico')
 
     // script(src="javascripts/geoplugin.gp", type="text/javascript")
     script(type='text/javascript', src='http://code.jquery.com/jquery.js')
@@ -75,5 +77,5 @@ html
               each user in station.users
                 div
                   | <a href='/friend/#{user.fb_id}'> #{user.username} </a>
-        div.logout
-          a.btn.btn-info(href='/logout') Log Out
+        //- div.logout
+        //-   a.btn.btn-info(href='/logout') Log Out
