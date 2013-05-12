@@ -37,6 +37,17 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+app.use(app.router);
+
+app.use(function(req, res, next){
+  res.render('404', { status: 404, url: req.url, title: 'Something went wrong' });
+});
+
+
+app.use(function(err, req, res, next){
+  res.render('500', { status: err.status || 500, error: err, title: 'Something went wrong'});
+});
+
 server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
@@ -73,7 +84,6 @@ app.post('/station/:station_id/delete', user.deleteStation);
 app.post('/station/:station_id/edit', user.editSongWeight);
 app.get('/friends', Facebook.loginRequired(scope), user.login, user.friends)
 app.get('/friend/:friend_id', Facebook.loginRequired(scope), user.login, user.friend_page)
-app.get('/error', user.error_page)
 
 io.configure(function () {
   io.set("transports", ["xhr-polling"]);

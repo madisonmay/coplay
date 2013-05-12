@@ -32,7 +32,7 @@ function map_setup(map, pos) {
   var ib = new InfoBox(myOptions);
 
   google.maps.event.addListener(marker, 'mouseover', function() {
-    ib.open(map, marker);
+    ib.open(map, marker); 
   });
 
   google.maps.event.addListener(marker, 'mouseout', function() {
@@ -224,11 +224,11 @@ $(document).ready(function() {
     window.location = data;
   };
   $('#add-station').click(function() {
-    console.log("Station added!");
-    navigator.geolocation.getCurrentPosition(function(position) {
-      $.post('/station', {'latitude': position.coords.latitude, 'longitude': position.coords.longitude,
-             'name': $('#station-title').val(), 'seed': $('#station-seed').val(), 'seed_type': 'TODO'}, station_created);
-    });
+      console.log("Station added!");
+      navigator.geolocation.getCurrentPosition(function(position) {
+        $.post('/station', {'latitude': position.coords.latitude, 'longitude': position.coords.longitude,
+               'name': $('#station-title').val(), 'seed': $('#station-seed').val(), 'seed_type': 'TODO'}, station_created);
+      });
   });
 
   $('#station-info').on('click', '.station-name', function() {
