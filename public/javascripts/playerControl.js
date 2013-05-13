@@ -1,4 +1,7 @@
 var isPlaying = false;
+var streamkey;
+var serverID;
+var songID;
 var playNewSong = function (song) {
   console.log("playing next");
 
@@ -8,7 +11,11 @@ var playNewSong = function (song) {
   console.log('streamkey',song.StreamKey);
   console.log('servername',serverName);
   console.log('serverID',song.StreamServerID);
-  window.player.setSongCompleteCallback("getNewSong");
+  console.log('songID',song.songID);
+  streamkey = song.StreamKey;
+  serverID = song.StreamServerID;
+  songID = song.songID;
+  window.player.setSongCompleteCallback("songComplete");
   window.player.setErrorCallback("errorCallback");
   window.player.playStreamKey(song.StreamKey,serverName,song.StreamServerID);
   window.player.setVolume(99);
@@ -32,6 +39,7 @@ var playNewSong = function (song) {
   //Reset voting buttons to the default -->
   $('.downvote').attr('src', '/images/down.png');
   $('.upvote').attr('src', '/images/up.png');
+  setTimeout(played30sec,30000);
 };
 
 var pause_resume = function () {
@@ -45,6 +53,15 @@ var pause_resume = function () {
     $("#playpause").attr('src','/images/pause.png');
   }
 };
+
+var played30sec = function() {
+  $.post("/markPlayed30sec",{streamkey:streamkey,serverID:serverID})
+}
+
+var songComplete = function() {
+  $.post("/markSongComplete",{streamkey:streamkey,serverID:serverID,songID:songID})
+  getNewSong();
+}
 
 var getNewSong = function () {
   $.get("/getNextSong",function(data){
@@ -64,6 +81,6 @@ var vote_response = function(data) {
 
 $(function () {
   getNewSong();
-  $('#next').on('click',getNewSong);
+  $('#next').on('click',songComplete);
   $('#playpause').on('click',pause_resume);
 });
