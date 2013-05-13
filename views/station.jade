@@ -34,15 +34,24 @@ block content
     script
 
         var user_list = !{friends};
-        var user_id = '#{fb_id}'
+        var user_id = '#{fb_id}';
+        var host = '#{host}';
         var users = user_list.users
         for (var i=0; i<users.length; i++) {
             if (users[i].fb_id != user_id) {
                 if (users[i].fb_id) {
-                    $('.list_users').append("<a href='/friend/" + users[i].fb_id + "'>" +
-                        "<img src='https://graph.facebook.com/" +
-                        users[i].fb_id + "/picture?width=300&height=300' class='fix-width station-fix-width'>" +
-                        "<div style='margin-bottom:15px;'>" + users[i].name + "</div></a>")
+                    if (host != 'true') {
+                        $('.list_users').append("<a href='/friend/" + users[i].fb_id + "'>" +
+                            "<img src='https://graph.facebook.com/" +
+                            users[i].fb_id + "/picture?width=300&height=300' class='fix-width station-fix-width'>" +
+                            "<div style='margin-bottom:15px;'>" + users[i].name + "</div></a>")
+                    } else {
+                        $('.list_users').append("<a href='/friend/" + users[i].fb_id + "'>" +
+                            "<img src='https://graph.facebook.com/" +
+                            users[i].fb_id + "/picture?width=300&height=300' class='fix-width station-fix-width'>" +
+                            "<div class='pull-text-left'>" + users[i].name + "</div></a>" + 
+                            '<button type="button" class="btn pull-button-up transfer" + id="' + users[i].fb_id + '">Transfer</button>')
+                    }     
                 }
             }
         }

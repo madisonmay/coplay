@@ -152,6 +152,14 @@ $(document).ready(function() {
       }
     });
 
+    $(document).on('click', '.transfer', function() {
+      console.log('Transfer Station');
+      var id = $(this).attr('id');
+      $.post('/transferhost', {'id': id}, function(data) {
+        console.log(data);
+      });
+    });
+
     $('.upvote').on('click', upvote);
     $('.downvote').on('click', downvote);
 
