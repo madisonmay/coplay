@@ -202,7 +202,6 @@ function updateD3(station, res) {
     data = JSON.stringify({artist_names:topics, user_counts:weights});
     // console.log("Final: ");
     // console.log(data);
-    io.emit('updateD3', {'data': data});
     res.send(data);
 }
 
