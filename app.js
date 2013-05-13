@@ -84,6 +84,8 @@ app.post('/station/:station_id/delete', user.deleteStation);
 app.post('/station/:station_id/edit', user.editSongWeight);
 app.get('/friends', Facebook.loginRequired(scope), user.login, user.friends);
 app.get('/friend/:friend_id', Facebook.loginRequired(scope), user.login, user.friend_page);
+app.get('/search/stations', user.search_stations);
+app.post('/search/stations', user.station_search);
 
 // io.configure(function () {
 //   io.set("transports", ["xhr-polling"]);

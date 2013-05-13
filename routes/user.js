@@ -30,6 +30,19 @@ Array.prototype.containsObject = function(obj) {
     return false;
 }
 
+exports.search_stations = function(req, res) {
+    res.render('search', {'title': 'Search Stations'});
+}
+
+exports.station_search = function(req, res) {
+    console.log(req.body);
+    console.log(req.body.station);
+    Station.find({'name':  new RegExp('.*' + req.body.station + '.*')}, function(err, db_stations) {
+        console.log(db_stations);
+        res.send(db_stations);
+    })
+}
+
 exports.deleteStation = function(req, res) {
     Station.remove({_id: req.params.station_id}, function(err, db_station) {
         if (err) {

@@ -64,6 +64,10 @@ html
         cursor: pointer;
       }
 
+      .hidden-div {
+        display: None;
+      }
+
       body{
         background-image: url("images/earbuds.jpg");
         background-size: 100%;
@@ -106,7 +110,7 @@ html
     //-   div.text-center
     //-     h3 No more arguing over music: effortlessly equal representation.
     img.fixed-footer.scrolldown(src='images/down_arrow.png');
-    div.page-center
+    div.page-center.hidden-div
       div.text-center#powered
         | Powered by:
       div.text-center
@@ -153,6 +157,7 @@ html
         getBackgroundSize('body', function(background) {
           var background_height = background.height*($(window).width()/3264);
           $('.page-center').css('margin-top', background_height + 50);
+          $('.page-center').css('display', 'block');
           $('.fixed-footer').css('left', $(window).width()/2 - 25);
           console.log('Moved');
         });

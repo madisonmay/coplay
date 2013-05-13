@@ -26,6 +26,7 @@ script(type='text/javascript')
       });
 
       $('#search').click(function (){
+        console.log("Clicked")
         var query = $("#searchbox").val();
         $.post('/autocomplete', {query: query}, function (data) {
             console.log(data);

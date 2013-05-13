@@ -1,0 +1,55 @@
+extends layout
+
+block scripts
+	style
+		.search_box {
+			margin-top: -50px;
+			margin-left: auto;
+			margin-right: auto;
+			text-align: center;
+		}
+
+		.up10px {
+			margin-top: -10px;
+			margin-left: 15px;
+		}
+
+		.station_results {
+			width: 100%;
+			text-align: center;
+		}
+
+		.station_result {
+			cursor: pointer;
+		}
+
+	script
+		$(document).ready(function() {
+			$('.station_title').keyup(function() {
+				var station_title = $('.station_title').val();
+				console.log(station_title)
+				if (station_title.length > 0) {
+					$.post('/search/stations', {'station': station_title}, function(data) {
+						console.log(data);
+						if (data.length > 0) {
+							$('.station_results').html('');
+							for(var i = 0; i<data.length; i++) {
+								$('.station_results').append('<div class="station_result" id=' + data[i]._id + '>'+data[i].name+'</div>');
+							}
+						} else {
+							$('.station_results').html('');
+						}
+					})
+				}
+			});
+
+			$(document).on('click', '.station_result', function() {
+				console.log("clicked")
+				window.location = '/station/' + $(this).attr('id');
+			})
+		})
+
+block content
+	div.search_box
+		input.station_title(type='text', placeholder='Search stations...')
+	div.station_results
