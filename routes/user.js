@@ -37,7 +37,7 @@ exports.search_stations = function(req, res) {
 exports.station_search = function(req, res) {
     console.log(req.body);
     console.log(req.body.station);
-    Station.find({'name':  new RegExp('.*' + req.body.station + '.*')}, function(err, db_stations) {
+    Station.find({'name':  new RegExp('.*' + req.body.station + '.*', "i")}, function(err, db_stations) {
         console.log(db_stations);
         res.send(db_stations);
     })

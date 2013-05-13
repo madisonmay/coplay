@@ -1,3 +1,17 @@
+#logout_button a {
+  color: #393939;
+}
+
+#logout_button a:hover {
+  color: #c6342e;
+}
+
+#logout_button {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-family: 'Quattrocento Sans', sans-serif;
+}
 
 .error {
   margin-top: 250px;
@@ -100,7 +114,7 @@ body {
       -ms-transition: .7s;
       transition: .7s; }
       .nav a:hover {
-        color: #c6342e; }
+        color: #049cdb; }
 
 .effect {
     position: absolute;
@@ -126,7 +140,7 @@ body {
   width: 90px;
   height: 2px;
   bottom: 36px;
-  background: #c6342e;
+  background: #049cdb;
   box-shadow: 0 1px 0 white;
   margin-left:-45px;
 }

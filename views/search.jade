@@ -7,6 +7,7 @@ block scripts
 			margin-left: auto;
 			margin-right: auto;
 			text-align: center;
+			margin-bottom: 25px;
 		}
 
 		.up10px {
@@ -31,8 +32,8 @@ block scripts
 				if (station_title.length > 0) {
 					$.post('/search/stations', {'station': station_title}, function(data) {
 						console.log(data);
+						$('.station_results').html('');
 						if (data.length > 0) {
-							$('.station_results').html('');
 							for(var i = 0; i<data.length; i++) {
 								$('.station_results').append('<div class="station_result" id=' + data[i]._id + '>'+data[i].name+'</div>');
 							}
