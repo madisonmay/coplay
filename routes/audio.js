@@ -48,8 +48,10 @@ exports.getNextSong = function(req,res,io) {
 
                 gs.make_request(streamQuery, function (result) {
                     result.result.songName = queryResult.result.songs[0].SongName;
+                    result.result.songID = queryResult.result.songs[0].SongID;
                     result.result.artistName = queryResult.result.songs[0].ArtistName;
                     result.result.albumArt = queryResult.result.songs[0].CoverArtFilename;
+
                     groovesharkStreamQueryCallback(result);
 
                     var setNewSongInDataBase = function(err,doc) {
@@ -93,6 +95,14 @@ exports.getNextSong = function(req,res,io) {
     } else {
         getNextSongCallback(req.session.playlist);
     }
+}
+
+exports.markPlayed30sec = function(req,res) {
+    res.send('');
+}
+
+exports.markSongComplete = function(req,res) {
+    res.send('');
 }
 
 exports.autocomplete = function(req, res) {
