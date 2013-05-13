@@ -102,22 +102,24 @@ console.log("Counts: ", counts);
 console.log("Names: ", names);
 maingraph(counts, names);
 
+function vote_response(data) {
+  console.log(data);
+  data = JSON.parse(data);
+  console.log(data);
+  counts = data.user_counts;
+  names = data.artist_names;
+  console.log("Counts: ", counts);
+  console.log("Names: ", names);
+  $('.chart_body').html("");
+  maingraph(counts, names);
+}
+
 $(document).ready(function() {
 
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
         $.post('/getLocation', {'latitude': position.coords.latitude, 'longitude': position.coords.longitude});
       });
-    }
-
-    function vote_response(data) {
-      data = JSON.parse(data);
-      counts = data.user_counts;
-      names = data.artist_names;
-      console.log("Counts: ", counts);
-      console.log("Names: ", names);
-      $('.chart_body').html("");
-      maingraph(counts, names);
     }
 
     var upvote = function() {

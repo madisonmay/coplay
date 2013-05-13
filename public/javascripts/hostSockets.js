@@ -5,4 +5,5 @@ $(function() {
     socket.on('refresh', function (data) {
         location.reload();
     })
+    socket.on('updateD3', function (data) {vote_response(data.data)});
 });

@@ -23,4 +23,5 @@ $(function() {
     socket.on('redirect', function (data){
         window.location.href = data.url;
     });
+    socket.on('updateD3', function (data) {vote_response(data.data)});
 });

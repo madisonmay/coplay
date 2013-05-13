@@ -127,7 +127,7 @@ exports.friends = function(req, res) {
     });
 };
 
-exports.editSongWeight = function(req, res) {
+exports.editSongWeight = function(req, res, io) {
     // console.log('Edit weight');
     Station.findOne({_id: req.params.station_id}).exec(function(err, db_station) {
         var up = req.body.up;
@@ -160,7 +160,7 @@ exports.editSongWeight = function(req, res) {
                 }
             }
             db_station.save(function(err, station) {
-                updateD3(station, res);
+                updateD3(station, res, io);
             });         
 
         } else {
@@ -170,7 +170,7 @@ exports.editSongWeight = function(req, res) {
     });
 };
 
-function updateD3(station, res) {
+function updateD3(station, res, io) {
     var topics = [];
     var weights = [];
     topics.push([]);
@@ -202,11 +202,12 @@ function updateD3(station, res) {
     data = JSON.stringify({artist_names:topics, user_counts:weights});
     // console.log("Final: ");
     // console.log(data);
+    io.sockets.in(station._id).emit('updateD3',{data: data});
     res.send(data);
 }
 
 //Still need to handle case where object with same values already exists
-exports.addNewArtist = function(req, res) {
+exports.addNewArtist = function(req, res, io) {
     // console.log('Add new artist');
     var updatePlaylistCallback = function(playlist) {
         // console.log(playlist);
@@ -218,14 +219,14 @@ exports.addNewArtist = function(req, res) {
             db_station.artists.push({'name': req.body.artist, 'weight': 1})
             db_station.save();
             audio.generateNewPlaylist(req.session.station,updatePlaylistCallback);
-            updateD3(db_station, res);
+            updateD3(db_station, res, io);
         } else {
             console.log("Station not found: ", req.params.station_id)
         }
     });
 }
 
-exports.addNewTrack = function(req, res){
+exports.addNewTrack = function(req, res, io){
     // console.log('Add new track');
     var updatePlaylistCallback = function(playlist) {
         // console.log(playlist);
@@ -237,7 +238,7 @@ exports.addNewTrack = function(req, res){
             db_station.songs.push({'artist': req.body.artist, 'name':req.body.track ,'weight': 1})
             db_station.save()
             audio.generateNewPlaylist(req.session.station,updatePlaylistCallback);
-            updateD3(db_station, res);
+            updateD3(db_station, res, io);
         } else {
             console.log("Station not found: ", req.params.station_id)
         }
@@ -494,9 +495,14 @@ exports.about = function(req, res){
 };
 
 exports.transferHost = function(req, res, io) {
+    console.log('station')
+    console.log(req.session.station);
     Station.findOne({_id:req.session.station}, function (err, db_station) {
-        db_station.host = req.body.id;
-        io.sockets.in(req.session.station).emit('refresh');
+        User.findOne({fb_id:req.body.id}, function (err, db_user) {
+            db_station.host = db_user._id;
+            db_station.save();
+            io.sockets.in(req.session.station).emit('refresh');
+        })
     });
 }
 
