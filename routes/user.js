@@ -103,12 +103,15 @@ exports.friend_page = function(req, res) {
 exports.friends = function(req, res) {
     // console.log("Friends");
     function render_attempt(friends, friend_objects) {
+        // console.log(friend_objects);
+        // console.log(friends);
         if (friend_objects.length == friends.length) {
             res.render('friends', {'friends': friend_objects, 'title': 'Friends\' Stations'});
         }
     }
 
     User.findOne({fb_id : req.session.user_id}).exec(function(err, db_user) {
+        // console.log(db_user);
         if (db_user) {
            var friend_objects = [];
            var friends = db_user.friend_list;
@@ -359,7 +362,7 @@ exports.station_view = function(req, res){
                     db_user.save();
                 }
 
-                db_user.recent.push(db_station);
+                db_user.recent = [db_station];
                 db_user.save();
 
                 var populateStation = function (db_user, station) {
@@ -498,8 +501,8 @@ exports.about = function(req, res){
 };
 
 exports.transferHost = function(req, res, io) {
-    console.log('station')
-    console.log(req.session.station);
+    // console.log('station')
+    // console.log(req.session.station);
     Station.findOne({_id:req.session.station}, function (err, db_station) {
         User.findOne({fb_id:req.body.id}, function (err, db_user) {
             db_station.host = db_user._id;
