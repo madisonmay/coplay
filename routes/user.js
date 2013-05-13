@@ -395,7 +395,10 @@ exports.station_view = function(req, res){
                     // console.log('Users: -->', users)
 
                     var host = db_user._id.equals(db_station.host);
-                    console.log()
+                    // io.sockets.in(req.session.station).emit('userJoined', {'users': JSON.stringify(users)});
+                    // console.log('----------------USERS---------------')
+                    // console.log(users);
+                    // console.log(JSON.stringify(users));
                     res.render('station', {'user': db_user, 'station': db_station.name,
                                         'fb_id': req.session.user, 'logged_in': true, 'host': host,
                                         'stationID': req.session.station, 'title': "Now Playing...",
@@ -404,7 +407,7 @@ exports.station_view = function(req, res){
                                         'friends': JSON.stringify({users: users, artist_names:topics, user_counts:weights})});
                 }
                 // console.log(db_user,db_station)
-                populateStation(db_user,db_station);
+                populateStation(db_user, db_station);
             });
 
 
@@ -531,8 +534,10 @@ function get_friends(fb_id, thisID, req, res, callback){
                 // console.log("DB_USER", db_user);
                 friend_list.push(db_user);
                 // console.log("Friend list:", friend_list);
-                db_user.friend_list.push(thisID);
-                db_user.save();
+                if (!db_user.friend_list.contains(thisID)) {
+                    db_user.friend_list.push(thisID);
+                    db_user.save();  
+                }
             }
             return save_try(friends, friend_list);
         };
