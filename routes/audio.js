@@ -97,11 +97,24 @@ exports.getNextSong = function(req,res,io) {
     }
 }
 
+var emptyCallback = function (data) { }
+
 exports.markPlayed30sec = function(req,res) {
+    console.log('30sec');
+    gs.make_request({method: "markStreamKeyOver30Secs",
+                        parameters:{streamKey:req.body.streamkey,
+                                    streamServerID:req.body.serverID},
+                        header:{wsKey:process.env.GSHARK_KEY,sessionID:"67309bd2c4ad33a96274131c4165cf8a"}},emptyCallback)
     res.send('');
 }
 
 exports.markSongComplete = function(req,res) {
+    console.log('complete');
+    gs.make_request({method: "markSongComplete",
+                        parameters:{streamKey:req.body.streamkey,
+                                    streamServerID:req.body.serverID,
+                                    songID:req.body.songID},
+                        header:{wsKey:process.env.GSHARK_KEY,sessionID:"67309bd2c4ad33a96274131c4165cf8a"}},emptyCallback)
     res.send('');
 }
 

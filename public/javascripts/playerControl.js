@@ -11,9 +11,10 @@ var playNewSong = function (song) {
   console.log('streamkey',song.StreamKey);
   console.log('servername',serverName);
   console.log('serverID',song.StreamServerID);
+  console.log('songID',song.songID);
   streamkey = song.StreamKey;
   serverID = song.StreamServerID;
-  songID = song.SongID;
+  songID = song.songID;
   window.player.setSongCompleteCallback("songComplete");
   window.player.setErrorCallback("errorCallback");
   window.player.playStreamKey(song.StreamKey,serverName,song.StreamServerID);
@@ -80,6 +81,6 @@ var vote_response = function(data) {
 
 $(function () {
   getNewSong();
-  $('#next').on('click',getNewSong);
+  $('#next').on('click',songComplete);
   $('#playpause').on('click',pause_resume);
 });
