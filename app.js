@@ -70,7 +70,6 @@ app.get('/getPlaylist', audio.generateNewPlaylist);
 // app.get('/station/:station_id', Facebook.loginRequired(scope), user.login, function(req,res){
 //   user.station_view(req, res, io);
 // });
-app.get('/station/:station_id', Facebook.loginRequired(scope), user.login, user.station_view);
 app.post('/editArtist', user.editArtist);
 app.post('/addFriend', user.addFriend);
 app.post('/removeArtist', user.removeArtist);
@@ -83,7 +82,7 @@ app.post('/getLocation', user.getLocation);
 app.post('/transferHost', function(req,res) {user.transferHost(req,res,io)});
 app.post('/markPlayed30sec', audio.markPlayed30sec);
 app.post('/markSongComplete', audio.markSongComplete);
-app.get('/station/:station_id', Facebook.loginRequired(scope), user.login, user.station_view);
+app.get('/station/:station_id', Facebook.loginRequired(scope), user.login, function(req,res) {user.station_view(req,res,io)});
 app.post('/station/:station_id/addArtist', function(req,res) {user.addNewArtist(req,res,io)});
 app.post('/station/:station_id/addTrack', function(req,res) {user.addNewTrack(req,res,io)});
 app.post('/station/:station_id/delete', user.deleteStation);

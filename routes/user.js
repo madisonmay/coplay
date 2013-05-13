@@ -335,7 +335,7 @@ exports.newsearch = function(req, res){
 }
 
 
-exports.station_view = function(req, res){
+exports.station_view = function(req, res, io){
 
     //Main page for mixing and welcome page
     // console.log('id',req.params.station_id);
@@ -372,6 +372,8 @@ exports.station_view = function(req, res){
                         users.push({'name': station.users[k].username, 'id': station.users[k]._id,
                                     'fb_id': station.users[k].fb_id})
                     }
+                    users.push({'name': db_user.username, 'id': db_user._id,
+                                    'fb_id': db_user.fb_id})
                     topics.push([]);
                     weights.push([]);
                     var i = topics.length-1;
@@ -398,7 +400,7 @@ exports.station_view = function(req, res){
                     // console.log('Users: -->', users)
 
                     var host = db_user._id.equals(db_station.host);
-                    // io.sockets.in(req.session.station).emit('userJoined', {'users': JSON.stringify(users)});
+                    io.sockets.in(req.session.station).emit('userJoined', {'users': JSON.stringify(users)});
                     // console.log('----------------USERS---------------')
                     // console.log(users);
                     // console.log(JSON.stringify(users));
