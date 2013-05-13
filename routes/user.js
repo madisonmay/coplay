@@ -371,7 +371,7 @@ exports.station_view = function(req, res, io){
                         // console.log(station.users[k])
                         var user = {'name': station.users[k].username, 'id': station.users[k]._id,
                                     'fb_id': station.users[k].fb_id};
-                        if (!users.contains(users)) {
+                        if (!users.contains(user)) {
                             users.push(user);
                         }
                     }
