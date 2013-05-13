@@ -369,8 +369,11 @@ exports.station_view = function(req, res, io){
                     // console.log("Station users: ", station.users)
                     for (var k=0; k < station.users.length; k++) {
                         // console.log(station.users[k])
-                        users.push({'name': station.users[k].username, 'id': station.users[k]._id,
-                                    'fb_id': station.users[k].fb_id})
+                        var user = {'name': station.users[k].username, 'id': station.users[k]._id,
+                                    'fb_id': station.users[k].fb_id};
+                        if (!users.contains(users)) {
+                            users.push(user);
+                        }
                     }
                     users.push({'name': db_user.username, 'id': db_user._id,
                                     'fb_id': db_user.fb_id})
