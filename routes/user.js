@@ -160,39 +160,7 @@ exports.editSongWeight = function(req, res) {
                 }
             }
             db_station.save(function(err, station) {
-                var topics = [];
-                var weights = [];
-                topics.push([]);
-                weights.push([]);
-                var i = topics.length-1;
-                var totalWeight = 0;
-                for (var j = 0; j < station.songs.length; j++) {
-                    topics[i].push(station.songs[j].name);
-                    weights[i].push(station.songs[j].weight);
-                    totalWeight += weights[i][j];
-                    // console.log('--------------------------');
-                    // console.log(topics);
-                    // console.log(weights);
-                };
-                for (var j = 0; j < station.artists.length; j++) {
-                    topics[i].push(station.artists[j].name);
-                    weights[i].push(station.artists[j].weight);
-                    totalWeight += weights[i][j];
-                    // console.log('--------------------------');
-                    // console.log(topics);
-                    // console.log(weights);
-                };
-
-                //normalize the weight
-                for (var j = 0; j < weights[i].length; j++) {
-                    weights[i][j] *= 100.0/totalWeight;
-                };
-                // console.log('--------------------------');
-                data = JSON.stringify({artist_names:topics, user_counts:weights});
-                // console.log("Final: ");
-                // console.log(data);
-                res.send(data);
-
+                updateD3(station, res);
             });         
 
         } else {
@@ -234,6 +202,7 @@ function updateD3(station, res) {
     data = JSON.stringify({artist_names:topics, user_counts:weights});
     // console.log("Final: ");
     // console.log(data);
+    io.emit('updateD3', {'data': data});
     res.send(data);
 }
 
