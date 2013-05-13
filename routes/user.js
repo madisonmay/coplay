@@ -17,6 +17,12 @@ Array.prototype.contains = function(obj) {
     return false;
 }
 
+Array.prototype.sortByProp = function(p){
+ return this.sort(function(a,b){
+  return (a[p] > b[p]) ? 1 : (a[p] < b[p]) ? -1 : 0;
+ });
+}
+
 Array.prototype.containsObject = function(obj) {
     var i = this.length;
     while (i--) {
@@ -35,11 +41,22 @@ exports.search_stations = function(req, res) {
 }
 
 exports.station_search = function(req, res) {
+
     console.log(req.body);
     console.log(req.body.station);
     Station.find({'name':  new RegExp('.*' + req.body.station + '.*', "i")}, function(err, db_stations) {
         console.log(db_stations);
-        res.send(db_stations);
+        if (db_stations.length > 0) {
+
+            //we don't want too many stations on our hands...
+            var index = 15;
+            if (db_stations.length < 15) {
+                var index = db_stations.length;
+            }
+            stations = db_stations.slice(0, index);
+            stations.sortByProp('name');
+            res.send(stations);
+        }
     })
 }
 
