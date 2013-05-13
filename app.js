@@ -77,6 +77,7 @@ app.post('/removeFriend', user.removeFriend);
 app.post('/autocomplete', audio.autocomplete);
 app.post('/station', user.station);
 app.post('/getLocation', user.getLocation);
+app.post('/transferHost', function(res,req) {user.transferHost(res,req,io)});
 app.get('/station/:station_id', Facebook.loginRequired(scope), user.login, user.station_view);
 app.post('/station/:station_id/addArtist', user.addNewArtist);
 app.post('/station/:station_id/addTrack', user.addNewTrack);
@@ -102,18 +103,13 @@ io.sockets.on('connection', function (socket) {
   });
   socket.on('setHost', function (host) {
     socket.set('host',host);
-  })
+  });
   socket.on('disconnect', function (){
     socket.get('stationID',function (err,id){
       socket.get('host',function (err,host) {
         socket.leave(id);
         if (host) {
           io.sockets.in(id).emit('redirect',{url:'/locate'});
-          // Station.remove({_id: id}, function (err, db_station){
-          //   console.log(err);
-          //   console.log(db_station);
-          //   console.log('success!');
-          // });
         }
       });
     });

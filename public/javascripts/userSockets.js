@@ -17,6 +17,9 @@ $(function() {
                                  "' class='album-art'></img>");
         }
     });
+    socket.on('refresh', function (data) {
+        location.reload();
+    })
     socket.on('redirect', function (data){
         window.location.href = data.url;
     });

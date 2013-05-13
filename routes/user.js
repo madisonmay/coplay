@@ -525,6 +525,13 @@ exports.about = function(req, res){
     res.render("about", {title: 'Coplay', logged_in: false});
 };
 
+exports.transferHost = function(req, res, io) {
+    Station.findOne({_id:req.session.station}, function (err, db_station) {
+        db_station.host = req.body.id;
+        io.sockets.in(req.session.station).emit('refresh');
+    });
+}
+
 function get_friends(fb_id, thisID, req, res, callback){
     //Populates the user object with friends who use CoPlay
     var curr = 0;
