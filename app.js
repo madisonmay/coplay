@@ -109,7 +109,11 @@ io.sockets.on('connection', function (socket) {
         socket.leave(id);
         if (host) {
           io.sockets.in(id).emit('redirect',{url:'/locate'});
-          // Station.remove({_id: id});
+          // Station.remove({_id: id}, function (err, db_station){
+          //   console.log(err);
+          //   console.log(db_station);
+          //   console.log('success!');
+          // });
         }
       });
     });
